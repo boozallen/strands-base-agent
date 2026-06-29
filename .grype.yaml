@@ -1,0 +1,16 @@
+# Grype vulnerability ignore list.
+#
+# Add an entry here only when a scan reports a vulnerability that has no
+# upstream fix yet, or when the fix cannot be adopted immediately. Every
+# entry should include the CVE/GHSA id, severity, a one-line summary, and
+# the fix that will let us remove it.
+#
+# Example:
+#   - vulnerability: CVE-YYYY-NNNNN
+#     package:
+#       name: <pkg>
+#       type: <python|apk|...>
+#     # <severity> - <one-line summary>
+#     # Fix: <upgrade target or "no fix available yet">
+
+ignore: []

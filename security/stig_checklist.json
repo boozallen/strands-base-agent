@@ -1,0 +1,4081 @@
+{
+  "stig": {
+    "id": "Application_Security_Development_STIG",
+    "version": "6",
+    "release": "4"
+  },
+  "assessment": {
+    "assessed_by": "foundry-stigkit",
+    "assessment_date": "2026-06-22",
+    "domains_assessed": [
+      "session",
+      "auth",
+      "authz",
+      "crypto",
+      "validation",
+      "audit",
+      "data"
+    ],
+    "domains_successful": [
+      "audit",
+      "auth",
+      "authz",
+      "crypto",
+      "data",
+      "session",
+      "validation"
+    ],
+    "domains_failed": [],
+    "total_findings": 286,
+    "status_summary": {
+      "not_applicable": 187,
+      "needs_human_review": 74,
+      "meets_requirement": 15,
+      "non_compliant": 10
+    },
+    "severity_summary": {
+      "medium": 230,
+      "low": 22,
+      "high": 34
+    }
+  },
+  "findings": [
+    {
+      "vuln_id": "V-222387",
+      "rule_id": "SV-222387r960735_rule",
+      "stig_id": "SRG-APP-000001",
+      "severity": "medium",
+      "title": "The application must provide a capability to limit the number of logon sessions per user.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: http_sessions",
+      "domains_assessed": [
+        "session"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222388",
+      "rule_id": "SV-222388r1043182_rule",
+      "stig_id": "SRG-APP-000295",
+      "severity": "medium",
+      "title": "The application must clear temporary storage and cookies when the session is terminated.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: http_sessions",
+      "domains_assessed": [
+        "session"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222389",
+      "rule_id": "SV-222389r1043182_rule",
+      "stig_id": "SRG-APP-000295",
+      "severity": "medium",
+      "title": "The application must automatically terminate the non-privileged user session and log off non-privileged users after a 15 minute idle time period has elapsed.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: http_sessions",
+      "domains_assessed": [
+        "session"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222390",
+      "rule_id": "SV-222390r1043182_rule",
+      "stig_id": "SRG-APP-000295",
+      "severity": "medium",
+      "title": "The application must automatically terminate the admin user session and log off admin users after a 10 minute idle time period is exceeded.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: http_sessions",
+      "domains_assessed": [
+        "session"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222391",
+      "rule_id": "SV-222391r961224_rule",
+      "stig_id": "SRG-APP-000296",
+      "severity": "medium",
+      "title": "Applications requiring user access authentication must provide a logoff capability for user initiated communication session.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: authentication",
+      "domains_assessed": [
+        "session"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222392",
+      "rule_id": "SV-222392r961227_rule",
+      "stig_id": "SRG-APP-000297",
+      "severity": "low",
+      "title": "The application must display an explicit logoff message to users indicating the reliable termination of authenticated communications sessions.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: authentication",
+      "domains_assessed": [
+        "session"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222393",
+      "rule_id": "SV-222393r961269_rule",
+      "stig_id": "SRG-APP-000311",
+      "severity": "medium",
+      "title": "The application must associate organization-defined types of security attributes having organization-defined security attribute values with information in storage.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: classified_data",
+      "domains_assessed": [
+        "authz"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222394",
+      "rule_id": "SV-222394r961272_rule",
+      "stig_id": "SRG-APP-000313",
+      "severity": "medium",
+      "title": "The application must associate organization-defined types of security attributes having organization-defined security attribute values with information in process.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: classified_data",
+      "domains_assessed": [
+        "authz"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222395",
+      "rule_id": "SV-222395r961275_rule",
+      "stig_id": "SRG-APP-000314",
+      "severity": "medium",
+      "title": "The application must associate organization-defined types of security attributes having organization-defined security attribute values with information in transmission.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: classified_data",
+      "domains_assessed": [
+        "authz"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222396",
+      "rule_id": "SV-222396r960759_rule",
+      "stig_id": "SRG-APP-000014",
+      "severity": "medium",
+      "title": "The application must implement DoD-approved encryption to protect the confidentiality of remote access sessions.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: http_sessions",
+      "domains_assessed": [
+        "session"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222397",
+      "rule_id": "SV-222397r960762_rule",
+      "stig_id": "SRG-APP-000015",
+      "severity": "medium",
+      "title": "The application must implement cryptographic mechanisms to protect the integrity of remote access sessions.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: http_sessions",
+      "domains_assessed": [
+        "session"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222398",
+      "rule_id": "SV-222398r960762_rule",
+      "stig_id": "SRG-APP-000015",
+      "severity": "medium",
+      "title": "Applications with SOAP messages requiring integrity must include the following message elements:-Message ID-Service Request-Timestamp-SAML Assertion (optionally included in messages) and all elements of the message must be digitally signed.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: saml_ws_security",
+      "domains_assessed": [
+        "crypto"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222399",
+      "rule_id": "SV-222399r960759_rule",
+      "stig_id": "SRG-APP-000014",
+      "severity": "high",
+      "title": "Messages protected with WS_Security must use time stamps with creation and expiration times.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: saml_ws_security",
+      "domains_assessed": [
+        "audit"
+      ],
+      "responsibility": "shared",
+      "responsibility_rationale": "Default — review manually"
+    },
+    {
+      "vuln_id": "V-222400",
+      "rule_id": "SV-222400r960759_rule",
+      "stig_id": "SRG-APP-000014",
+      "severity": "high",
+      "title": "Validity periods must be verified on all application messages using WS-Security or SAML assertions.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: saml_ws_security",
+      "domains_assessed": [
+        "audit"
+      ],
+      "responsibility": "shared",
+      "responsibility_rationale": "Default — review manually"
+    },
+    {
+      "vuln_id": "V-222401",
+      "rule_id": "SV-222401r960759_rule",
+      "stig_id": "SRG-APP-000014",
+      "severity": "medium",
+      "title": "The application must ensure each unique asserting party provides unique assertion ID references for each SAML assertion.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: saml_ws_security",
+      "domains_assessed": [
+        "auth"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222402",
+      "rule_id": "SV-222402r960759_rule",
+      "stig_id": "SRG-APP-000014",
+      "severity": "medium",
+      "title": "The application must ensure encrypted assertions, or equivalent confidentiality protections are used when assertion data is passed through an intermediary, and confidentiality of the assertion data is required when passing through the intermediary.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: saml_ws_security",
+      "domains_assessed": [
+        "crypto"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222403",
+      "rule_id": "SV-222403r960759_rule",
+      "stig_id": "SRG-APP-000014",
+      "severity": "high",
+      "title": "The application must use the NotOnOrAfter condition when using the SubjectConfirmation element in a SAML assertion.",
+      "status": "meets_requirement",
+      "finding_details": "Not assessed by any domain worker. This V-ID covers a procedural, documentation, or cross-cutting control outside the scope of automated code analysis. Manual review required.",
+      "domains_assessed": [],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation",
+      "comments": "Not applicable — strands-base-agent does not act as a SAML Service Provider or Identity Provider and does not consume SAML assertions. No SAML libraries (python3-saml, pysaml2, signxml, lxml-based assertion handling) are declared in pyproject.toml, and no SubjectConfirmation/NotOnOrAfter logic exists in source. Authentication is delegated to upstream identity infrastructure; this control is satisfied by absence of the attack surface."
+    },
+    {
+      "vuln_id": "V-222404",
+      "rule_id": "SV-222404r960759_rule",
+      "stig_id": "SRG-APP-000014",
+      "severity": "high",
+      "title": "The application must use both the NotBefore and NotOnOrAfter elements or OneTimeUse element when using the Conditions element in a SAML assertion.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: saml_ws_security",
+      "domains_assessed": [
+        "auth"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222405",
+      "rule_id": "SV-222405r960759_rule",
+      "stig_id": "SRG-APP-000014",
+      "severity": "medium",
+      "title": "The application must ensure if a OneTimeUse element is used in an assertion, there is only one of the same used in the Conditions element portion of an assertion.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: saml_ws_security",
+      "domains_assessed": [
+        "authz"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222406",
+      "rule_id": "SV-222406r960759_rule",
+      "stig_id": "SRG-APP-000014",
+      "severity": "medium",
+      "title": "The application must ensure messages are encrypted when the SessionIndex is tied to privacy data.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: saml_ws_security",
+      "domains_assessed": [
+        "crypto"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222407",
+      "rule_id": "SV-222407r1043176_rule",
+      "stig_id": "SRG-APP-000023",
+      "severity": "medium",
+      "title": "The application must provide automated mechanisms for supporting account management functions.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: authentication",
+      "domains_assessed": [
+        "auth"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222408",
+      "rule_id": "SV-222408r1015683_rule",
+      "stig_id": "SRG-APP-000317",
+      "severity": "medium",
+      "title": "Shared/group account credentials must be terminated when members leave the group.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: user_accounts",
+      "domains_assessed": [
+        "crypto"
+      ],
+      "responsibility": "shared",
+      "responsibility_rationale": "Default — review manually"
+    },
+    {
+      "vuln_id": "V-222409",
+      "rule_id": "SV-222409r960771_rule",
+      "stig_id": "SRG-APP-000024",
+      "severity": "medium",
+      "title": "The application must automatically remove or disable temporary user accounts 72 hours after account creation.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: authentication",
+      "domains_assessed": [
+        "auth"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222410",
+      "rule_id": "SV-222410r961863_rule",
+      "stig_id": "SRG-APP-000516",
+      "severity": "low",
+      "title": "The application must have a process, feature or function that prevents removal or disabling of emergency accounts.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: authentication",
+      "domains_assessed": [
+        "auth"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222411",
+      "rule_id": "SV-222411r960774_rule",
+      "stig_id": "SRG-APP-000025",
+      "severity": "low",
+      "title": "The application must automatically disable accounts after a 35 day period of account inactivity.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: authentication",
+      "domains_assessed": [
+        "auth"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222412",
+      "rule_id": "SV-222412r960774_rule",
+      "stig_id": "SRG-APP-000025",
+      "severity": "medium",
+      "title": "Unnecessary application accounts must be disabled, or deleted.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: user_accounts",
+      "domains_assessed": [
+        "audit"
+      ],
+      "responsibility": "delivery",
+      "responsibility_rationale": "Account hygiene in deployed instance"
+    },
+    {
+      "vuln_id": "V-222413",
+      "rule_id": "SV-222413r960777_rule",
+      "stig_id": "SRG-APP-000026",
+      "severity": "medium",
+      "title": "The application must automatically audit account creation.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: authentication",
+      "domains_assessed": [
+        "auth"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222414",
+      "rule_id": "SV-222414r960780_rule",
+      "stig_id": "SRG-APP-000027",
+      "severity": "medium",
+      "title": "The application must automatically audit account modification.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: authentication",
+      "domains_assessed": [
+        "auth"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222415",
+      "rule_id": "SV-222415r960783_rule",
+      "stig_id": "SRG-APP-000028",
+      "severity": "medium",
+      "title": "The application must automatically audit account disabling actions.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: authentication",
+      "domains_assessed": [
+        "auth"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222416",
+      "rule_id": "SV-222416r960786_rule",
+      "stig_id": "SRG-APP-000029",
+      "severity": "medium",
+      "title": "The application must automatically audit account removal actions.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: authentication",
+      "domains_assessed": [
+        "auth"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222417",
+      "rule_id": "SV-222417r1015684_rule",
+      "stig_id": "SRG-APP-000291",
+      "severity": "low",
+      "title": "The application must notify system administrators (SAs) and information system security officers (ISSOs) when accounts are created.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: authentication",
+      "domains_assessed": [
+        "auth"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222418",
+      "rule_id": "SV-222418r1015685_rule",
+      "stig_id": "SRG-APP-000292",
+      "severity": "low",
+      "title": "The application must notify system administrators (SAs) and information system security officers (ISSOs) when accounts are modified.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: authentication",
+      "domains_assessed": [
+        "auth"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222419",
+      "rule_id": "SV-222419r1015686_rule",
+      "stig_id": "SRG-APP-000293",
+      "severity": "low",
+      "title": "The application must notify system administrators (SAs) and information system security officers (ISSOs) of account disabling actions.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: authentication",
+      "domains_assessed": [
+        "auth"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222420",
+      "rule_id": "SV-222420r1015687_rule",
+      "stig_id": "SRG-APP-000294",
+      "severity": "low",
+      "title": "The application must notify system administrators (SAs) and information system security officers (ISSOs) of account removal actions.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: authentication",
+      "domains_assessed": [
+        "auth"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222421",
+      "rule_id": "SV-222421r961290_rule",
+      "stig_id": "SRG-APP-000319",
+      "severity": "medium",
+      "title": "The application must automatically audit account enabling actions.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: authentication",
+      "domains_assessed": [
+        "auth"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222422",
+      "rule_id": "SV-222422r1015688_rule",
+      "stig_id": "SRG-APP-000320",
+      "severity": "low",
+      "title": "The application must notify system administrators (SAs) and information system security officers (ISSOs) of account enabling actions.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: authentication",
+      "domains_assessed": [
+        "auth"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222423",
+      "rule_id": "SV-222423r961302_rule",
+      "stig_id": "SRG-APP-000323",
+      "severity": "medium",
+      "title": "Application data protection requirements must be identified and documented.",
+      "status": "needs_human_review",
+      "finding_details": "This V-ID is outside the scope of automated code analysis for the crypto domain. Manual review required.",
+      "domains_assessed": [
+        "crypto"
+      ],
+      "responsibility": "shared",
+      "responsibility_rationale": "Baseline documents data protection requirements at component level; delivery team finalizes per env data classification",
+      "glasswing_findings": [
+        "GW-AFOU-068"
+      ]
+    },
+    {
+      "vuln_id": "V-222424",
+      "rule_id": "SV-222424r961305_rule",
+      "stig_id": "SRG-APP-000324",
+      "severity": "medium",
+      "title": "The application must utilize organization-defined data mining detection techniques for organization-defined data storage objects to adequately detect data mining attempts.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: authentication",
+      "domains_assessed": [
+        "auth"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222425",
+      "rule_id": "SV-222425r960792_rule",
+      "stig_id": "SRG-APP-000033",
+      "severity": "high",
+      "title": "The application must enforce approved authorizations for logical access to information and system resources in accordance with applicable access control policies.",
+      "status": "needs_human_review",
+      "finding_details": "This V-ID is outside the scope of automated code analysis for the crypto domain. Manual review required.",
+      "domains_assessed": [
+        "crypto"
+      ],
+      "responsibility": "delivery",
+      "responsibility_rationale": "Logical access enforcement is configured in deployed env (IAM, network policy)",
+      "ecs_findings": [
+        "RISK-AFOU-001"
+      ],
+      "glasswing_findings": [
+        "GW-AFOU-049",
+        "GW-AFOU-061"
+      ]
+    },
+    {
+      "vuln_id": "V-222426",
+      "rule_id": "SV-222426r961317_rule",
+      "stig_id": "SRG-APP-000328",
+      "severity": "medium",
+      "title": "The application must enforce organization-defined discretionary access control policies over defined subjects and objects.",
+      "status": "needs_human_review",
+      "finding_details": "This V-ID is outside the scope of automated code analysis for the crypto domain. Manual review required.",
+      "domains_assessed": [
+        "crypto"
+      ],
+      "responsibility": "delivery",
+      "responsibility_rationale": "Discretionary access control policies are env-specific",
+      "ecs_findings": [
+        "RISK-AFOU-001"
+      ],
+      "glasswing_findings": [
+        "GW-AFOU-049"
+      ]
+    },
+    {
+      "vuln_id": "V-222427",
+      "rule_id": "SV-222427r960801_rule",
+      "stig_id": "SRG-APP-000038",
+      "severity": "medium",
+      "title": "The application must enforce approved authorizations for controlling the flow of information within the system based on organization-defined information flow control policies.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: authorization",
+      "domains_assessed": [
+        "authz"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222428",
+      "rule_id": "SV-222428r960804_rule",
+      "stig_id": "SRG-APP-000039",
+      "severity": "medium",
+      "title": "The application must enforce approved authorizations for controlling the flow of information between interconnected systems based on organization-defined information flow control policies.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: authorization",
+      "domains_assessed": [
+        "authz"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation",
+      "glasswing_findings": [
+        "GW-AFOU-061"
+      ]
+    },
+    {
+      "vuln_id": "V-222429",
+      "rule_id": "SV-222429r961353_rule",
+      "stig_id": "SRG-APP-000340",
+      "severity": "medium",
+      "title": "The application must prevent non-privileged users from executing privileged functions to include disabling, circumventing, or altering implemented security safeguards/countermeasures.",
+      "status": "needs_human_review",
+      "finding_details": "This V-ID is outside the scope of automated code analysis for the crypto domain. Manual review required.",
+      "domains_assessed": [
+        "crypto"
+      ],
+      "responsibility": "delivery",
+      "responsibility_rationale": "Privileged function restrictions configured per deployment",
+      "ecs_findings": [
+        "RISK-AFOU-001"
+      ],
+      "glasswing_findings": [
+        "GW-AFOU-061"
+      ]
+    },
+    {
+      "vuln_id": "V-222430",
+      "rule_id": "SV-222430r961359_rule",
+      "stig_id": "SRG-APP-000342",
+      "severity": "high",
+      "title": "The application must execute without excessive account permissions.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: authentication",
+      "domains_assessed": [
+        "auth"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222431",
+      "rule_id": "SV-222431r961362_rule",
+      "stig_id": "SRG-APP-000343",
+      "severity": "medium",
+      "title": "The application must audit the execution of privileged functions.",
+      "status": "needs_human_review",
+      "finding_details": "This V-ID is outside the scope of automated code analysis for the crypto domain. Manual review required.",
+      "domains_assessed": [
+        "crypto"
+      ],
+      "responsibility": "delivery",
+      "responsibility_rationale": "Audit of privileged function execution depends on deployed audit infrastructure",
+      "glasswing_findings": [
+        "GW-AFOU-061"
+      ]
+    },
+    {
+      "vuln_id": "V-222432",
+      "rule_id": "SV-222432r960840_rule",
+      "stig_id": "SRG-APP-000065",
+      "severity": "high",
+      "title": "The application must enforce the limit of three consecutive invalid logon attempts by a user during a 15 minute time period.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: authentication",
+      "domains_assessed": [
+        "auth"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222433",
+      "rule_id": "SV-222433r961368_rule",
+      "stig_id": "SRG-APP-000345",
+      "severity": "medium",
+      "title": "The application administrator must follow an approved process to unlock locked user accounts.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: authentication",
+      "domains_assessed": [
+        "auth"
+      ],
+      "responsibility": "delivery",
+      "responsibility_rationale": "Operator/administrator action — performed in deployed env"
+    },
+    {
+      "vuln_id": "V-222434",
+      "rule_id": "SV-222434r960843_rule",
+      "stig_id": "SRG-APP-000068",
+      "severity": "low",
+      "title": "The application must display the Standard Mandatory DoD Notice and Consent Banner before granting access to the application.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: authentication",
+      "domains_assessed": [
+        "auth"
+      ],
+      "responsibility": "delivery",
+      "responsibility_rationale": "Display banner in deployed env"
+    },
+    {
+      "vuln_id": "V-222435",
+      "rule_id": "SV-222435r960846_rule",
+      "stig_id": "SRG-APP-000069",
+      "severity": "low",
+      "title": "The application must retain the Standard Mandatory DoD Notice and Consent Banner on the screen until users acknowledge the usage conditions and take explicit actions to log on for further access.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: authentication",
+      "domains_assessed": [
+        "auth"
+      ],
+      "responsibility": "delivery",
+      "responsibility_rationale": "Display banner in deployed env"
+    },
+    {
+      "vuln_id": "V-222436",
+      "rule_id": "SV-222436r960849_rule",
+      "stig_id": "SRG-APP-000070",
+      "severity": "low",
+      "title": "The publicly accessible application must display the Standard Mandatory DoD Notice and Consent Banner before granting access to the application.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: authentication",
+      "domains_assessed": [
+        "auth"
+      ],
+      "responsibility": "delivery",
+      "responsibility_rationale": "Display banner in deployed env"
+    },
+    {
+      "vuln_id": "V-222437",
+      "rule_id": "SV-222437r987626_rule",
+      "stig_id": "SRG-APP-000075",
+      "severity": "low",
+      "title": "The application must display the time and date of the users last successful logon.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: authentication",
+      "domains_assessed": [
+        "auth"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222438",
+      "rule_id": "SV-222438r960864_rule",
+      "stig_id": "SRG-APP-000080",
+      "severity": "medium",
+      "title": "The application must protect against an individual (or process acting on behalf of an individual) falsely denying having performed organization-defined actions to be covered by non-repudiation.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: authentication",
+      "domains_assessed": [
+        "crypto"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222439",
+      "rule_id": "SV-222439r960873_rule",
+      "stig_id": "SRG-APP-000086",
+      "severity": "medium",
+      "title": "For applications providing audit record aggregation, the application must compile audit records from organization-defined information system components into a system-wide audit trail that is time-correlated with an organization-defined level of tolerance for the relationship between time stamps of individual records in the audit trail.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: audit_aggregation",
+      "domains_assessed": [
+        "audit"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222441",
+      "rule_id": "SV-222441r960879_rule",
+      "stig_id": "SRG-APP-000089",
+      "severity": "medium",
+      "title": "The application must provide audit record generation capability for the creation of session IDs.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: http_sessions",
+      "domains_assessed": [
+        "session"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222442",
+      "rule_id": "SV-222442r960879_rule",
+      "stig_id": "SRG-APP-000089",
+      "severity": "medium",
+      "title": "The application must provide audit record generation capability for the destruction of session IDs.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: http_sessions",
+      "domains_assessed": [
+        "session"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222443",
+      "rule_id": "SV-222443r960879_rule",
+      "stig_id": "SRG-APP-000089",
+      "severity": "medium",
+      "title": "The application must provide audit record generation capability for the renewal of session IDs.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: http_sessions",
+      "domains_assessed": [
+        "session"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222444",
+      "rule_id": "SV-222444r960879_rule",
+      "stig_id": "SRG-APP-000089",
+      "severity": "medium",
+      "title": "The application must not write sensitive data into the application logs.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: http_sessions",
+      "domains_assessed": [
+        "session"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222445",
+      "rule_id": "SV-222445r960879_rule",
+      "stig_id": "SRG-APP-000089",
+      "severity": "medium",
+      "title": "The application must provide audit record generation capability for session timeouts.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: http_sessions",
+      "domains_assessed": [
+        "session"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222446",
+      "rule_id": "SV-222446r960879_rule",
+      "stig_id": "SRG-APP-000089",
+      "severity": "medium",
+      "title": "The application must record a time stamp indicating when the event occurred.",
+      "status": "meets_requirement",
+      "finding_details": "[audit] lifecycle.py:36-40 _initialize_logging configures format with %(asctime)s.%(msecs)03dZ; gmtime converter (line 35) ensures UTC timestamps on every log record.",
+      "domains_assessed": [
+        "audit"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222447",
+      "rule_id": "SV-222447r960879_rule",
+      "stig_id": "SRG-APP-000089",
+      "severity": "medium",
+      "title": "The application must provide audit record generation capability for HTTP headers including User-Agent, Referer, GET, and POST.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: http_sessions",
+      "domains_assessed": [
+        "session"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222448",
+      "rule_id": "SV-222448r960879_rule",
+      "stig_id": "SRG-APP-000089",
+      "severity": "medium",
+      "title": "The application must provide audit record generation capability for connecting system IP addresses.",
+      "status": "needs_human_review",
+      "finding_details": "[audit] No explicit IP capture in repo source. server.py:319 delegates request logging to foundry_agent_fastapi.add_request_logging_middleware (external pkg). Verify middleware records client IP.",
+      "domains_assessed": [
+        "audit"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222449",
+      "rule_id": "SV-222449r960879_rule",
+      "stig_id": "SRG-APP-000089",
+      "severity": "medium",
+      "title": "The application must record the username or user ID of the user associated with the event.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: authentication",
+      "domains_assessed": [
+        "auth"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222450",
+      "rule_id": "SV-222450r960885_rule",
+      "stig_id": "SRG-APP-000091",
+      "severity": "medium",
+      "title": "The application must generate audit records when successful/unsuccessful attempts to grant privileges occur.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: authentication",
+      "domains_assessed": [
+        "auth"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222451",
+      "rule_id": "SV-222451r961791_rule",
+      "stig_id": "SRG-APP-000492",
+      "severity": "medium",
+      "title": "The application must generate audit records when successful/unsuccessful attempts to access security objects occur.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: authentication",
+      "domains_assessed": [
+        "auth"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222452",
+      "rule_id": "SV-222452r961794_rule",
+      "stig_id": "SRG-APP-000493",
+      "severity": "medium",
+      "title": "The application must generate audit records when successful/unsuccessful attempts to access security levels occur.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: authentication",
+      "domains_assessed": [
+        "auth"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222453",
+      "rule_id": "SV-222453r961797_rule",
+      "stig_id": "SRG-APP-000494",
+      "severity": "medium",
+      "title": "The application must generate audit records when successful/unsuccessful attempts to access categories of information (e.g., classification levels) occur.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: authentication",
+      "domains_assessed": [
+        "auth"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222454",
+      "rule_id": "SV-222454r961800_rule",
+      "stig_id": "SRG-APP-000495",
+      "severity": "medium",
+      "title": "The application must generate audit records when successful/unsuccessful attempts to modify privileges occur.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: authentication",
+      "domains_assessed": [
+        "auth"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222455",
+      "rule_id": "SV-222455r961803_rule",
+      "stig_id": "SRG-APP-000496",
+      "severity": "medium",
+      "title": "The application must generate audit records when successful/unsuccessful attempts to modify security objects occur.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: authentication",
+      "domains_assessed": [
+        "auth"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222456",
+      "rule_id": "SV-222456r961806_rule",
+      "stig_id": "SRG-APP-000497",
+      "severity": "medium",
+      "title": "The application must generate audit records when successful/unsuccessful attempts to modify security levels occur.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: authentication",
+      "domains_assessed": [
+        "auth"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222457",
+      "rule_id": "SV-222457r961809_rule",
+      "stig_id": "SRG-APP-000498",
+      "severity": "medium",
+      "title": "The application must generate audit records when successful/unsuccessful attempts to modify categories of information (e.g., classification levels) occur.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: authentication",
+      "domains_assessed": [
+        "auth"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222458",
+      "rule_id": "SV-222458r961812_rule",
+      "stig_id": "SRG-APP-000499",
+      "severity": "medium",
+      "title": "The application must generate audit records when successful/unsuccessful attempts to delete privileges occur.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: authentication",
+      "domains_assessed": [
+        "auth"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222459",
+      "rule_id": "SV-222459r961815_rule",
+      "stig_id": "SRG-APP-000500",
+      "severity": "medium",
+      "title": "The application must generate audit records when successful/unsuccessful attempts to delete security levels occur.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: authentication",
+      "domains_assessed": [
+        "auth"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222460",
+      "rule_id": "SV-222460r961818_rule",
+      "stig_id": "SRG-APP-000501",
+      "severity": "medium",
+      "title": "The application must generate audit records when successful/unsuccessful attempts to delete application database security objects occur.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: authentication",
+      "domains_assessed": [
+        "auth"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222461",
+      "rule_id": "SV-222461r961821_rule",
+      "stig_id": "SRG-APP-000502",
+      "severity": "medium",
+      "title": "The application must generate audit records when successful/unsuccessful attempts to delete categories of information (e.g., classification levels) occur.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: authentication",
+      "domains_assessed": [
+        "auth"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222462",
+      "rule_id": "SV-222462r961824_rule",
+      "stig_id": "SRG-APP-000503",
+      "severity": "medium",
+      "title": "The application must generate audit records when successful/unsuccessful logon attempts occur.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: authentication",
+      "domains_assessed": [
+        "session"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222463",
+      "rule_id": "SV-222463r961827_rule",
+      "stig_id": "SRG-APP-000504",
+      "severity": "medium",
+      "title": "The application must generate audit records for privileged activities or other system-level access.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: http_sessions",
+      "domains_assessed": [
+        "session"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222464",
+      "rule_id": "SV-222464r961830_rule",
+      "stig_id": "SRG-APP-000505",
+      "severity": "medium",
+      "title": "The application must generate audit records showing starting and ending time for user access to the system.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: http_sessions",
+      "domains_assessed": [
+        "session"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222465",
+      "rule_id": "SV-222465r961836_rule",
+      "stig_id": "SRG-APP-000507",
+      "severity": "medium",
+      "title": "The application must generate audit records when successful/unsuccessful accesses to objects occur.",
+      "status": "needs_human_review",
+      "finding_details": "[audit] chat_history.py logs success cases (lines 47, 54, 83, 90, 122, 129, 151, 155) but no explicit failure-path logging beyond unhandled exceptions; failure logging relies on external middleware.",
+      "domains_assessed": [
+        "audit"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation",
+      "glasswing_findings": [
+        "GW-AFOU-049"
+      ]
+    },
+    {
+      "vuln_id": "V-222466",
+      "rule_id": "SV-222466r961839_rule",
+      "stig_id": "SRG-APP-000508",
+      "severity": "medium",
+      "title": "The application must generate audit records for all direct access to the information system.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: authorization",
+      "domains_assessed": [
+        "authz"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222467",
+      "rule_id": "SV-222467r961842_rule",
+      "stig_id": "SRG-APP-000509",
+      "severity": "medium",
+      "title": "The application must generate audit records for all account creations, modifications, disabling, and termination events.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: authentication",
+      "domains_assessed": [
+        "auth"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222468",
+      "rule_id": "SV-222468r960888_rule",
+      "stig_id": "SRG-APP-000092",
+      "severity": "medium",
+      "title": "The application must initiate session auditing upon startup.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: http_sessions",
+      "domains_assessed": [
+        "session"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222469",
+      "rule_id": "SV-222469r960891_rule",
+      "stig_id": "SRG-APP-000095",
+      "severity": "medium",
+      "title": "The application must log application shutdown events.",
+      "status": "meets_requirement",
+      "finding_details": "[audit] lifecycle.py:70 logs received signal; lifecycle.py:96,101,104,108 emit Beginning/Completed/Error graceful shutdown messages via logging.info/error.",
+      "domains_assessed": [
+        "audit"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222470",
+      "rule_id": "SV-222470r960891_rule",
+      "stig_id": "SRG-APP-000095",
+      "severity": "medium",
+      "title": "The application must log destination IP addresses.",
+      "status": "needs_human_review",
+      "finding_details": "Not assessed by any domain worker. This V-ID covers a procedural, documentation, or cross-cutting control outside the scope of automated code analysis. Manual review required.",
+      "domains_assessed": [],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222471",
+      "rule_id": "SV-222471r960891_rule",
+      "stig_id": "SRG-APP-000095",
+      "severity": "medium",
+      "title": "The application must log user actions involving access to data.",
+      "status": "meets_requirement",
+      "finding_details": "[audit] chat_history.py:47-92 logs session/message retrieval (data access) with correlation_id, session_id; query.py:48-71 logs query processing access events.",
+      "domains_assessed": [
+        "audit"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222472",
+      "rule_id": "SV-222472r960891_rule",
+      "stig_id": "SRG-APP-000095",
+      "severity": "medium",
+      "title": "The application must log user actions involving changes to data.",
+      "status": "meets_requirement",
+      "finding_details": "[audit] chat_history.py:122,129 logs session creation; chat_history.py:151,155 logs session deletion. Both include correlation_id and session_id.",
+      "domains_assessed": [
+        "audit"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222473",
+      "rule_id": "SV-222473r960894_rule",
+      "stig_id": "SRG-APP-000096",
+      "severity": "medium",
+      "title": "The application must produce audit records containing information to establish when (date and time) the events occurred.",
+      "status": "meets_requirement",
+      "finding_details": "[audit] lifecycle.py:35-40 sets logging.Formatter.converter=gmtime and format with %(asctime)s.%(msecs)03dZ - every record gets a UTC date/time stamp.",
+      "domains_assessed": [
+        "audit"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222474",
+      "rule_id": "SV-222474r960897_rule",
+      "stig_id": "SRG-APP-000097",
+      "severity": "medium",
+      "title": "The application must produce audit records containing enough information to establish which component, feature or function of the application triggered the audit event.",
+      "status": "meets_requirement",
+      "finding_details": "[audit] lifecycle.py:38 format includes %(name)s (logger module name). factory.py:48, server.py:29, query.py:25, chat_history.py:22 all use logging.getLogger(__name__) so each record identifies its module.",
+      "domains_assessed": [
+        "audit"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222475",
+      "rule_id": "SV-222475r960900_rule",
+      "stig_id": "SRG-APP-000098",
+      "severity": "medium",
+      "title": "When using centralized logging; the application must include a unique identifier in order to distinguish itself from other application logs.",
+      "status": "needs_human_review",
+      "finding_details": "[audit] OTEL service.name=strands-base-agent set in env.template:120 only; no centralized logging implementation in repo source. If centralized logging is enabled at deploy, app identity is via OTel resource, which is config not code.",
+      "domains_assessed": [
+        "audit"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222476",
+      "rule_id": "SV-222476r960903_rule",
+      "stig_id": "SRG-APP-000099",
+      "severity": "medium",
+      "title": "The application must produce audit records that contain information to establish the outcome of the events.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: authorization",
+      "domains_assessed": [
+        "authz"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222477",
+      "rule_id": "SV-222477r960906_rule",
+      "stig_id": "SRG-APP-000100",
+      "severity": "medium",
+      "title": "The application must generate audit records containing information that establishes the identity of any individual or process associated with the event.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: authentication",
+      "domains_assessed": [
+        "auth"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222478",
+      "rule_id": "SV-222478r960909_rule",
+      "stig_id": "SRG-APP-000101",
+      "severity": "medium",
+      "title": "The application must generate audit records containing the full-text recording of privileged commands or the individual identities of group account users.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: authentication",
+      "domains_assessed": [
+        "auth"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222479",
+      "rule_id": "SV-222479r960909_rule",
+      "stig_id": "SRG-APP-000101",
+      "severity": "medium",
+      "title": "The application must implement transaction recovery logs when transaction based.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: transaction_system",
+      "domains_assessed": [
+        "authz"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222480",
+      "rule_id": "SV-222480r985972_rule",
+      "stig_id": "SRG-APP-000356",
+      "severity": "medium",
+      "title": "The application must provide centralized management and configuration of the content to be captured in audit records generated by all application components.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: audit_logging",
+      "domains_assessed": [
+        "audit"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222481",
+      "rule_id": "SV-222481r961395_rule",
+      "stig_id": "SRG-APP-000358",
+      "severity": "medium",
+      "title": "The application must off-load audit records onto a different system or media than the system being audited.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: audit_management",
+      "domains_assessed": [
+        "audit"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222482",
+      "rule_id": "SV-222482r961860_rule",
+      "stig_id": "SRG-APP-000515",
+      "severity": "medium",
+      "title": "The application must be configured to write application logs to a centralized log repository.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: audit_management",
+      "domains_assessed": [
+        "audit"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222483",
+      "rule_id": "SV-222483r961398_rule",
+      "stig_id": "SRG-APP-000359",
+      "severity": "medium",
+      "title": "The application must provide an immediate warning to the SA and ISSO (at a minimum) when allocated audit record storage volume reaches 75% of repository maximum audit record storage capacity.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: audit_management",
+      "domains_assessed": [
+        "audit"
+      ],
+      "responsibility": "delivery",
+      "responsibility_rationale": "ISSO operational duty"
+    },
+    {
+      "vuln_id": "V-222484",
+      "rule_id": "SV-222484r961401_rule",
+      "stig_id": "SRG-APP-000360",
+      "severity": "medium",
+      "title": "Applications categorized as having a moderate or high impact must provide an immediate real-time alert to the SA and ISSO (at a minimum) for all audit failure events.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: audit_management",
+      "domains_assessed": [
+        "audit"
+      ],
+      "responsibility": "delivery",
+      "responsibility_rationale": "ISSO operational duty"
+    },
+    {
+      "vuln_id": "V-222485",
+      "rule_id": "SV-222485r960912_rule",
+      "stig_id": "SRG-APP-000108",
+      "severity": "medium",
+      "title": "The application must alert the ISSO and SA (at a minimum) in the event of an audit processing failure.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: audit_management",
+      "domains_assessed": [
+        "audit"
+      ],
+      "responsibility": "delivery",
+      "responsibility_rationale": "ISSO operational duty"
+    },
+    {
+      "vuln_id": "V-222486",
+      "rule_id": "SV-222486r1043188_rule",
+      "stig_id": "SRG-APP-000109",
+      "severity": "medium",
+      "title": "The application must shut down by default upon audit failure (unless availability is an overriding concern).",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: audit_management",
+      "domains_assessed": [
+        "audit"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222487",
+      "rule_id": "SV-222487r960918_rule",
+      "stig_id": "SRG-APP-000111",
+      "severity": "medium",
+      "title": "The application must provide the capability to centrally review and analyze audit records from multiple components within the system.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: audit_management",
+      "domains_assessed": [
+        "audit"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222488",
+      "rule_id": "SV-222488r960924_rule",
+      "stig_id": "SRG-APP-000115",
+      "severity": "medium",
+      "title": "The application must provide the capability to filter audit records for events of interest based upon organization-defined criteria.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: audit_management",
+      "domains_assessed": [
+        "audit"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222489",
+      "rule_id": "SV-222489r961056_rule",
+      "stig_id": "SRG-APP-000181",
+      "severity": "medium",
+      "title": "The application must provide an audit reduction capability that supports on-demand reporting requirements.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: audit_management",
+      "domains_assessed": [
+        "audit"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222490",
+      "rule_id": "SV-222490r961413_rule",
+      "stig_id": "SRG-APP-000364",
+      "severity": "medium",
+      "title": "The application must provide an audit reduction capability that supports on-demand audit review and analysis.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: audit_management",
+      "domains_assessed": [
+        "audit"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222491",
+      "rule_id": "SV-222491r961416_rule",
+      "stig_id": "SRG-APP-000365",
+      "severity": "medium",
+      "title": "The application must provide an audit reduction capability that supports after-the-fact investigations of security incidents.",
+      "status": "needs_human_review",
+      "finding_details": "This V-ID is outside the scope of automated code analysis for the auth domain. Manual review required.",
+      "domains_assessed": [
+        "auth"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Audit reduction capability — implement structured logging in app code"
+    },
+    {
+      "vuln_id": "V-222492",
+      "rule_id": "SV-222492r961419_rule",
+      "stig_id": "SRG-APP-000366",
+      "severity": "medium",
+      "title": "The application must provide a report generation capability that supports on-demand audit review and analysis.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: audit_management",
+      "domains_assessed": [
+        "audit"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222493",
+      "rule_id": "SV-222493r961422_rule",
+      "stig_id": "SRG-APP-000367",
+      "severity": "medium",
+      "title": "The application must provide a report generation capability that supports on-demand reporting requirements.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: audit_management",
+      "domains_assessed": [
+        "audit"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222494",
+      "rule_id": "SV-222494r961425_rule",
+      "stig_id": "SRG-APP-000368",
+      "severity": "medium",
+      "title": "The application must provide a report generation capability that supports after-the-fact investigations of security incidents.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: audit_management",
+      "domains_assessed": [
+        "audit"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222495",
+      "rule_id": "SV-222495r961428_rule",
+      "stig_id": "SRG-APP-000369",
+      "severity": "medium",
+      "title": "The application must provide an audit reduction capability that does not alter original content or time ordering of audit records.",
+      "status": "needs_human_review",
+      "finding_details": "This V-ID is outside the scope of automated code analysis for the auth domain. Manual review required.",
+      "domains_assessed": [
+        "auth"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Audit reduction must not alter content/order — code-level logging design"
+    },
+    {
+      "vuln_id": "V-222496",
+      "rule_id": "SV-222496r961431_rule",
+      "stig_id": "SRG-APP-000370",
+      "severity": "medium",
+      "title": "The application must provide a report generation capability that does not alter original content or time ordering of audit records.",
+      "status": "needs_human_review",
+      "finding_details": "This V-ID is outside the scope of automated code analysis for the auth domain. Manual review required.",
+      "domains_assessed": [
+        "auth"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Report generation integrity — code-level logging design"
+    },
+    {
+      "vuln_id": "V-222497",
+      "rule_id": "SV-222497r960927_rule",
+      "stig_id": "SRG-APP-000116",
+      "severity": "medium",
+      "title": "The applications must use internal system clocks to generate time stamps for audit records.",
+      "status": "meets_requirement",
+      "finding_details": "[audit] lifecycle.py:35-40 configures Python stdlib logging with default %(asctime)s, which uses the host OS clock via time.gmtime - internal system clock.",
+      "domains_assessed": [
+        "audit"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222498",
+      "rule_id": "SV-222498r961443_rule",
+      "stig_id": "SRG-APP-000374",
+      "severity": "medium",
+      "title": "The application must record time stamps for audit records that can be mapped to Coordinated Universal Time (UTC) or Greenwich Mean Time (GMT).",
+      "status": "meets_requirement",
+      "finding_details": "[audit] lifecycle.py:35 sets logging.Formatter.converter = gmtime; format ends in 'Z' (Zulu/UTC). All log records emit UTC timestamps.",
+      "domains_assessed": [
+        "audit"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222499",
+      "rule_id": "SV-222499r961446_rule",
+      "stig_id": "SRG-APP-000375",
+      "severity": "medium",
+      "title": "The application must record time stamps for audit records that meet a granularity of one second for a minimum degree of precision.",
+      "status": "meets_requirement",
+      "finding_details": "[audit] lifecycle.py:38-39 datefmt='%Y-%m-%dT%H:%M:%S' plus '.%(msecs)03d' yields millisecond precision (well below 1s requirement).",
+      "domains_assessed": [
+        "audit"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222500",
+      "rule_id": "SV-222500r960930_rule",
+      "stig_id": "SRG-APP-000118",
+      "severity": "medium",
+      "title": "The application must protect audit information from any type of unauthorized read access.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: authorization",
+      "domains_assessed": [
+        "authz"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222501",
+      "rule_id": "SV-222501r960933_rule",
+      "stig_id": "SRG-APP-000119",
+      "severity": "medium",
+      "title": "The application must protect audit information from unauthorized modification.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: authorization",
+      "domains_assessed": [
+        "authz"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222502",
+      "rule_id": "SV-222502r960936_rule",
+      "stig_id": "SRG-APP-000120",
+      "severity": "medium",
+      "title": "The application must protect audit information from unauthorized deletion.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: authorization",
+      "domains_assessed": [
+        "authz"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222503",
+      "rule_id": "SV-222503r960939_rule",
+      "stig_id": "SRG-APP-000121",
+      "severity": "medium",
+      "title": "The application must protect audit tools from unauthorized access.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: authorization",
+      "domains_assessed": [
+        "authz"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222504",
+      "rule_id": "SV-222504r960942_rule",
+      "stig_id": "SRG-APP-000122",
+      "severity": "medium",
+      "title": "The application must protect audit tools from unauthorized modification.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: authorization",
+      "domains_assessed": [
+        "authz"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222505",
+      "rule_id": "SV-222505r960945_rule",
+      "stig_id": "SRG-APP-000123",
+      "severity": "medium",
+      "title": "The application must protect audit tools from unauthorized deletion.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: authorization",
+      "domains_assessed": [
+        "authz"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222506",
+      "rule_id": "SV-222506r960948_rule",
+      "stig_id": "SRG-APP-000125",
+      "severity": "medium",
+      "title": "The application must back up audit records at least every seven days onto a different system or system component than the system or component being audited.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: audit_management",
+      "domains_assessed": [
+        "audit"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222507",
+      "rule_id": "SV-222507r960951_rule",
+      "stig_id": "SRG-APP-000126",
+      "severity": "medium",
+      "title": "The application must use cryptographic mechanisms to protect the integrity of audit information.",
+      "status": "non_compliant",
+      "finding_details": "[crypto] No code generates cryptographic hashes or signatures over audit log files. Logs written via stdlib logging only (lifecycle.py:_initialize_logging) without integrity protection.",
+      "domains_assessed": [
+        "crypto"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation",
+      "glasswing_findings": [
+        "GW-AFOU-069"
+      ]
+    },
+    {
+      "vuln_id": "V-222508",
+      "rule_id": "SV-222508r961206_rule",
+      "stig_id": "SRG-APP-000290",
+      "severity": "medium",
+      "title": "Application audit tools must be cryptographically hashed.",
+      "status": "needs_human_review",
+      "finding_details": "[crypto] Application provides no separate audit tool/binary; relies on stdlib logging. Per V-ID guidance, NA when no separate tool exists, but verification of host file-monitoring posture requires manual review.",
+      "domains_assessed": [
+        "crypto"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222509",
+      "rule_id": "SV-222509r961206_rule",
+      "stig_id": "SRG-APP-000290",
+      "severity": "medium",
+      "title": "The integrity of the audit tools must be validated by checking the files for changes in the cryptographic hash value.",
+      "status": "needs_human_review",
+      "finding_details": "[crypto] Application provides no separate audit tool/binary; relies on stdlib logging. Per V-ID guidance, NA when no separate tool exists, but verification of host file-monitoring posture requires manual review.",
+      "domains_assessed": [
+        "crypto"
+      ],
+      "responsibility": "shared",
+      "responsibility_rationale": "Default — review manually"
+    },
+    {
+      "vuln_id": "V-222510",
+      "rule_id": "SV-222510r1015689_rule",
+      "stig_id": "SRG-APP-000378",
+      "severity": "medium",
+      "title": "The application must prohibit user installation of software without explicit privileged status.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: authorization",
+      "domains_assessed": [
+        "authz"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222511",
+      "rule_id": "SV-222511r961461_rule",
+      "stig_id": "SRG-APP-000380",
+      "severity": "medium",
+      "title": "The application must enforce access restrictions associated with changes to application configuration.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: authorization",
+      "domains_assessed": [
+        "authz"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222512",
+      "rule_id": "SV-222512r1015690_rule",
+      "stig_id": "SRG-APP-000381",
+      "severity": "medium",
+      "title": "The application must audit who makes configuration changes to the application.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: authorization",
+      "domains_assessed": [
+        "authz"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222513",
+      "rule_id": "SV-222513r1015691_rule",
+      "stig_id": "SRG-APP-000131",
+      "severity": "medium",
+      "title": "The application must have the capability to prevent the installation of patches, service packs, or application components without verification the software component has been digitally signed using a certificate that is recognized and approved by the organization.",
+      "status": "needs_human_review",
+      "finding_details": "This V-ID is outside the scope of automated code analysis for the crypto domain. Manual review required.",
+      "domains_assessed": [
+        "crypto"
+      ],
+      "responsibility": "delivery",
+      "responsibility_rationale": "Patch installation prevention is an env hardening control"
+    },
+    {
+      "vuln_id": "V-222514",
+      "rule_id": "SV-222514r960960_rule",
+      "stig_id": "SRG-APP-000133",
+      "severity": "medium",
+      "title": "The applications must limit privileges to change the software resident within software libraries.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: authorization",
+      "domains_assessed": [
+        "authz"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222515",
+      "rule_id": "SV-222515r961863_rule",
+      "stig_id": "SRG-APP-000516",
+      "severity": "medium",
+      "title": "An application vulnerability assessment must be conducted.",
+      "status": "needs_human_review",
+      "finding_details": "This V-ID is outside the scope of automated code analysis for the session domain. Manual review required.",
+      "domains_assessed": [
+        "session"
+      ],
+      "responsibility": "shared",
+      "responsibility_rationale": "Baseline runs vulnerability scans (e.g. SAST/SCA) in CI; delivery team runs assessment in deployed env"
+    },
+    {
+      "vuln_id": "V-222516",
+      "rule_id": "SV-222516r961473_rule",
+      "stig_id": "SRG-APP-000384",
+      "severity": "medium",
+      "title": "The application must prevent program execution in accordance with organization-defined policies regarding software program usage and restrictions, and/or rules authorizing the terms and conditions of software program usage.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: authorization",
+      "domains_assessed": [
+        "authz"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222517",
+      "rule_id": "SV-222517r961479_rule",
+      "stig_id": "SRG-APP-000386",
+      "severity": "medium",
+      "title": "The application must employ a deny-all, permit-by-exception (whitelist) policy to allow the execution of authorized software programs.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: authorization",
+      "domains_assessed": [
+        "authz"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222518",
+      "rule_id": "SV-222518r960963_rule",
+      "stig_id": "SRG-APP-000141",
+      "severity": "medium",
+      "title": "The application must be configured to disable non-essential capabilities.",
+      "status": "non_compliant",
+      "finding_details": "[audit] No log integrity, log permission, or non-essential-capability disablement code located via search patterns (log.*integrity|tamper|chmod.*log). No evidence of configuration to disable extra features.",
+      "domains_assessed": [
+        "audit"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222519",
+      "rule_id": "SV-222519r1043177_rule",
+      "stig_id": "SRG-APP-000142",
+      "severity": "medium",
+      "title": "The application must be configured to use only functions, ports, and protocols permitted to it in the PPSM CAL.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: authorization",
+      "domains_assessed": [
+        "authz"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222520",
+      "rule_id": "SV-222520r1050664_rule",
+      "stig_id": "SRG-APP-000389",
+      "severity": "medium",
+      "title": "The application must require users to reauthenticate when organization-defined circumstances or situations require reauthentication.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: authentication",
+      "domains_assessed": [
+        "session"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222521",
+      "rule_id": "SV-222521r985974_rule",
+      "stig_id": "SRG-APP-000390",
+      "severity": "medium",
+      "title": "The application must require devices to reauthenticate when organization-defined circumstances or situations requiring reauthentication.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: endpoint_devices",
+      "domains_assessed": [
+        "session"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222522",
+      "rule_id": "SV-222522r1051115_rule",
+      "stig_id": "SRG-APP-000148",
+      "severity": "high",
+      "title": "The application must uniquely identify and authenticate organizational users (or processes acting on behalf of organizational users).",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: authentication",
+      "domains_assessed": [
+        "auth"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222523",
+      "rule_id": "SV-222523r960972_rule",
+      "stig_id": "SRG-APP-000149",
+      "severity": "medium",
+      "title": "The application must use multifactor (Alt. Token) authentication for network access to privileged accounts.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: mfa",
+      "domains_assessed": [
+        "session"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222524",
+      "rule_id": "SV-222524r961494_rule",
+      "stig_id": "SRG-APP-000391",
+      "severity": "medium",
+      "title": "The application must accept Personal Identity Verification (PIV) credentials.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: pki_authentication",
+      "domains_assessed": [
+        "crypto"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222525",
+      "rule_id": "SV-222525r961497_rule",
+      "stig_id": "SRG-APP-000392",
+      "severity": "medium",
+      "title": "The application must electronically verify Personal Identity Verification (PIV) credentials.",
+      "status": "needs_human_review",
+      "finding_details": "Not assessed by any domain worker. This V-ID covers a procedural, documentation, or cross-cutting control outside the scope of automated code analysis. Manual review required.",
+      "domains_assessed": [],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222526",
+      "rule_id": "SV-222526r960975_rule",
+      "stig_id": "SRG-APP-000150",
+      "severity": "medium",
+      "title": "The application must use multifactor (e.g., CAC, Alt. Token) authentication for network access to non-privileged accounts.",
+      "status": "needs_human_review",
+      "finding_details": "Not assessed by any domain worker. This V-ID covers a procedural, documentation, or cross-cutting control outside the scope of automated code analysis. Manual review required.",
+      "domains_assessed": [],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222527",
+      "rule_id": "SV-222527r1015693_rule",
+      "stig_id": "SRG-APP-000151",
+      "severity": "medium",
+      "title": "The application must use multifactor (Alt. Token) authentication for local access to privileged accounts.",
+      "status": "needs_human_review",
+      "finding_details": "Not assessed by any domain worker. This V-ID covers a procedural, documentation, or cross-cutting control outside the scope of automated code analysis. Manual review required.",
+      "domains_assessed": [],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222528",
+      "rule_id": "SV-222528r1015694_rule",
+      "stig_id": "SRG-APP-000152",
+      "severity": "medium",
+      "title": "The application must use multifactor (e.g., CAC, Alt. Token) authentication for local access to nonprivileged accounts.",
+      "status": "needs_human_review",
+      "finding_details": "Not assessed by any domain worker. This V-ID covers a procedural, documentation, or cross-cutting control outside the scope of automated code analysis. Manual review required.",
+      "domains_assessed": [],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222529",
+      "rule_id": "SV-222529r1015695_rule",
+      "stig_id": "SRG-APP-000153",
+      "severity": "medium",
+      "title": "The application must ensure users are authenticated with an individual authenticator prior to using a group authenticator.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: authentication",
+      "domains_assessed": [
+        "auth"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222530",
+      "rule_id": "SV-222530r960993_rule",
+      "stig_id": "SRG-APP-000156",
+      "severity": "medium",
+      "title": "The application must implement replay-resistant authentication mechanisms for network access to privileged accounts.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: authentication",
+      "domains_assessed": [
+        "crypto"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222531",
+      "rule_id": "SV-222531r1015696_rule",
+      "stig_id": "SRG-APP-000157",
+      "severity": "medium",
+      "title": "The application must implement replay-resistant authentication mechanisms for network access to nonprivileged accounts.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: authentication",
+      "domains_assessed": [
+        "crypto"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222532",
+      "rule_id": "SV-222532r960999_rule",
+      "stig_id": "SRG-APP-000158",
+      "severity": "medium",
+      "title": "The application must utilize mutual authentication when endpoint device non-repudiation protections are required by DoD policy or by the data owner.",
+      "status": "needs_human_review",
+      "finding_details": "Not assessed by any domain worker. This V-ID covers a procedural, documentation, or cross-cutting control outside the scope of automated code analysis. Manual review required.",
+      "domains_assessed": [],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222533",
+      "rule_id": "SV-222533r961503_rule",
+      "stig_id": "SRG-APP-000394",
+      "severity": "medium",
+      "title": "The application must authenticate all network connected endpoint devices before establishing any connection.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: endpoint_devices",
+      "domains_assessed": [
+        "crypto"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222534",
+      "rule_id": "SV-222534r961506_rule",
+      "stig_id": "SRG-APP-000395",
+      "severity": "medium",
+      "title": "Service-Oriented Applications handling non-releasable data must authenticate endpoint devices via mutual SSL/TLS.",
+      "status": "needs_human_review",
+      "finding_details": "Not assessed by any domain worker. This V-ID covers a procedural, documentation, or cross-cutting control outside the scope of automated code analysis. Manual review required.",
+      "domains_assessed": [],
+      "responsibility": "shared",
+      "responsibility_rationale": "Default — review manually"
+    },
+    {
+      "vuln_id": "V-222535",
+      "rule_id": "SV-222535r1015697_rule",
+      "stig_id": "SRG-APP-000163",
+      "severity": "medium",
+      "title": "The application must disable device identifiers after 35 days of inactivity unless a cryptographic certificate is used for authentication.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: endpoint_devices",
+      "domains_assessed": [
+        "crypto"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222536",
+      "rule_id": "SV-222536r1015698_rule",
+      "stig_id": "SRG-APP-000164",
+      "severity": "high",
+      "title": "The application must enforce a minimum 15-character password length.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: password_management",
+      "domains_assessed": [
+        "auth"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222537",
+      "rule_id": "SV-222537r1015699_rule",
+      "stig_id": "SRG-APP-000166",
+      "severity": "medium",
+      "title": "The application must enforce password complexity by requiring that at least one uppercase character be used.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: password_management",
+      "domains_assessed": [
+        "auth"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222538",
+      "rule_id": "SV-222538r1015700_rule",
+      "stig_id": "SRG-APP-000167",
+      "severity": "medium",
+      "title": "The application must enforce password complexity by requiring that at least one lowercase character be used.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: password_management",
+      "domains_assessed": [
+        "auth"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222539",
+      "rule_id": "SV-222539r1015701_rule",
+      "stig_id": "SRG-APP-000168",
+      "severity": "medium",
+      "title": "The application must enforce password complexity by requiring that at least one numeric character be used.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: password_management",
+      "domains_assessed": [
+        "auth"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222540",
+      "rule_id": "SV-222540r1015702_rule",
+      "stig_id": "SRG-APP-000169",
+      "severity": "medium",
+      "title": "The application must enforce password complexity by requiring that at least one special character be used.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: password_management",
+      "domains_assessed": [
+        "auth"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222541",
+      "rule_id": "SV-222541r1043189_rule",
+      "stig_id": "SRG-APP-000170",
+      "severity": "medium",
+      "title": "The application must require the change of at least eight of the total number of characters when passwords are changed.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: password_management",
+      "domains_assessed": [
+        "auth"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222542",
+      "rule_id": "SV-222542r1015704_rule",
+      "stig_id": "SRG-APP-000171",
+      "severity": "high",
+      "title": "The application must only store cryptographic representations of passwords.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: password_management",
+      "domains_assessed": [
+        "crypto"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222543",
+      "rule_id": "SV-222543r961029_rule",
+      "stig_id": "SRG-APP-000172",
+      "severity": "high",
+      "title": "The application must transmit only cryptographically-protected passwords.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: password_management",
+      "domains_assessed": [
+        "crypto"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222544",
+      "rule_id": "SV-222544r1015705_rule",
+      "stig_id": "SRG-APP-000173",
+      "severity": "medium",
+      "title": "The application must enforce 24 hours/1 day as the minimum password lifetime.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: password_management",
+      "domains_assessed": [
+        "auth"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222545",
+      "rule_id": "SV-222545r1043190_rule",
+      "stig_id": "SRG-APP-000174",
+      "severity": "medium",
+      "title": "The application must enforce a 60-day maximum password lifetime restriction.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: password_management",
+      "domains_assessed": [
+        "auth"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222546",
+      "rule_id": "SV-222546r1015267_rule",
+      "stig_id": "SRG-APP-000165",
+      "severity": "medium",
+      "title": "The application must prohibit password reuse for a minimum of five generations.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: password_management",
+      "domains_assessed": [
+        "auth"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222547",
+      "rule_id": "SV-222547r985976_rule",
+      "stig_id": "SRG-APP-000397",
+      "severity": "medium",
+      "title": "The application must allow the use of a temporary password for system logons with an immediate change to a permanent password.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: password_management",
+      "domains_assessed": [
+        "auth"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222548",
+      "rule_id": "SV-222548r961863_rule",
+      "stig_id": "SRG-APP-000516",
+      "severity": "medium",
+      "title": "The application password must not be changeable by users other than the administrator or the user with which the password is associated.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: password_management",
+      "domains_assessed": [
+        "auth"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222549",
+      "rule_id": "SV-222549r961521_rule",
+      "stig_id": "SRG-APP-000400",
+      "severity": "medium",
+      "title": "The application must terminate existing user sessions upon account deletion.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: authentication",
+      "domains_assessed": [
+        "session"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222550",
+      "rule_id": "SV-222550r961038_rule",
+      "stig_id": "SRG-APP-000175",
+      "severity": "high",
+      "title": "The application, when utilizing PKI-based authentication, must validate certificates by constructing a certification path (which includes status information) to an accepted trust anchor.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: pki_authentication",
+      "domains_assessed": [
+        "crypto"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222551",
+      "rule_id": "SV-222551r961041_rule",
+      "stig_id": "SRG-APP-000176",
+      "severity": "high",
+      "title": "The application, when using PKI-based authentication, must enforce authorized access to the corresponding private key.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: pki_authentication",
+      "domains_assessed": [
+        "crypto"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222552",
+      "rule_id": "SV-222552r961044_rule",
+      "stig_id": "SRG-APP-000177",
+      "severity": "medium",
+      "title": "The application must map the authenticated identity to the individual user or group account for PKI-based authentication.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: pki_authentication",
+      "domains_assessed": [
+        "crypto"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222553",
+      "rule_id": "SV-222553r1015707_rule",
+      "stig_id": "SRG-APP-000401",
+      "severity": "medium",
+      "title": "The application, for PKI-based authentication, must implement a local cache of revocation data to support path discovery and validation in case of the inability to access revocation information via the network.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: pki_authentication",
+      "domains_assessed": [
+        "crypto"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222554",
+      "rule_id": "SV-222554r961047_rule",
+      "stig_id": "SRG-APP-000178",
+      "severity": "high",
+      "title": "The application must not display passwords/PINs as clear text.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: password_management",
+      "domains_assessed": [
+        "auth"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222555",
+      "rule_id": "SV-222555r961050_rule",
+      "stig_id": "SRG-APP-000179",
+      "severity": "high",
+      "title": "The application must use mechanisms meeting the requirements of applicable federal laws, Executive Orders, directives, policies, regulations, standards, and guidance for authentication to a cryptographic module.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: pki_authentication",
+      "domains_assessed": [
+        "crypto"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222556",
+      "rule_id": "SV-222556r961053_rule",
+      "stig_id": "SRG-APP-000180",
+      "severity": "medium",
+      "title": "The application must uniquely identify and authenticate non-organizational users (or processes acting on behalf of non-organizational users).",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: authentication",
+      "domains_assessed": [
+        "auth"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222557",
+      "rule_id": "SV-222557r961527_rule",
+      "stig_id": "SRG-APP-000402",
+      "severity": "medium",
+      "title": "The application must accept Personal Identity Verification (PIV) credentials from other federal agencies.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: pki_authentication",
+      "domains_assessed": [
+        "crypto"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222558",
+      "rule_id": "SV-222558r961530_rule",
+      "stig_id": "SRG-APP-000403",
+      "severity": "medium",
+      "title": "The application must electronically verify Personal Identity Verification (PIV) credentials from other federal agencies.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: pki_authentication",
+      "domains_assessed": [
+        "crypto"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222559",
+      "rule_id": "SV-222559r1015708_rule",
+      "stig_id": "SRG-APP-000404",
+      "severity": "medium",
+      "title": "The application must accept Federal Identity, Credential, and Access Management (FICAM)-approved third-party credentials.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: pki_authentication",
+      "domains_assessed": [
+        "crypto"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222560",
+      "rule_id": "SV-222560r1067800_rule",
+      "stig_id": "SRG-APP-000405",
+      "severity": "medium",
+      "title": "The application must conform to Federal Identity, Credential, and Access Management (FICAM)-issued profiles.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: pki_authentication",
+      "domains_assessed": [
+        "crypto"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222561",
+      "rule_id": "SV-222561r961548_rule",
+      "stig_id": "SRG-APP-000409",
+      "severity": "medium",
+      "title": "Applications used for non-local maintenance sessions must audit non-local maintenance and diagnostic sessions for organization-defined auditable events.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: nonlocal_maintenance",
+      "domains_assessed": [
+        "authz"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222562",
+      "rule_id": "SV-222562r961554_rule",
+      "stig_id": "SRG-APP-000411",
+      "severity": "medium",
+      "title": "Applications used for non-local maintenance sessions must implement cryptographic mechanisms to protect the integrity of non-local maintenance and diagnostic communications.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: nonlocal_maintenance",
+      "domains_assessed": [
+        "session"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222563",
+      "rule_id": "SV-222563r961557_rule",
+      "stig_id": "SRG-APP-000412",
+      "severity": "medium",
+      "title": "Applications used for non-local maintenance sessions must implement cryptographic mechanisms to protect the confidentiality of non-local maintenance and diagnostic communications.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: nonlocal_maintenance",
+      "domains_assessed": [
+        "session"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222564",
+      "rule_id": "SV-222564r961560_rule",
+      "stig_id": "SRG-APP-000413",
+      "severity": "medium",
+      "title": "Applications used for non-local maintenance sessions must verify remote disconnection at the termination of non-local maintenance and diagnostic sessions.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: nonlocal_maintenance",
+      "domains_assessed": [
+        "session"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222565",
+      "rule_id": "SV-222565r961062_rule",
+      "stig_id": "SRG-APP-000185",
+      "severity": "medium",
+      "title": "The application must employ strong authenticators in the establishment of non-local maintenance and diagnostic sessions.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: endpoint_devices",
+      "domains_assessed": [
+        "crypto"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222566",
+      "rule_id": "SV-222566r985978_rule",
+      "stig_id": "SRG-APP-000186",
+      "severity": "medium",
+      "title": "The application must terminate all sessions and network connections when nonlocal maintenance is completed.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: nonlocal_maintenance",
+      "domains_assessed": [
+        "session"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222567",
+      "rule_id": "SV-222567r961863_rule",
+      "stig_id": "SRG-APP-000516",
+      "severity": "medium",
+      "title": "The application must not be vulnerable to race conditions.",
+      "status": "needs_human_review",
+      "finding_details": "[audit] server.py uses threading.RLock (lines 71, 87-89, 127-128, 132-138, 142-145, 186-196, 203-204, 221-222, 233-234) for ReconnectingAgentProxy. Static analysis cannot guarantee race-freedom; manual review/static tooling required.",
+      "domains_assessed": [
+        "audit"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Race conditions — addressed via code review and concurrency testing in baseline"
+    },
+    {
+      "vuln_id": "V-222568",
+      "rule_id": "SV-222568r961068_rule",
+      "stig_id": "SRG-APP-000190",
+      "severity": "medium",
+      "title": "The application must terminate all network connections associated with a communications session at the end of the session.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: http_sessions",
+      "domains_assessed": [
+        "session"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222570",
+      "rule_id": "SV-222570r961857_rule",
+      "stig_id": "SRG-APP-000514",
+      "severity": "medium",
+      "title": "The application must utilize FIPS-validated cryptographic modules when signing application components.",
+      "status": "non_compliant",
+      "finding_details": "[crypto] No code-signing logic in source. Application does not sign distributed components; no FIPS-validated module invocation found in strands_base_agent/.",
+      "domains_assessed": [
+        "crypto"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222571",
+      "rule_id": "SV-222571r961857_rule",
+      "stig_id": "SRG-APP-000514",
+      "severity": "medium",
+      "title": "The application must utilize FIPS-validated cryptographic modules when generating cryptographic hashes.",
+      "status": "non_compliant",
+      "finding_details": "[crypto] No hashlib/hmac/cryptography-hash invocations in source. Application does not generate cryptographic hashes; no FIPS-validated hashing logic found.",
+      "domains_assessed": [
+        "crypto"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222572",
+      "rule_id": "SV-222572r961857_rule",
+      "stig_id": "SRG-APP-000514",
+      "severity": "medium",
+      "title": "The application must utilize FIPS-validated cryptographic modules when protecting unclassified information that requires cryptographic protection.",
+      "status": "non_compliant",
+      "finding_details": "[crypto] cryptography==46.0.7 declared in requirements.txt but no active enforcement in source. Library import alone is not evidence (per not_evidence).",
+      "domains_assessed": [
+        "crypto"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222573",
+      "rule_id": "SV-222573r961857_rule",
+      "stig_id": "SRG-APP-000514",
+      "severity": "medium",
+      "title": "Applications making SAML assertions must use FIPS-approved random numbers in the generation of SessionIndex in the SAML element AuthnStatement.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: saml_ws_security",
+      "domains_assessed": [
+        "crypto"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222574",
+      "rule_id": "SV-222574r961095_rule",
+      "stig_id": "SRG-APP-000211",
+      "severity": "medium",
+      "title": "The application user interface must be either physically or logically separated from data storage and management interfaces.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: user_interface",
+      "domains_assessed": [
+        "auth"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222575",
+      "rule_id": "SV-222575r1043178_rule",
+      "stig_id": "SRG-APP-000219",
+      "severity": "medium",
+      "title": "The application must set the HTTPOnly flag on session cookies.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: cookies",
+      "domains_assessed": [
+        "session"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222576",
+      "rule_id": "SV-222576r1043178_rule",
+      "stig_id": "SRG-APP-000219",
+      "severity": "medium",
+      "title": "The application must set the secure flag on session cookies.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: cookies",
+      "domains_assessed": [
+        "session"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222577",
+      "rule_id": "SV-222577r1043178_rule",
+      "stig_id": "SRG-APP-000219",
+      "severity": "high",
+      "title": "The application must not expose session IDs.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: http_sessions",
+      "domains_assessed": [
+        "session"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222578",
+      "rule_id": "SV-222578r1043179_rule",
+      "stig_id": "SRG-APP-000220",
+      "severity": "high",
+      "title": "The application must destroy the session ID value and/or cookie on logoff or browser close.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: http_sessions",
+      "domains_assessed": [
+        "session"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222579",
+      "rule_id": "SV-222579r1043180_rule",
+      "stig_id": "SRG-APP-000223",
+      "severity": "medium",
+      "title": "Applications must use system-generated session identifiers that protect against session fixation.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: http_sessions",
+      "domains_assessed": [
+        "session"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222580",
+      "rule_id": "SV-222580r1043180_rule",
+      "stig_id": "SRG-APP-000223",
+      "severity": "medium",
+      "title": "Applications must validate session identifiers.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: http_sessions",
+      "domains_assessed": [
+        "session"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222581",
+      "rule_id": "SV-222581r1043180_rule",
+      "stig_id": "SRG-APP-000223",
+      "severity": "medium",
+      "title": "Applications must not use URL embedded session IDs.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: http_sessions",
+      "domains_assessed": [
+        "session"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222582",
+      "rule_id": "SV-222582r1043180_rule",
+      "stig_id": "SRG-APP-000223",
+      "severity": "medium",
+      "title": "The application must not re-use or recycle session IDs.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: http_sessions",
+      "domains_assessed": [
+        "session"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222583",
+      "rule_id": "SV-222583r1051270_rule",
+      "stig_id": "SRG-APP-000224",
+      "severity": "medium",
+      "title": "The application must generate a unique session identifier using a FIPS 140-2/140-3 approved random number generator.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: http_sessions",
+      "domains_assessed": [
+        "session"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222584",
+      "rule_id": "SV-222584r961596_rule",
+      "stig_id": "SRG-APP-000427",
+      "severity": "medium",
+      "title": "The application must only allow the use of DoD-approved certificate authorities for verification of the establishment of protected sessions.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: pki_authentication",
+      "domains_assessed": [
+        "session"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222585",
+      "rule_id": "SV-222585r961122_rule",
+      "stig_id": "SRG-APP-000225",
+      "severity": "high",
+      "title": "The application must fail to a secure state if system initialization fails, shutdown fails, or aborts fail.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: authentication",
+      "domains_assessed": [
+        "auth"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222586",
+      "rule_id": "SV-222586r961125_rule",
+      "stig_id": "SRG-APP-000226",
+      "severity": "medium",
+      "title": "In the event of a system failure, applications must preserve any information necessary to determine cause of failure and any information necessary to return to operations with least disruption to mission processes.",
+      "status": "meets_requirement",
+      "finding_details": "[audit] query.py:163 logger.exception captures full traceback on unexpected errors; lifecycle.py:104 logs error during graceful shutdown; server.py:346 logs cleanup warnings.",
+      "domains_assessed": [
+        "audit"
+      ],
+      "responsibility": "shared",
+      "responsibility_rationale": "Default — review manually"
+    },
+    {
+      "vuln_id": "V-222587",
+      "rule_id": "SV-222587r961128_rule",
+      "stig_id": "SRG-APP-000231",
+      "severity": "medium",
+      "title": "The application must protect the confidentiality and integrity of stored information when required by DoD policy or the information owner.",
+      "status": "non_compliant",
+      "finding_details": "[crypto] No encryption/hashing applied to stored data (sessions/, chat history). No encrypt|cipher|hashlib calls in source; file-based session storage without confidentiality/integrity controls.",
+      "domains_assessed": [
+        "crypto"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222588",
+      "rule_id": "SV-222588r1067803_rule",
+      "stig_id": "SRG-APP-000428",
+      "severity": "high",
+      "title": "The application must implement approved cryptographic mechanisms to prevent unauthorized modification of organization-defined information at rest on organization-defined information system components.",
+      "status": "meets_requirement",
+      "finding_details": "[crypto] Satisfied by EncryptedFileSessionManager in foundry-strands-agent 0.3.2 (FOUNDRY-579). File-backed session state is encrypted with AES-256-GCM; integrity/modification protection is provided by the GCM auth tag — tampered ciphertext raises cryptography.exceptions.InvalidTag on read. Key supplied via SESSION_ENCRYPTION_KEY (32-byte hex), documented in env.template:45-51 (PR #361, FOUNDRY-588). Server fails startup if session_type=file and the key is missing or malformed.",
+      "domains_assessed": [
+        "crypto"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222589",
+      "rule_id": "SV-222589r1067813_rule",
+      "stig_id": "SRG-APP-000429",
+      "severity": "high",
+      "title": "The application must use appropriate cryptography in order to protect stored DOD information when required by the information owner or DOD policy.",
+      "status": "meets_requirement",
+      "finding_details": "[crypto] AES-256-GCM (FIPS-approved AEAD) applied to all persisted session payloads via EncryptedFileSessionManager in foundry-strands-agent 0.3.2 (FOUNDRY-579). Encryption module docstring explicitly cites V-222588 (CCI-002475) and V-222589 (CCI-002476). Operator key configuration (SESSION_ENCRYPTION_KEY, 32-byte hex) documented in env.template:45-51 (PR #361, FOUNDRY-588).",
+      "domains_assessed": [
+        "crypto"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222590",
+      "rule_id": "SV-222590r961131_rule",
+      "stig_id": "SRG-APP-000233",
+      "severity": "medium",
+      "title": "The application must isolate security functions from non-security functions.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: authorization",
+      "domains_assessed": [
+        "authz"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222591",
+      "rule_id": "SV-222591r961608_rule",
+      "stig_id": "SRG-APP-000431",
+      "severity": "medium",
+      "title": "The application must maintain a separate execution domain for each executing process.",
+      "status": "needs_human_review",
+      "finding_details": "[audit] Search patterns process.*isolat|sandbox|execution.*domain returned no matches. Process isolation is OS-provided for Python apps; no app-level enforcement code present in repo. Manual review required.",
+      "domains_assessed": [
+        "audit"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222592",
+      "rule_id": "SV-222592r961149_rule",
+      "stig_id": "SRG-APP-000243",
+      "severity": "medium",
+      "title": "Applications must prevent unauthorized and unintended information transfer via shared system resources.",
+      "status": "needs_human_review",
+      "finding_details": "[crypto] Process-level isolation relies on Python runtime/OS; no application-level shared-resource boundary enforcement found in source. Deployment containerization context required for verdict.",
+      "domains_assessed": [
+        "crypto"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation",
+      "glasswing_findings": [
+        "GW-AFOU-068"
+      ]
+    },
+    {
+      "vuln_id": "V-222593",
+      "rule_id": "SV-222593r961620_rule",
+      "stig_id": "SRG-APP-000435",
+      "severity": "medium",
+      "title": "XML-based applications must mitigate DoS attacks by using XML filters, parser options, or gateways.",
+      "status": "needs_human_review",
+      "finding_details": "Not assessed by any domain worker. This V-ID covers a procedural, documentation, or cross-cutting control outside the scope of automated code analysis. Manual review required.",
+      "domains_assessed": [],
+      "responsibility": "shared",
+      "responsibility_rationale": "Default — review manually"
+    },
+    {
+      "vuln_id": "V-222594",
+      "rule_id": "SV-222594r961152_rule",
+      "stig_id": "SRG-APP-000246",
+      "severity": "medium",
+      "title": "The application must restrict the ability to launch Denial of Service (DoS) attacks against itself or other information systems.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: authorization",
+      "domains_assessed": [
+        "authz"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222595",
+      "rule_id": "SV-222595r961155_rule",
+      "stig_id": "SRG-APP-000247",
+      "severity": "medium",
+      "title": "The web service design must include redundancy mechanisms when used with high-availability systems.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: data_processing",
+      "domains_assessed": [
+        "data"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222596",
+      "rule_id": "SV-222596r961632_rule",
+      "stig_id": "SRG-APP-000439",
+      "severity": "high",
+      "title": "The application must protect the confidentiality and integrity of transmitted information.",
+      "status": "meets_requirement",
+      "finding_details": "[crypto] Satisfied via FOUNDRY-589 TLS posture enforcement (PR #352) and the outbound TLS context in foundry-strands-agent 0.3.2 (PR #396). Inbound: strands_base_agent/application/tls_config.py:62-93 fails the server closed via sys.exit(1) if tls_mode is unset, invalid, or if 'native' mode lacks readable keyfile/certfile. strands_base_agent/server.py:396-416 validates TLS posture before uvicorn.run and passes ssl_keyfile/ssl_certfile in native mode. Configured via tls_mode in config.yaml (default platform) or STRANDS_TLS_MODE env var; documented in docs/tls-posture.md (which explicitly cites V-222596 / APSC-DV-002440). Outbound: foundry_strands_agent/tls.py:6 cites V-222596 / CCI-002418; create_tls_context() enforces TLS 1.2 minimum and certificate verification on by default for all outbound MCP HTTPS calls. Test coverage in tests/unit/application/tls_config_test.py for unset / invalid / platform / native / missing-files paths.",
+      "domains_assessed": [
+        "crypto"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222597",
+      "rule_id": "SV-222597r961635_rule",
+      "stig_id": "SRG-APP-000440",
+      "severity": "medium",
+      "title": "The application must implement cryptographic mechanisms to prevent unauthorized disclosure of information and/or detect changes to information during transmission unless otherwise protected by alternative physical safeguards, such as, at a minimum, a Protected Distribution System (PDS).",
+      "status": "needs_human_review",
+      "finding_details": "Not assessed by any domain worker. This V-ID covers a procedural, documentation, or cross-cutting control outside the scope of automated code analysis. Manual review required.",
+      "domains_assessed": [],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222598",
+      "rule_id": "SV-222598r961638_rule",
+      "stig_id": "SRG-APP-000441",
+      "severity": "medium",
+      "title": "The application must maintain the confidentiality and integrity of information during preparation for transmission.",
+      "status": "needs_human_review",
+      "finding_details": "Not assessed by any domain worker. This V-ID covers a procedural, documentation, or cross-cutting control outside the scope of automated code analysis. Manual review required.",
+      "domains_assessed": [],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222599",
+      "rule_id": "SV-222599r961641_rule",
+      "stig_id": "SRG-APP-000442",
+      "severity": "medium",
+      "title": "The application must maintain the confidentiality and integrity of information during reception.",
+      "status": "needs_human_review",
+      "finding_details": "Not assessed by any domain worker. This V-ID covers a procedural, documentation, or cross-cutting control outside the scope of automated code analysis. Manual review required.",
+      "domains_assessed": [],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222600",
+      "rule_id": "SV-222600r961638_rule",
+      "stig_id": "SRG-APP-000441",
+      "severity": "medium",
+      "title": "The application must not disclose unnecessary information to users.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: user_interface",
+      "domains_assessed": [
+        "auth"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222601",
+      "rule_id": "SV-222601r961638_rule",
+      "stig_id": "SRG-APP-000441",
+      "severity": "high",
+      "title": "The application must not store sensitive information in hidden fields.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: html_forms",
+      "domains_assessed": [
+        "session"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222602",
+      "rule_id": "SV-222602r961158_rule",
+      "stig_id": "SRG-APP-000251",
+      "severity": "high",
+      "title": "The application must protect from Cross-Site Scripting (XSS) vulnerabilities.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: html_forms",
+      "domains_assessed": [
+        "session"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222603",
+      "rule_id": "SV-222603r961158_rule",
+      "stig_id": "SRG-APP-000251",
+      "severity": "medium",
+      "title": "The application must protect from Cross-Site Request Forgery (CSRF) vulnerabilities.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: html_forms",
+      "domains_assessed": [
+        "session"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222604",
+      "rule_id": "SV-222604r961158_rule",
+      "stig_id": "SRG-APP-000251",
+      "severity": "high",
+      "title": "The application must protect from command injection.",
+      "status": "meets_requirement",
+      "finding_details": "Zero command-execution sinks in production source (strands_base_agent/**). Ruff rules S102/S307/S602/S603/S604/S605/S606/S607 enforced in pyproject.toml and CI (ci-cd.yml). Bandit B602/B603/B605/B607 runs in CI pipeline. No noqa suppressions bypass these rules. os module usage limited to os.getenv() only (server.py, lifecycle.py).",
+      "domains_assessed": [
+        "validation"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation",
+      "comments": "Human-attested command-injection prevention control for strands-base-agent: command-execution sinks (os.system, os.popen, subprocess with shell=True or string command, eval, exec) are prohibited by enforced lint rules. Enforcement is active in pyproject.toml via ruff S102/S307/S602/S603/S604/S605/S606/S607 and in local/CI lint via bandit B602/B603/B605/B607 (just lint and .github/workflows/ci-cd.yml). Scope scanned (2026-06-22): strands_base_agent/**, tests/** — zero sink hits; no shell-out surface currently exists. If a future exception is required it must use argv-list subprocess invocation (shell=False), avoid partial executable paths, and include inline justification with security review evidence. Adopters whose ATO requires a written prose policy should add it to this comments field in their fork; the baseline relies on the enforced rules above as the policy."
+    },
+    {
+      "vuln_id": "V-222605",
+      "rule_id": "SV-222605r961158_rule",
+      "stig_id": "SRG-APP-000251",
+      "severity": "medium",
+      "title": "The application must protect from canonical representation vulnerabilities.",
+      "status": "needs_human_review",
+      "finding_details": "Not assessed by any domain worker. This V-ID covers a procedural, documentation, or cross-cutting control outside the scope of automated code analysis. Manual review required.",
+      "domains_assessed": [],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222606",
+      "rule_id": "SV-222606r961158_rule",
+      "stig_id": "SRG-APP-000251",
+      "severity": "medium",
+      "title": "The application must validate all input.",
+      "status": "needs_human_review",
+      "finding_details": "Not assessed by any domain worker. This V-ID covers a procedural, documentation, or cross-cutting control outside the scope of automated code analysis. Manual review required.",
+      "domains_assessed": [],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222607",
+      "rule_id": "SV-222607r961158_rule",
+      "stig_id": "SRG-APP-000251",
+      "severity": "high",
+      "title": "The application must not be vulnerable to SQL Injection.",
+      "status": "meets_requirement",
+      "finding_details": "Not assessed by any domain worker. This V-ID covers a procedural, documentation, or cross-cutting control outside the scope of automated code analysis. Manual review required.",
+      "domains_assessed": [],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation",
+      "comments": "Not applicable — strands-base-agent does not connect to SQL databases. No SQL drivers, ORMs (SQLAlchemy, Tortoise, Peewee), or raw query construction (cursor.execute, db.exec) appear in source or pyproject.toml. Session persistence uses file-based storage. Control is satisfied by absence of the attack surface."
+    },
+    {
+      "vuln_id": "V-222608",
+      "rule_id": "SV-222608r961158_rule",
+      "stig_id": "SRG-APP-000251",
+      "severity": "high",
+      "title": "The application must not be vulnerable to XML-oriented attacks.",
+      "status": "meets_requirement",
+      "finding_details": "Not assessed by any domain worker. This V-ID covers a procedural, documentation, or cross-cutting control outside the scope of automated code analysis. Manual review required.",
+      "domains_assessed": [],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation",
+      "comments": "Not applicable — strands-base-agent does not parse, generate, or process XML input. No XML libraries (xml.etree.ElementTree, lxml, xmltodict, defusedxml) are declared in pyproject.toml or imported in source. All structured I/O is JSON via FastAPI/Pydantic. Control is satisfied by absence of the attack surface."
+    },
+    {
+      "vuln_id": "V-222609",
+      "rule_id": "SV-222609r961656_rule",
+      "stig_id": "SRG-APP-000447",
+      "severity": "high",
+      "title": "The application must not be subject to input handling vulnerabilities.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: http_sessions",
+      "domains_assessed": [
+        "session"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222610",
+      "rule_id": "SV-222610r961167_rule",
+      "stig_id": "SRG-APP-000266",
+      "severity": "medium",
+      "title": "The application must generate error messages that provide information necessary for corrective actions without revealing information that could be exploited by adversaries.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: authorization",
+      "domains_assessed": [
+        "authz"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222611",
+      "rule_id": "SV-222611r961170_rule",
+      "stig_id": "SRG-APP-000267",
+      "severity": "medium",
+      "title": "The application must reveal error messages only to the ISSO, ISSM, or SA.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: user_interface",
+      "domains_assessed": [
+        "auth"
+      ],
+      "responsibility": "delivery",
+      "responsibility_rationale": "ISSO operational duty"
+    },
+    {
+      "vuln_id": "V-222612",
+      "rule_id": "SV-222612r961665_rule",
+      "stig_id": "SRG-APP-000450",
+      "severity": "high",
+      "title": "The application must not be vulnerable to overflow attacks.",
+      "status": "meets_requirement",
+      "finding_details": "[validation] Satisfied via defense-in-depth size/format constraints introduced under FOUNDRY-586 (foundry-agent-core 0.2.4, foundry-agent-fastapi 0.2.2, foundry-strands-agent 0.3.2; bumped to release in PR #396). foundry_agent_core/types.py:12 explicitly cites STIG V-222612 / CCI-002824. (1) HTTP request models bound query (8 KiB), session_id (128 chars, regex ^[A-Za-z0-9_-]+$), context dict (32 keys / 16 KiB) — foundry_agent_fastapi/models/requests.py:44-71. (2) Domain types apply matching Pydantic v2 StringConstraints with _validate_bounded_dict — foundry_agent_core/types.py:16-43; mirrored for RAG types in foundry_strands_agent/types.py:36-45. (3) Orchestrator re-validates max_query_length at runtime — foundry_strands_agent/orchestrator.py:257-266. Starter repo enforces session-id bounds on chat history routes — strands_base_agent/api/routes/chat_history.py:25. Configurable via max_query_length / STRANDS__MAX_QUERY_LENGTH.",
+      "domains_assessed": [
+        "validation"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222613",
+      "rule_id": "SV-222613r961677_rule",
+      "stig_id": "SRG-APP-000454",
+      "severity": "medium",
+      "title": "The application must remove organization-defined software components after updated versions have been installed.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: data_processing",
+      "domains_assessed": [
+        "data"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222614",
+      "rule_id": "SV-222614r961683_rule",
+      "stig_id": "SRG-APP-000456",
+      "severity": "medium",
+      "title": "Security-relevant software updates and patches must be kept up to date.",
+      "status": "needs_human_review",
+      "finding_details": "This V-ID is outside the scope of automated code analysis for the audit domain. Manual review required.",
+      "domains_assessed": [
+        "audit"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Keep baseline dependencies patched (Renovate/Dependabot/scheduled SBOM)",
+      "glasswing_findings": [
+        "GW-AFOU-067",
+        "GW-AFOU-069",
+        "GW-AFOU-078"
+      ]
+    },
+    {
+      "vuln_id": "V-222615",
+      "rule_id": "SV-222615r961731_rule",
+      "stig_id": "SRG-APP-000472",
+      "severity": "medium",
+      "title": "The application performing organization-defined security functions must verify correct operation of security functions.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: authorization",
+      "domains_assessed": [
+        "authz"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222616",
+      "rule_id": "SV-222616r961734_rule",
+      "stig_id": "SRG-APP-000473",
+      "severity": "medium",
+      "title": "The application must perform verification of the correct operation of security functions: upon system startup and/or restart; upon command by a user with privileged access; and/or every 30 days.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: authorization",
+      "domains_assessed": [
+        "authz"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222617",
+      "rule_id": "SV-222617r961185_rule",
+      "stig_id": "SRG-APP-000275",
+      "severity": "low",
+      "title": "The application must notify the ISSO and ISSM of failed security verification tests.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: authorization",
+      "domains_assessed": [
+        "authz"
+      ],
+      "responsibility": "delivery",
+      "responsibility_rationale": "ISSO operational duty"
+    },
+    {
+      "vuln_id": "V-222618",
+      "rule_id": "SV-222618r961083_rule",
+      "stig_id": "SRG-APP-000206",
+      "severity": "medium",
+      "title": "Unsigned Category 1A mobile code must not be used in the application in accordance with DoD policy.",
+      "status": "needs_human_review",
+      "finding_details": "This V-ID is outside the scope of automated code analysis for the authz domain. Manual review required.",
+      "domains_assessed": [
+        "authz"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Mobile code policy — code-level: do not include unsigned Cat 1A code"
+    },
+    {
+      "vuln_id": "V-222619",
+      "rule_id": "SV-222619r961863_rule",
+      "stig_id": "SRG-APP-000516",
+      "severity": "medium",
+      "title": "The ISSO must ensure an account management process is implemented, verifying only authorized users can gain access to the application, and individual accounts designated as inactive, suspended, or terminated are promptly removed.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: user_accounts",
+      "domains_assessed": [
+        "authz"
+      ],
+      "responsibility": "delivery",
+      "responsibility_rationale": "ISSO operational duty"
+    },
+    {
+      "vuln_id": "V-222620",
+      "rule_id": "SV-222620r961863_rule",
+      "stig_id": "SRG-APP-000516",
+      "severity": "high",
+      "title": "Application web servers must be on a separate network segment from the application and database servers if it is a tiered application operating in the DoD DMZ.",
+      "status": "needs_human_review",
+      "finding_details": "This V-ID is outside the scope of automated code analysis for the authz domain. Manual review required.",
+      "domains_assessed": [
+        "authz"
+      ],
+      "responsibility": "delivery",
+      "responsibility_rationale": "Web/app/db network segmentation is a deployment topology concern"
+    },
+    {
+      "vuln_id": "V-222621",
+      "rule_id": "SV-222621r961863_rule",
+      "stig_id": "SRG-APP-000516",
+      "severity": "medium",
+      "title": "The ISSO must ensure application audit trails are retained for at least 1 year for applications without SAMI data, and 5 years for applications including SAMI data.",
+      "status": "needs_human_review",
+      "finding_details": "This V-ID is outside the scope of automated code analysis for the audit domain. Manual review required.",
+      "domains_assessed": [
+        "audit"
+      ],
+      "responsibility": "delivery",
+      "responsibility_rationale": "ISSO retains audit trails — operational duty"
+    },
+    {
+      "vuln_id": "V-222622",
+      "rule_id": "SV-222622r961863_rule",
+      "stig_id": "SRG-APP-000516",
+      "severity": "medium",
+      "title": "The ISSO must review audit trails periodically based on system documentation recommendations or immediately upon system security events.",
+      "status": "needs_human_review",
+      "finding_details": "This V-ID is outside the scope of automated code analysis for the authz domain. Manual review required.",
+      "domains_assessed": [
+        "authz"
+      ],
+      "responsibility": "delivery",
+      "responsibility_rationale": "ISSO reviews audit trails — operational duty"
+    },
+    {
+      "vuln_id": "V-222623",
+      "rule_id": "SV-222623r961863_rule",
+      "stig_id": "SRG-APP-000516",
+      "severity": "medium",
+      "title": "The ISSO must report all suspected violations of IA policies in accordance with DoD information system IA procedures.",
+      "status": "needs_human_review",
+      "finding_details": "This V-ID is outside the scope of automated code analysis for the data domain. Manual review required.",
+      "domains_assessed": [
+        "data"
+      ],
+      "responsibility": "delivery",
+      "responsibility_rationale": "ISSO reports IA policy violations — operational duty"
+    },
+    {
+      "vuln_id": "V-222624",
+      "rule_id": "SV-222624r1051272_rule",
+      "stig_id": "SRG-APP-000516",
+      "severity": "medium",
+      "title": "The ISSO must ensure active vulnerability testing is performed.",
+      "status": "needs_human_review",
+      "finding_details": "Not assessed by any domain worker. This V-ID covers a procedural, documentation, or cross-cutting control outside the scope of automated code analysis. Manual review required.",
+      "domains_assessed": [],
+      "responsibility": "shared",
+      "responsibility_rationale": "Baseline runs active vuln testing in CI; delivery team runs against deployed instance"
+    },
+    {
+      "vuln_id": "V-222625",
+      "rule_id": "SV-222625r961863_rule",
+      "stig_id": "SRG-APP-000516",
+      "severity": "medium",
+      "title": "Execution flow diagrams and design documents must be created to show how deadlock and recursion issues in web services are being mitigated.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: data_processing",
+      "domains_assessed": [
+        "data"
+      ],
+      "responsibility": "shared",
+      "responsibility_rationale": "Default — review manually"
+    },
+    {
+      "vuln_id": "V-222626",
+      "rule_id": "SV-222626r961863_rule",
+      "stig_id": "SRG-APP-000516",
+      "severity": "medium",
+      "title": "The designer must ensure the application does not store configuration and control files in the same directory as user data.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: authorization",
+      "domains_assessed": [
+        "authz"
+      ],
+      "responsibility": "shared",
+      "responsibility_rationale": "Default — review manually"
+    },
+    {
+      "vuln_id": "V-222627",
+      "rule_id": "SV-222627r961863_rule",
+      "stig_id": "SRG-APP-000516",
+      "severity": "medium",
+      "title": "The ISSO must ensure if a DoD STIG or NSA guide is not available, a third-party product will be configured by following available guidance.",
+      "status": "needs_human_review",
+      "finding_details": "This V-ID is outside the scope of automated code analysis for the audit domain. Manual review required.",
+      "domains_assessed": [
+        "audit"
+      ],
+      "responsibility": "delivery",
+      "responsibility_rationale": "Third-party product configuration via vendor guides — env config"
+    },
+    {
+      "vuln_id": "V-222628",
+      "rule_id": "SV-222628r961863_rule",
+      "stig_id": "SRG-APP-000516",
+      "severity": "medium",
+      "title": "New IP addresses, data services, and associated ports used by the application must be submitted to the appropriate approving authority for the organization, which in turn will be submitted through the DoD Ports, Protocols, and Services Management (DoD PPSM)",
+      "status": "needs_human_review",
+      "finding_details": "This V-ID is outside the scope of automated code analysis for the data domain. Manual review required.",
+      "domains_assessed": [
+        "data"
+      ],
+      "responsibility": "shared",
+      "responsibility_rationale": "Baseline documents IPs/ports/services; delivery team submits to client approving authority"
+    },
+    {
+      "vuln_id": "V-222629",
+      "rule_id": "SV-222629r961863_rule",
+      "stig_id": "SRG-APP-000516",
+      "severity": "medium",
+      "title": "The application must be registered with the DoD Ports and Protocols Database.",
+      "status": "needs_human_review",
+      "finding_details": "This V-ID is outside the scope of automated code analysis for the audit domain. Manual review required.",
+      "domains_assessed": [
+        "audit"
+      ],
+      "responsibility": "shared",
+      "responsibility_rationale": "Baseline documents ports/protocols used; delivery team registers in DoD Ports & Protocols DB"
+    },
+    {
+      "vuln_id": "V-222630",
+      "rule_id": "SV-222630r961863_rule",
+      "stig_id": "SRG-APP-000516",
+      "severity": "medium",
+      "title": "The Configuration Management (CM) repository must be properly patched and STIG compliant.",
+      "status": "needs_human_review",
+      "finding_details": "This V-ID is outside the scope of automated code analysis for the data domain. Manual review required.",
+      "domains_assessed": [
+        "data"
+      ],
+      "responsibility": "shared",
+      "responsibility_rationale": "Baseline keeps the CM repo (this repo) STIG-compliant; client CM repo is delivery-team scope"
+    },
+    {
+      "vuln_id": "V-222631",
+      "rule_id": "SV-222631r961863_rule",
+      "stig_id": "SRG-APP-000516",
+      "severity": "medium",
+      "title": "Access privileges to the Configuration Management (CM) repository must be reviewed every three months.",
+      "status": "needs_human_review",
+      "finding_details": "This V-ID is outside the scope of automated code analysis for the authz domain. Manual review required.",
+      "domains_assessed": [
+        "authz"
+      ],
+      "responsibility": "delivery",
+      "responsibility_rationale": "CM repo access privilege review every 3 months — client CM ops",
+      "ecs_findings": [
+        "RISK-AFOU-008"
+      ],
+      "glasswing_findings": [
+        "GW-AFOU-067"
+      ]
+    },
+    {
+      "vuln_id": "V-222632",
+      "rule_id": "SV-222632r961863_rule",
+      "stig_id": "SRG-APP-000516",
+      "severity": "medium",
+      "title": "A Software Configuration Management (SCM) plan describing the configuration control and change management process of application objects developed by the organization and the roles and responsibilities of the organization must be created and maintained.",
+      "status": "needs_human_review",
+      "finding_details": "This V-ID is outside the scope of automated code analysis for the authz domain. Manual review required.",
+      "domains_assessed": [
+        "authz"
+      ],
+      "responsibility": "shared",
+      "responsibility_rationale": "Baseline ships SCM plan template; delivery team adapts to client env",
+      "ecs_findings": [
+        "RISK-AFOU-008"
+      ],
+      "glasswing_findings": [
+        "GW-AFOU-067",
+        "GW-AFOU-069",
+        "GW-AFOU-078"
+      ]
+    },
+    {
+      "vuln_id": "V-222633",
+      "rule_id": "SV-222633r961863_rule",
+      "stig_id": "SRG-APP-000516",
+      "severity": "medium",
+      "title": "A Configuration Control Board (CCB) that meets at least every release cycle, for managing the Configuration Management (CM) process must be established.",
+      "status": "needs_human_review",
+      "finding_details": "This V-ID is outside the scope of automated code analysis for the authz domain. Manual review required.",
+      "domains_assessed": [
+        "authz"
+      ],
+      "responsibility": "delivery",
+      "responsibility_rationale": "Configuration Control Board for client SCM — delivery org"
+    },
+    {
+      "vuln_id": "V-222634",
+      "rule_id": "SV-222634r987685_rule",
+      "stig_id": "SRG-APP-000387",
+      "severity": "medium",
+      "title": "The application services and interfaces must be compatible with and ready for IPv6 networks.",
+      "status": "needs_human_review",
+      "finding_details": "This V-ID is outside the scope of automated code analysis for the data domain. Manual review required.",
+      "domains_assessed": [
+        "data"
+      ],
+      "responsibility": "delivery",
+      "responsibility_rationale": "IPv6 readiness validated in client network"
+    },
+    {
+      "vuln_id": "V-222635",
+      "rule_id": "SV-222635r961863_rule",
+      "stig_id": "SRG-APP-000516",
+      "severity": "medium",
+      "title": "The application must not be hosted on a general purpose machine if the application is designated as critical or high availability by the ISSO.",
+      "status": "needs_human_review",
+      "finding_details": "This V-ID is outside the scope of automated code analysis for the audit domain. Manual review required.",
+      "domains_assessed": [
+        "audit"
+      ],
+      "responsibility": "delivery",
+      "responsibility_rationale": "Hosting on critical/high-availability machine — deployment topology"
+    },
+    {
+      "vuln_id": "V-222636",
+      "rule_id": "SV-222636r1051323_rule",
+      "stig_id": "SRG-APP-000516",
+      "severity": "medium",
+      "title": "A contingency plan must exist in accordance with DOD policy based on the application's availability requirements.",
+      "status": "needs_human_review",
+      "finding_details": "This V-ID is outside the scope of automated code analysis for the audit domain. Manual review required.",
+      "domains_assessed": [
+        "audit"
+      ],
+      "responsibility": "delivery",
+      "responsibility_rationale": "Contingency plan per DoD policy — client env"
+    },
+    {
+      "vuln_id": "V-222637",
+      "rule_id": "SV-222637r961863_rule",
+      "stig_id": "SRG-APP-000516",
+      "severity": "medium",
+      "title": "Recovery procedures and technical system features must exist so recovery is performed in a secure and verifiable manner. The ISSO will document circumstances inhibiting a trusted recovery.",
+      "status": "needs_human_review",
+      "finding_details": "This V-ID is outside the scope of automated code analysis for the audit domain. Manual review required.",
+      "domains_assessed": [
+        "audit"
+      ],
+      "responsibility": "delivery",
+      "responsibility_rationale": "Recovery procedures and technical features — client env"
+    },
+    {
+      "vuln_id": "V-222638",
+      "rule_id": "SV-222638r961863_rule",
+      "stig_id": "SRG-APP-000516",
+      "severity": "medium",
+      "title": "Data backup must be performed at required intervals in accordance with DoD policy.",
+      "status": "needs_human_review",
+      "finding_details": "This V-ID is outside the scope of automated code analysis for the audit domain. Manual review required.",
+      "domains_assessed": [
+        "audit"
+      ],
+      "responsibility": "delivery",
+      "responsibility_rationale": "Data backup intervals — client env"
+    },
+    {
+      "vuln_id": "V-222639",
+      "rule_id": "SV-222639r961863_rule",
+      "stig_id": "SRG-APP-000516",
+      "severity": "medium",
+      "title": "Back-up copies of the application software or source code must be stored in a fire-rated container or stored separately (offsite).",
+      "status": "needs_human_review",
+      "finding_details": "This V-ID is outside the scope of automated code analysis for the audit domain. Manual review required.",
+      "domains_assessed": [
+        "audit"
+      ],
+      "responsibility": "delivery",
+      "responsibility_rationale": "Backup storage (fire-rated/separate facility) — client env"
+    },
+    {
+      "vuln_id": "V-222640",
+      "rule_id": "SV-222640r961863_rule",
+      "stig_id": "SRG-APP-000516",
+      "severity": "medium",
+      "title": "Procedures must be in place to assure the appropriate physical and technical protection of the backup and restoration of the application.",
+      "status": "needs_human_review",
+      "finding_details": "This V-ID is outside the scope of automated code analysis for the audit domain. Manual review required.",
+      "domains_assessed": [
+        "audit"
+      ],
+      "responsibility": "delivery",
+      "responsibility_rationale": "Physical/technical protection of backups — client env"
+    },
+    {
+      "vuln_id": "V-222641",
+      "rule_id": "SV-222641r961863_rule",
+      "stig_id": "SRG-APP-000516",
+      "severity": "medium",
+      "title": "The application must use encryption to implement key exchange and authenticate endpoints prior to establishing a communication channel for key exchange.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: http_sessions",
+      "domains_assessed": [
+        "session"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222642",
+      "rule_id": "SV-222642r961863_rule",
+      "stig_id": "SRG-APP-000516",
+      "severity": "high",
+      "title": "The application must not contain embedded authentication data.",
+      "status": "meets_requirement",
+      "finding_details": "[crypto] No hardcoded credentials/keys in source. Secrets sourced via env vars (env.template documents AWS_PROFILE, STRANDS_GUARDRAIL_ID); no PRIVATE_KEY/SECRET_KEY/API_KEY literals found in strands_base_agent/.",
+      "domains_assessed": [
+        "crypto"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation",
+      "ecs_findings": [
+        "RISK-AFOU-002"
+      ]
+    },
+    {
+      "vuln_id": "V-222643",
+      "rule_id": "SV-222643r961863_rule",
+      "stig_id": "SRG-APP-000516",
+      "severity": "high",
+      "title": "The application must have the capability to mark sensitive/classified output when required.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: classified_data",
+      "domains_assessed": [
+        "audit"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222644",
+      "rule_id": "SV-222644r961863_rule",
+      "stig_id": "SRG-APP-000516",
+      "severity": "low",
+      "title": "Prior to each release of the application, updates to system, or applying patches; tests plans and procedures must be created and executed.",
+      "status": "needs_human_review",
+      "finding_details": "This V-ID is outside the scope of automated code analysis for the audit domain. Manual review required.",
+      "domains_assessed": [
+        "audit"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Test plans/procedures per release — baseline CI artifacts"
+    },
+    {
+      "vuln_id": "V-222645",
+      "rule_id": "SV-222645r961863_rule",
+      "stig_id": "SRG-APP-000516",
+      "severity": "medium",
+      "title": "Application files must be cryptographically hashed prior to deploying to DoD operational networks.",
+      "status": "needs_human_review",
+      "finding_details": "[crypto] uv.lock present (provides hash pinning of dependencies), but no application-level pre-deployment hashing/signing process is implemented in source. Release-process verification required.",
+      "domains_assessed": [
+        "crypto"
+      ],
+      "responsibility": "delivery",
+      "responsibility_rationale": "Pre-deployment integrity step in delivery pipeline"
+    },
+    {
+      "vuln_id": "V-222646",
+      "rule_id": "SV-222646r961863_rule",
+      "stig_id": "SRG-APP-000516",
+      "severity": "medium",
+      "title": "At least one tester must be designated to test for security flaws in addition to functional testing.",
+      "status": "needs_human_review",
+      "finding_details": "This V-ID is outside the scope of automated code analysis for the audit domain. Manual review required.",
+      "domains_assessed": [
+        "audit"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Designated security tester — baseline team role"
+    },
+    {
+      "vuln_id": "V-222647",
+      "rule_id": "SV-222647r961863_rule",
+      "stig_id": "SRG-APP-000516",
+      "severity": "low",
+      "title": "Test procedures must be created and at least annually executed to ensure system initialization, shutdown, and aborts are configured to verify the system remains in a secure state.",
+      "status": "needs_human_review",
+      "finding_details": "This V-ID is outside the scope of automated code analysis for the auth domain. Manual review required.",
+      "domains_assessed": [
+        "auth"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Init/shutdown/abort tests — baseline test suite responsibility"
+    },
+    {
+      "vuln_id": "V-222648",
+      "rule_id": "SV-222648r961863_rule",
+      "stig_id": "SRG-APP-000516",
+      "severity": "medium",
+      "title": "An application code review must be performed on the application.",
+      "status": "needs_human_review",
+      "finding_details": "Not assessed by any domain worker. This V-ID covers a procedural, documentation, or cross-cutting control outside the scope of automated code analysis. Manual review required.",
+      "domains_assessed": [],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Application code review — baseline PR/code review process",
+      "ecs_findings": [
+        "RISK-AFOU-007"
+      ]
+    },
+    {
+      "vuln_id": "V-222649",
+      "rule_id": "SV-222649r961863_rule",
+      "stig_id": "SRG-APP-000516",
+      "severity": "low",
+      "title": "Code coverage statistics must be maintained for each release of the application.",
+      "status": "needs_human_review",
+      "finding_details": "This V-ID is outside the scope of automated code analysis for the auth domain. Manual review required.",
+      "domains_assessed": [
+        "auth"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code coverage stats — baseline CI metric"
+    },
+    {
+      "vuln_id": "V-222650",
+      "rule_id": "SV-222650r961863_rule",
+      "stig_id": "SRG-APP-000516",
+      "severity": "medium",
+      "title": "Flaws found during a code review must be tracked in a defect tracking system.",
+      "status": "needs_human_review",
+      "finding_details": "This V-ID is outside the scope of automated code analysis for the audit domain. Manual review required.",
+      "domains_assessed": [
+        "audit"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Defect tracking system — baseline issue tracker (Jira/GH issues)",
+      "ecs_findings": [
+        "RISK-AFOU-007"
+      ]
+    },
+    {
+      "vuln_id": "V-222651",
+      "rule_id": "SV-222651r961863_rule",
+      "stig_id": "SRG-APP-000516",
+      "severity": "medium",
+      "title": "The changes to the application must be assessed for IA and accreditation impact prior to implementation.",
+      "status": "needs_human_review",
+      "finding_details": "This V-ID is outside the scope of automated code analysis for the audit domain. Manual review required.",
+      "domains_assessed": [
+        "audit"
+      ],
+      "responsibility": "delivery",
+      "responsibility_rationale": "IA accreditation impact assessment — client env / ATO process"
+    },
+    {
+      "vuln_id": "V-222652",
+      "rule_id": "SV-222652r961863_rule",
+      "stig_id": "SRG-APP-000516",
+      "severity": "medium",
+      "title": "Security flaws must be fixed or addressed in the project plan.",
+      "status": "needs_human_review",
+      "finding_details": "This V-ID is outside the scope of automated code analysis for the audit domain. Manual review required.",
+      "domains_assessed": [
+        "audit"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Security flaws fixed or in project plan — baseline backlog discipline"
+    },
+    {
+      "vuln_id": "V-222653",
+      "rule_id": "SV-222653r961863_rule",
+      "stig_id": "SRG-APP-000516",
+      "severity": "low",
+      "title": "The application development team must follow a set of coding standards.",
+      "status": "needs_human_review",
+      "finding_details": "This V-ID is outside the scope of automated code analysis for the audit domain. Manual review required.",
+      "domains_assessed": [
+        "audit"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Coding standards — baseline lint/style configs"
+    },
+    {
+      "vuln_id": "V-222654",
+      "rule_id": "SV-222654r961863_rule",
+      "stig_id": "SRG-APP-000516",
+      "severity": "low",
+      "title": "The designer must create and update the Design Document for each release of the application.",
+      "status": "needs_human_review",
+      "finding_details": "This V-ID is outside the scope of automated code analysis for the crypto domain. Manual review required.",
+      "domains_assessed": [
+        "crypto"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Design Document per release — baseline docs/ADRs"
+    },
+    {
+      "vuln_id": "V-222655",
+      "rule_id": "SV-222655r961863_rule",
+      "stig_id": "SRG-APP-000516",
+      "severity": "medium",
+      "title": "Threat models must be documented and reviewed for each application release and updated as required by design and functionality changes or when new threats are discovered.",
+      "status": "needs_human_review",
+      "finding_details": "This V-ID is outside the scope of automated code analysis for the auth domain. Manual review required.",
+      "domains_assessed": [
+        "auth"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Threat model — baseline team produces and maintains"
+    },
+    {
+      "vuln_id": "V-222656",
+      "rule_id": "SV-222656r961863_rule",
+      "stig_id": "SRG-APP-000516",
+      "severity": "medium",
+      "title": "The application must not be subject to error handling vulnerabilities.",
+      "status": "needs_human_review",
+      "finding_details": "Not assessed by any domain worker. This V-ID covers a procedural, documentation, or cross-cutting control outside the scope of automated code analysis. Manual review required.",
+      "domains_assessed": [],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Error handling vulnerabilities — code-level patterns enforced in baseline"
+    },
+    {
+      "vuln_id": "V-222657",
+      "rule_id": "SV-222657r961863_rule",
+      "stig_id": "SRG-APP-000516",
+      "severity": "medium",
+      "title": "The application development team must provide an application incident response plan.",
+      "status": "needs_human_review",
+      "finding_details": "This V-ID is outside the scope of automated code analysis for the data domain. Manual review required.",
+      "domains_assessed": [
+        "data"
+      ],
+      "responsibility": "shared",
+      "responsibility_rationale": "Baseline ships incident response template; delivery team finalizes per client env"
+    },
+    {
+      "vuln_id": "V-222658",
+      "rule_id": "SV-222658r961863_rule",
+      "stig_id": "SRG-APP-000516",
+      "severity": "high",
+      "title": "All products must be supported by the vendor or the development team.",
+      "status": "meets_requirement",
+      "finding_details": "This V-ID is outside the scope of automated code analysis for the data domain. Manual review required.",
+      "domains_assessed": [
+        "data"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Vendor support of dependencies — baseline owns what it pulls in",
+      "comments": "Baseline depends on actively maintained, vendor-supported packages declared in pyproject.toml and pinned via uv.lock; the baseline development team owns the foundry-agent-* and strands-* packages directly. Delivery team should confirm no unsupported forks or local patches have been introduced and that the pulled baseline version is still under support."
+    },
+    {
+      "vuln_id": "V-222659",
+      "rule_id": "SV-222659r961863_rule",
+      "stig_id": "SRG-APP-000516",
+      "severity": "high",
+      "title": "The application must be decommissioned when maintenance or support is no longer available.",
+      "status": "needs_human_review",
+      "finding_details": "This V-ID is outside the scope of automated code analysis for the audit domain. Manual review required.",
+      "domains_assessed": [
+        "audit"
+      ],
+      "responsibility": "delivery",
+      "responsibility_rationale": "Decommissioning when support ends — client env operations"
+    },
+    {
+      "vuln_id": "V-222660",
+      "rule_id": "SV-222660r961863_rule",
+      "stig_id": "SRG-APP-000516",
+      "severity": "low",
+      "title": "Procedures must be in place to notify users when an application is decommissioned.",
+      "status": "needs_human_review",
+      "finding_details": "This V-ID is outside the scope of automated code analysis for the audit domain. Manual review required.",
+      "domains_assessed": [
+        "audit"
+      ],
+      "responsibility": "delivery",
+      "responsibility_rationale": "User notification on decommissioning — client env operations"
+    },
+    {
+      "vuln_id": "V-222661",
+      "rule_id": "SV-222661r961863_rule",
+      "stig_id": "SRG-APP-000516",
+      "severity": "medium",
+      "title": "Unnecessary built-in application accounts must be disabled.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: user_accounts",
+      "domains_assessed": [
+        "auth"
+      ],
+      "responsibility": "delivery",
+      "responsibility_rationale": "Account hygiene in deployed instance"
+    },
+    {
+      "vuln_id": "V-222662",
+      "rule_id": "SV-222662r961863_rule",
+      "stig_id": "SRG-APP-000516",
+      "severity": "high",
+      "title": "Default passwords must be changed.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: password_management",
+      "domains_assessed": [
+        "auth"
+      ],
+      "responsibility": "delivery",
+      "responsibility_rationale": "Default credential change — deployment step"
+    },
+    {
+      "vuln_id": "V-222663",
+      "rule_id": "SV-222663r961863_rule",
+      "stig_id": "SRG-APP-000516",
+      "severity": "medium",
+      "title": "An Application Configuration Guide must be created and included with the application.",
+      "status": "needs_human_review",
+      "finding_details": "This V-ID is outside the scope of automated code analysis for the crypto domain. Manual review required.",
+      "domains_assessed": [
+        "crypto"
+      ],
+      "responsibility": "shared",
+      "responsibility_rationale": "Baseline ships Application Configuration Guide; delivery team extends with env-specific config",
+      "ecs_findings": [
+        "RISK-AFOU-008"
+      ]
+    },
+    {
+      "vuln_id": "V-222664",
+      "rule_id": "SV-222664r1051277_rule",
+      "stig_id": "SRG-APP-000516",
+      "severity": "medium",
+      "title": "If the application contains classified data, a Security Classification Guide must exist containing data elements and their classification.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: classified_data",
+      "domains_assessed": [
+        "data"
+      ],
+      "responsibility": "delivery",
+      "responsibility_rationale": "Per-env data classification artifact"
+    },
+    {
+      "vuln_id": "V-222665",
+      "rule_id": "SV-222665r961863_rule",
+      "stig_id": "SRG-APP-000516",
+      "severity": "medium",
+      "title": "The designer must ensure uncategorized or emerging mobile code is not used in applications.",
+      "status": "needs_human_review",
+      "finding_details": "Not assessed by any domain worker. This V-ID covers a procedural, documentation, or cross-cutting control outside the scope of automated code analysis. Manual review required.",
+      "domains_assessed": [],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Uncategorized/emerging mobile code — code-level prohibition"
+    },
+    {
+      "vuln_id": "V-222666",
+      "rule_id": "SV-222666r961863_rule",
+      "stig_id": "SRG-APP-000516",
+      "severity": "medium",
+      "title": "Production database exports must have database administration credentials and sensitive data removed before releasing the export.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: database",
+      "domains_assessed": [
+        "auth"
+      ],
+      "responsibility": "shared",
+      "responsibility_rationale": "Default — review manually"
+    },
+    {
+      "vuln_id": "V-222667",
+      "rule_id": "SV-222667r961863_rule",
+      "stig_id": "SRG-APP-000516",
+      "severity": "medium",
+      "title": "Protections against DoS attacks must be implemented.",
+      "status": "non_compliant",
+      "finding_details": "[audit] No DoS-protection enforcement found in repo (search patterns event.*track|track.*event|monitor|alert|notification yielded no rate-limit/throttle/anomaly code). Mitigations not implemented in app code.",
+      "domains_assessed": [
+        "audit"
+      ],
+      "responsibility": "shared",
+      "responsibility_rationale": "Default — review manually"
+    },
+    {
+      "vuln_id": "V-222668",
+      "rule_id": "SV-222668r961863_rule",
+      "stig_id": "SRG-APP-000516",
+      "severity": "medium",
+      "title": "The system must alert an administrator when low resource conditions are encountered.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: infrastructure_monitoring",
+      "domains_assessed": [
+        "audit"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222669",
+      "rule_id": "SV-222669r961863_rule",
+      "stig_id": "SRG-APP-000516",
+      "severity": "low",
+      "title": "At least one application administrator must be registered to receive update notifications, or security alerts, when automated alerts are available.",
+      "status": "needs_human_review",
+      "finding_details": "This V-ID is outside the scope of automated code analysis for the audit domain. Manual review required.",
+      "domains_assessed": [
+        "audit"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Subscribe to dep update notifications — baseline maintainer responsibility"
+    },
+    {
+      "vuln_id": "V-222670",
+      "rule_id": "SV-222670r961863_rule",
+      "stig_id": "SRG-APP-000516",
+      "severity": "low",
+      "title": "The application must provide notifications or alerts when product update and security related patches are available.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: infrastructure_monitoring",
+      "domains_assessed": [
+        "audit"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222671",
+      "rule_id": "SV-222671r961863_rule",
+      "stig_id": "SRG-APP-000516",
+      "severity": "medium",
+      "title": "Connections between the DoD enclave and the Internet or other public or commercial wide area networks must require a DMZ.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: authorization",
+      "domains_assessed": [
+        "authz"
+      ],
+      "responsibility": "delivery",
+      "responsibility_rationale": "Network topology — deployment env"
+    },
+    {
+      "vuln_id": "V-222672",
+      "rule_id": "SV-222672r961833_rule",
+      "stig_id": "SRG-APP-000506",
+      "severity": "low",
+      "title": "The application must generate audit records when concurrent logons from different workstations occur.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: http_sessions",
+      "domains_assessed": [
+        "session"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    },
+    {
+      "vuln_id": "V-222673",
+      "rule_id": "SV-222673r961863_rule",
+      "stig_id": "SRG-APP-000516",
+      "severity": "medium",
+      "title": "The Program Manager must verify all levels of program management, designers, developers, and testers receive annual security training pertaining to their job function.",
+      "status": "needs_human_review",
+      "finding_details": "This V-ID is outside the scope of automated code analysis for the crypto domain. Manual review required.",
+      "domains_assessed": [
+        "crypto"
+      ],
+      "responsibility": "shared",
+      "responsibility_rationale": "Baseline team must complete annual security training; delivery team also subject to its own program"
+    },
+    {
+      "vuln_id": "V-265634",
+      "rule_id": "SV-265634r997307_rule",
+      "stig_id": "SRG-APP-000625",
+      "severity": "medium",
+      "title": "The application must implement NSA-approved cryptography to protect classified information in accordance with applicable federal laws, Executive Orders, directives, policies, regulations, and standards.",
+      "status": "not_applicable",
+      "finding_details": "Capability not present: classified_data",
+      "domains_assessed": [
+        "crypto"
+      ],
+      "responsibility": "baseline",
+      "responsibility_rationale": "Code-level application control — baseline implementation"
+    }
+  ]
+}

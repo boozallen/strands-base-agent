@@ -1,0 +1,61 @@
+services:
+  strands-agent:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "$PORT:8000"
+    env_file:
+      - .env
+
+    # Restart policy for development
+    restart: unless-stopped
+
+    volumes:
+      # Persist FileSessionManager storage across container restarts.
+      - type: volume
+        source: strands_sessions
+        target: /app/sessions
+      # mount AWS SSO credentials:
+      - type: bind
+        source: ~/.aws
+        target: /home/nonroot/.aws
+
+    # Connect to shared network
+    networks:
+      - agentic-platform
+
+    healthcheck:
+      test:
+        - CMD
+        - python3
+        - -c
+        - >-
+          import http.client, sys, json;
+          conn = http.client.HTTPConnection('127.0.0.1', 8000, timeout=3);
+          conn.request('GET', '/api/v1/health');
+          r = conn.getresponse();
+          data = r.read();
+          conn.close();
+          print(data.decode('utf-8'), end='');
+          health = r.status == 200 and json.loads(data).get('status');
+          sys.exit(0 if health == 'healthy' else 1)
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+    develop:
+      watch:
+        - action: rebuild
+          path: .
+          target: /app
+          ignore:
+            - .venv/
+
+networks:
+  agentic-platform:
+    name: agentic-platform
+
+volumes:
+  strands_sessions:

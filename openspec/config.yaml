@@ -1,0 +1,50 @@
+schema: spec-driven
+
+context: |
+  ## Project: strands-base-agent
+
+  **Read first:** `AGENTS.md` at the repo root is the authoritative
+  source for file layout, package boundaries, extension points,
+  configuration, and conventions. Read it before proposing changes
+  or generating code.
+
+  Baseline starter repo from the Agent Foundry team, used to accelerate
+  client delivery and team POCs. Adopters fork this repo into their own
+  environment and extend it for a use case. Shared infrastructure lives
+  in installed `foundry-agent-*` packages; this repo is the composition
+  root.
+
+  **Tech stack**: Python 3.14, AWS Strands Agent SDK, FastAPI, Uvicorn,
+  AWS Bedrock (primary) / Ollama (local), OpenTelemetry, Pydantic v2, uv.
+
+  **Architecture**: Hexagonal (ports and adapters). The composition root
+  (`server.py`) wires driving adapters (HTTP API, A2A, CLI) to a core
+  domain provided by `foundry-agent-core`, with driven adapters from
+  `foundry-strands-agent` (Strands SDK), `foundry-agent-config`, and
+  `foundry-agent-fastapi`.
+
+  **Key extension points** (see `AGENTS.md` for full details):
+  - `config.yaml` — model, system prompt, MCP servers, tools modules
+  - `server.py` — session manager / model provider customization
+  - `tools/` — domain-specific tool functions
+  - `api/routes/` — domain-specific HTTP endpoints
+
+  **Specs in this directory:**
+  - `openspec/specs/` — baseline capabilities this repo ships with. Read
+    these to understand what exists before proposing changes.
+  - `openspec/changes/` — active proposals (if any) and `archive/` of
+    completed ones.
+
+  **Security posture**: `security/stig_checklist.json` tracks the
+  baseline's findings against the DISA ASD STIG (status, responsibility,
+  evidence). When a proposal touches a STIG-relevant area —
+  auth, authz, crypto, audit logging, session handling, data handling,
+  or input validation — update the checklist in the same change. See
+  `security/README.md` for the schema and refresh workflow.
+
+  **Hard constraints**:
+  - Do NOT re-implement infrastructure that lives in `foundry-agent-*`
+    packages (DI, lifecycle, middleware, tool loading, retry, OTel).
+  - Maintain hexagonal architecture and protocol contracts.
+  - Keep commits small and independently reviewable.
+  - Run `just check` before marking any task complete.

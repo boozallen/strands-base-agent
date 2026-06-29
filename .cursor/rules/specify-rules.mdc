@@ -1,0 +1,347 @@
+# Strands Base Agent - Cursor Development Rules
+
+<!-- AUTO-GENERATED SECTION: Updated by update-agent-context.sh -->
+<!-- Last updated: 2025-10-24 -->
+
+## Project Overview
+
+**Purpose**: Reference implementation for Agentic RAG applications using AWS Strands Agents SDK with tool-based document retrieval.
+
+**Target Users**: Development teams building Agentic applications with AI-assisted coding tools.
+
+**Current Status**: Production-ready agent framework with CLI interface, programmatic API, and multiple deployment patterns. Base agent infrastructure complete (Phase 4). Successfully migrated from RAG-specific implementation to general-purpose agent framework.
+
+## Technology Stack
+
+**Language**: Python 3.14+
+**Package Manager**: uv (NEVER use pip directly)
+**Agentic Framework**: AWS Strands Agents SDK
+**API Framework**: FastAPI + Uvicorn
+**Build Tool**: Just task runner
+**Deployment**: Docker + Docker Compose
+
+**Key Dependencies**:
+- strands-agents (agent framework)
+- strands-agents-tools (tool integration)
+- pydantic (data validation)
+- fastapi (HTTP API)
+- uvicorn (ASGI server)
+
+## Development Commands
+
+```bash
+# Package management (uv only - never use pip!)
+uv sync
+uv add <package>
+uv remove <package>
+
+# Quality pipeline (via justfile)
+just setup      # Install dependencies + pre-commit hooks
+just check      # Run lint + type-check + test pipeline
+just format     # Format code with black and ruff
+just test       # Run pytest test suite
+just type-check # Run mypy type checking
+just lint       # Run ruff linting
+
+# Development
+just dev        # Start FastAPI development server
+python -m strands_base_agent "query"  # CLI interface
+
+# Specific test commands
+uv run pytest tests/unit/agent/         # Run all agent unit tests
+uv run pytest tests/integration/agent/ # Run agent integration tests
+uv run pytest tests/unit/agent/orchestrator_test.py -v  # Single test file
+uv run pytest -k "test_process_query"  # Run tests matching pattern
+```
+
+## Project Structure
+
+```
+strands_base_agent/           # Application-specific package name
+├── __main__.py              # CLI entry point (python -m strands_base_agent)
+├── main.py                  # Interface-agnostic query processing
+├── core/                    # Core application protocols and types
+│   ├── exceptions.py        # Exception hierarchy
+│   ├── types.py            # Value objects (QueryRequest, QueryResponse)
+│   └── protocols/          # Abstract interfaces (ConfigurationProvider, AgentFactory)
+├── components/             # Implementation components
+│   ├── container.py        # Dependency injection
+│   ├── config/             # Configuration providers
+│   ├── errors/             # Error translators
+│   ├── factories/          # Tool factories
+│   └── testing/            # Test utilities
+├── agent/                  # Agent orchestration layer
+│   ├── service.py          # High-level agent service interface
+│   ├── factory.py          # Strands Agent creation and configuration
+│   ├── orchestrator.py     # Query processing orchestration
+│   ├── response_handler.py # Agent response processing
+│   ├── workflow.py         # Execution context and error recovery
+│   ├── registry.py         # Tool registration and lifecycle
+│   └── exceptions.py       # Agent-specific exceptions
+├── application/            # Application bootstrap layer
+│   ├── factory.py          # Production application container
+│   └── lifecycle.py        # Signal handling and graceful shutdown
+├── models/                 # Data models and configuration
+│   └── agent.py           # Agent configuration
+└── api/                   # API layer
+    ├── main.py            # FastAPI application
+    ├── routes/            # Endpoint handlers
+    ├── middleware/        # CORS, errors, logging
+    └── models/            # API request/response models
+
+tests/                     # Dedicated test directory
+├── unit/                  # Unit tests mirroring source structure
+│   ├── core/
+│   ├── components/
+│   ├── agent/
+│   ├── application/
+│   ├── models/
+│   └── main_test.py
+└── integration/           # Integration tests
+    ├── agent/             # Agent service integration tests
+    ├── components/        # Component integration tests
+    └── application/       # End-to-end application tests
+```
+
+## Architecture Patterns
+
+### Protocol-Based Design
+- Abstract interfaces in `core/protocols/` (ConfigurationProvider, AgentFactory, QueryProcessor)
+- Infrastructure implements protocols in `components/`
+- Dependency injection container at `components/container.py`
+- No circular dependencies (strict layer hierarchy enforced)
+- Dependency direction: Infrastructure implements domain protocols without tight coupling
+
+### Agent Orchestration
+- **AgentService**: Primary interface at `agent/service.py` providing query processing lifecycle
+- **QueryOrchestrator**: Business logic coordinator at `agent/orchestrator.py`
+- **StrandsAgentFactory**: Agent creation at `agent/factory.py`
+- **AgentResponseHandler**: Response processing at `agent/response_handler.py`
+- **WorkflowManager**: Execution context at `agent/workflow.py`
+- **AgentToolRegistry**: Tool registration at `agent/registry.py`
+
+### Critical Architectural Principles
+- **Agent Autonomy**: Tool selection occurs within Strands Agent framework, never in application code
+- **Infrastructure Support Only**: Application provides tools during initialization and handles external system failures
+- **Domain Compliance**: All agent responses convert to QueryResponse domain types
+- **Error Separation**: Agent execution errors remain in Strands framework; infrastructure failures handled by workflow manager
+
+### Configuration Management
+- Environment-driven via `STRANDS_*` prefix convention
+- Pydantic models for validation at `models/agent.py`
+- Production defaults with override support
+- `load_agent_config_from_env()` for environment loading
+- Fail-fast validation on startup
+
+## Python Coding Standards
+
+### Type Annotations (Python 3.9+ Modern Syntax)
+```python
+# ✅ CORRECT - Use built-in types (Python 3.9+)
+def process(items: list[str]) -> dict[str, int]:
+    ...
+
+def optional(x: str | None = None) -> list[tuple[str, int]]:
+    ...
+
+# ❌ WRONG - Deprecated typing module types
+from typing import List, Dict, Optional  # DON'T USE THESE
+def old(items: List[str]) -> Dict[str, int]:
+    ...
+```
+
+### Pydantic Models (v2 Patterns)
+```python
+from pydantic import BaseModel, field_validator
+
+class DomainModel(BaseModel):
+    model_config = {"frozen": True}  # Immutable required
+    
+    field: str
+    
+    @field_validator('field')  # Use field_validator, NOT @validator
+    @classmethod
+    def validate_field(cls, v: str) -> str:
+        if not v.strip():
+            raise ValueError('Field cannot be empty')
+        return v.strip()
+```
+
+### Import Organization
+```python
+# 1. Standard library imports
+import os
+import sys
+
+# 2. Third-party imports
+from pydantic import BaseModel
+
+# 3. Project-specific imports
+from strands_base_agent.core.types import QueryRequest
+```
+
+### Collections and Type Aliases
+```python
+# Use abstract types for parameters
+from collections.abc import Sequence, Mapping, Callable
+
+def process(items: Sequence[int]) -> Mapping[str, int]:
+    ...
+
+# Use built-in types for concrete returns
+def get_data() -> list[tuple[str, int]]:
+    ...
+
+# Type aliases for domain clarity
+DocumentId = str
+SimilarityScore = float
+```
+
+### Exception Handling
+- Extend hierarchy in `core/exceptions.py` with context
+- Rich error information with debugging context dictionaries
+- Use specific exceptions (never bare `except:`)
+- Clear, actionable error messages with field names and suggested fixes
+- `InvalidConfigurationError` for configuration validation failures
+
+### Testing Patterns
+- File pattern: `*_test.py` in tests directory
+- Location: `tests/` directory mirroring source structure
+- Mocking: AsyncMock for Strands Agent framework, Mock for infrastructure components
+- Coverage: Comprehensive, non-brittle tests (318+ tests across 19 test files)
+- Pattern: Arrange-Act-Assert methodology
+- Test behavior and functionality, not implementation details
+
+## Key Implementation Patterns
+
+### Dependency Injection
+```python
+from strands_base_agent.components import create_dependency_container
+
+container = create_dependency_container()
+container.register_factory("ConfigurationProvider", lambda: ProviderImpl())
+service = container.resolve("AgentService")
+```
+
+### Agent Service Usage (Programmatic API - Recommended)
+```python
+from strands_base_agent import process_query
+from strands_base_agent.core.types import QueryRequest
+
+request = QueryRequest(query="What are the key features?", context={})
+response = await process_query(request)
+```
+
+### Custom Application Integration
+```python
+from strands_base_agent.application import create_application_container
+from strands_base_agent.agent import create_agent_service
+
+container = create_application_container()
+async with create_agent_service(container).service_lifecycle() as service:
+    response = await service.process_query(query_request)
+```
+
+### Configuration Loading
+```python
+from strands_base_agent.models.agent import load_agent_config_from_env
+
+config = load_agent_config_from_env()  # Loads all STRANDS_* env vars
+```
+
+## Environment Configuration
+
+### Required Variables
+```bash
+STRANDS_MODEL_PROVIDER=bedrock|anthropic|openai
+STRANDS_MODEL_ID=anthropic.claude-3-sonnet-20240229-v1:0
+
+# Provider credentials (as needed)
+AWS_ACCESS_KEY_ID=...
+AWS_SECRET_ACCESS_KEY=...
+ANTHROPIC_API_KEY=...
+OPENAI_API_KEY=...
+```
+
+### Optional Configuration
+```bash
+STRANDS_MAX_TOKENS=4096
+STRANDS_TEMPERATURE=1.0
+STRANDS_ENABLE_MEMORY=true
+STRANDS_MAX_CONVERSATION_LENGTH=10
+STRANDS_CONVERSATION_WINDOW_SIZE=100
+STRANDS_AGENT_STATE_INITIAL_VALUES='{"key": "value"}'
+```
+
+## Success Metrics for Features
+
+All features MUST validate these project-level success metrics:
+- Functional document search capability in vector stores
+- Document retrieval and content summarization
+- Proper response formatting via API response objects
+- 30-second maximum response time maintained
+- Graceful failure with helpful error messages
+
+## Current Architecture Components
+
+**Implemented Features**:
+- Core domain types and protocols
+- Agent orchestration layer (service, factory, orchestrator, workflow)
+- Application bootstrap with lifecycle management
+- HTTP API with FastAPI (endpoints, middleware, dependency injection)
+- Docker containerization for deployment
+- Agent state configuration
+- MCP server configuration
+- Session management (file and S3 backends)
+
+**Core Layer** (`core/`):
+- QueryRequest, QueryResponse domain models
+- Protocol abstractions (ConfigurationProvider, AgentFactory, QueryProcessor)
+- Exception hierarchy with rich context
+
+**Agent Layer** (`agent/`):
+- AgentService (primary interface)
+- QueryOrchestrator (business logic coordinator)
+- StrandsAgentFactory (agent creation)
+- AgentResponseHandler (response processing)
+- WorkflowManager (error recovery for infrastructure failures)
+- AgentToolRegistry (tool lifecycle management)
+
+**Application Layer** (`application/`):
+- Application factory (production dependency container)
+- Lifecycle management (signal handling, graceful shutdown)
+
+**API Layer** (`api/`):
+- FastAPI application with ASGI entry point
+- Routes: /query, /health endpoints
+- Middleware: CORS, error handling, request logging
+- API models separate from domain models (clean boundary)
+
+## Quality Requirements
+
+**Before ANY Pull Request**:
+- All tests pass: `just test`
+- Linting clean: `just lint`
+- Type checking passes: `just type-check`
+- Full pipeline: `just check`
+
+**Code Quality Standards**:
+- mypy strict compliance (100% required)
+- black + ruff formatting (pre-commit hooks enforced)
+- Comprehensive test coverage (prioritize non-brittle tests)
+- No circular dependencies allowed
+
+## Performance Constraints
+
+- Query processing: <30 seconds maximum response time
+- Configuration validation: At application startup (fail-fast pattern)
+- Graceful degradation: Service failures don't crash application
+- Resource cleanup: Proper async context managers for lifecycle
+
+<!-- MANUAL ADDITIONS START -->
+<!-- Add project-specific notes here - preserved across auto-updates -->
+<!-- MANUAL ADDITIONS END -->
+
+## Recent Changes
+- 006-a2a-remote-server: Added Python 3.13+ (enforced by constitution) + AWS Strands Agents SDK, FastAPI, strands-agents[a2a], strands-agents-tools[a2a_client]
+- 003-basic-a2a-config: Added Python 3.11+ (existing codebase constraint) + FastAPI, AWS Strands Agents SDK, Pydantic, Poetry

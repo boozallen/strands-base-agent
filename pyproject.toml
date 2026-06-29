@@ -1,0 +1,159 @@
+[project]
+name = "strands-base-agent"
+version = "1.0.0"
+license = "Apache-2.0"
+license-files = ["LICENSE*", "NOTICE*"]
+description = "General-purpose AI agent application using AWS Strands SDK"
+readme = "README.md"
+requires-python = ">=3.14,<3.15"
+authors = [{ name = "Booz Allen Hamilton" }]
+
+dependencies = [
+    "fastapi==0.138.0",
+    "foundry-agent-config==1.0.0",
+    "foundry-agent-core==1.0.0",
+    "foundry-agent-fastapi==1.0.0",
+    "foundry-strands-agent==1.0.0",
+    "mcp==1.28.0",
+    "opentelemetry-api==1.42.1",
+    "opentelemetry-exporter-otlp-proto-http==1.42.1",
+    "opentelemetry-sdk==1.42.1",
+    "pydantic==2.13.4",
+    "python-dotenv==1.2.2",
+    "python-multipart==0.0.32",
+    "strands-agents-tools[a2a-client]==0.8.1",
+    "strands-agents[a2a,ollama]==1.44.0",
+    "uvicorn==0.49.0",
+]
+
+[dependency-groups]
+dev = [
+    "bandit[toml]==1.9.4",
+    "basedpyright==1.33.0",
+    "coverage==7.11.3",
+    "debugpy==1.8.17",
+    "deptry==0.24.0",
+    "pre-commit==4.4.0",
+    "pytest==9.0.1",
+    "pytest-asyncio==1.3.0",
+    "pytest-cov==7.0.0",
+    "pytest-mock==3.15.1",
+    "pytest-xdist[psutil]==3.8.0",
+    "ruff==0.14.5",
+    "vulture==2.16",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.basedpyright]
+pythonVersion = "3.14"
+include = ["strands_base_agent"]
+exclude = ["**/build", "**/dist"]
+typeCheckingMode = "basic"
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
+python_files = ["test_*.py", "*_test.py"]
+addopts = "-v --tb=short --cov=strands_base_agent --cov-report=term-missing --cov-fail-under=70"
+asyncio_mode = "auto"
+markers = [
+    "integration: marks tests as integration tests",
+]
+
+[tool.ruff]
+line-length = 120
+
+[tool.ruff.format]
+docstring-code-format = true
+docstring-code-line-length = 100
+
+[tool.ruff.lint]
+select = [
+    "ARG001",  # unused function arguments
+    "ARG005",  # unused lambda arguments
+    "B",       # flake8-bugbear
+    "C4",     # flake8-comprehensions
+    "D",       # pydocstyle
+    "E",       # pycodestyle errors
+    "F",       # pyflakes
+    "G",       # flake8-logging-format
+    "I",       # isort
+    "T20",     # flake8-print
+    "UP",      # pyupgrade
+    "W",       # pycodestyle warnings
+]
+extend-select = [
+    # STIG V-222604 (CCI-001310) command-injection sink coverage
+    "S102",   # use of exec
+    "S307",   # use of eval
+    "S602",   # subprocess with shell=True
+    "S603",   # subprocess without shell=True
+    "S604",   # any shell=True
+    "S605",   # starting process with a shell
+    "S606",   # starting process without shell
+    "S607",   # partial executable path
+]
+ignore = [
+    "B008",    # function call in argument default — common in FastAPI
+    "B904",    # raise from in except* — not always wanted
+    "C901",    # function too complex (subjective)
+    "D100", "D101", "D102", "D103", "D104", "D105", "D107",  # don't require docstrings
+    "D200", "D203", "D212", "D413", "D415", "D417",          # docstring formatting nits
+    "G002",    # allow %-style logging (project standard, see AGENTS.md)
+    # Conflict with Ruff formatter (per Ruff docs):
+    "D206", "D300", "E111", "E114", "E117", "E501", "W191",
+]
+
+[tool.ruff.lint.isort]
+known-local-folder = ["strands_base_agent", "tests"]
+known-first-party = ["foundry_agent_core", "foundry_agent_config", "foundry_agent_fastapi", "foundry_strands_agent"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = [
+    "B011",  # assert False
+    "B017",  # pytest.raises(Exception) — fine in error-path tests
+    "T201",  # print
+]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.bandit]
+exclude_dirs = ["tests", "openspec"]
+targets = ["strands_base_agent"]
+skips = ["B101"]
+
+[tool.vulture]
+# Advisory dead-code scan. Run via `just dead-code`. Not wired into pre-commit
+# or CI — the DI container, dynamic tool loading, and FastAPI decorators
+# generate enough false positives that vulture is best used as a periodic
+# pre-refactor checklist, not a gate.
+min_confidence = 80
+paths = ["strands_base_agent"]
+sort_by_size = true
+exclude = [
+    "*/__pycache__/*",
+    "*/.venv/*",
+    "*/build/*",
+    "*/dist/*",
+    # Tools are loaded dynamically via STRANDS__TOOLS_MODULES /
+    # STRANDS__TOOLS_FILES; vulture can't see those references.
+    "strands_base_agent/tools/*",
+]
+
+[tool.uv]
+required-version = ">=0.8.0"
+constraint-dependencies = [
+    "aiohttp>=3.14.1",
+    "cryptography>=48.0.1",
+    "idna>=3.15",
+    "pillow>=12.2.0",
+    "pyasn1>=0.6.3",
+    "pygments>=2.20.0",
+    "pyjwt>=2.13.0",
+    "starlette>=1.3.1",
+    "urllib3>=2.7.0",
+]
