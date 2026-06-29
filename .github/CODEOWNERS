@@ -1,0 +1,14 @@
+# Code Owners for strands-base-agent
+# These users/teams will be automatically requested for review on PRs
+# that modify matching files.
+
+# Default owners for everything in the repo
+* @boozallen/agent-foundry-admins
+
+# Infrastructure and CI
+.github/ @boozallen/agent-foundry-admins
+compose.yaml @boozallen/agent-foundry-admins
+Dockerfile @boozallen/agent-foundry-admins
+
+# Security-sensitive files
+SECURITY.md @boozallen/agent-foundry-admins

@@ -1,0 +1,21 @@
+version: 2
+
+updates:
+  - package-ecosystem: "uv"
+    directory: "/"
+    target-branch: "develop"
+    schedule:
+      interval: "daily"
+    groups:
+      # Collapse low-risk minor/patch bumps into one PR.
+      # Major bumps are intentionally left out so they open as
+      # individual PRs and get their own review (GitHub-recommended
+      # risk-tiered grouping). dependency-type is NOT used here: the
+      # development/production filter is unsupported for the uv
+      # ecosystem.
+      minor-and-patch:
+        patterns:
+          - "*"
+        update-types:
+          - "minor"
+          - "patch"
