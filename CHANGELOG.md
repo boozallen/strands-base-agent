@@ -7,6 +7,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.1] - 2026-06-30
+
+Packaging fix so a fresh clone installs without access to internal
+infrastructure. v1.0.0 shipped with `uv.lock` resolving the four
+`foundry-agent-*` wheels from a private Booz Allen JFrog index; the
+packages are now public on GitHub Releases, and this release repoints
+the lockfile accordingly.
+
+### Changed
+
+- `pyproject.toml` — the four `foundry-agent-*` dependencies now use
+  direct-URL specs pointing at
+  [`boozallen/foundry-agent-packages`](https://github.com/boozallen/foundry-agent-packages)
+  GitHub Release wheels. `[tool.hatch.metadata] allow-direct-references = true`
+  added so Hatchling accepts the URL specs in this repo's own metadata.
+- `uv.lock` — regenerated; no longer references the internal JFrog index.
+
+### Added
+
+- README — "Installing the `foundry-*` packages" section documenting the
+  GitHub-Release install path (for evaluation / POCs) and the intended
+  adoption pattern (mirror wheels into an internal index for production).
+- AGENTS.md — one-line pointer to the README install note.
+
 ## [1.0.0] - 2026-06-29
 
 Initial public release of the Strands Base Agent — a baseline starter repo

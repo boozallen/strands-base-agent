@@ -1,9 +1,24 @@
 # Strands Base Agent
 
 ![Project Status: Available](https://img.shields.io/badge/status-available-brightgreen)
-![Version](https://img.shields.io/badge/version-1.0.0-blue)
+![Version](https://img.shields.io/badge/version-1.0.1-blue)
 
 A baseline starter repo from the Agent Foundry team. Teams fork this repo into their own environment and customize it for their use case. Shared infrastructure (DI, lifecycle, middleware, retry, OTel, tool loading) lives in the published `foundry-agent-*` packages — this repo is the composition root that wires them into a runnable service.
+
+## Installing the `foundry-*` packages
+
+The four `foundry-agent-*` wheels this repo depends on are published as
+assets on [`boozallen/foundry-agent-packages`](https://github.com/boozallen/foundry-agent-packages)
+GitHub Releases. The default `pyproject.toml` pins each package to its
+GitHub Release wheel URL so a fresh clone runs out of the box — useful for
+evaluation, demos, and POCs.
+
+**Intended adoption pattern:** mirror the wheels into your own internal
+package index (Artifactory, AWS CodeArtifact, Sonatype Nexus, GitLab
+Package Registry, etc.) and repoint the dependency specs in `pyproject.toml`
+at that index. Direct dependence on `github.com` release URLs is fine for
+kicking the tires, but production deployments should resolve packages from
+infrastructure you control.
 
 ## Where to go
 

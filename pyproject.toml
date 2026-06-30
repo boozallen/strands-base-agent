@@ -1,6 +1,6 @@
 [project]
 name = "strands-base-agent"
-version = "1.0.0"
+version = "1.0.1"
 license = "Apache-2.0"
 license-files = ["LICENSE*", "NOTICE*"]
 description = "General-purpose AI agent application using AWS Strands SDK"
@@ -10,10 +10,10 @@ authors = [{ name = "Booz Allen Hamilton" }]
 
 dependencies = [
     "fastapi==0.138.0",
-    "foundry-agent-config==1.0.0",
-    "foundry-agent-core==1.0.0",
-    "foundry-agent-fastapi==1.0.0",
-    "foundry-strands-agent==1.0.0",
+    "foundry-agent-config @ https://github.com/boozallen/foundry-agent-packages/releases/download/foundry-agent-config/v1.0.0/foundry_agent_config-1.0.0-py3-none-any.whl",
+    "foundry-agent-core @ https://github.com/boozallen/foundry-agent-packages/releases/download/foundry-agent-core/v1.0.0/foundry_agent_core-1.0.0-py3-none-any.whl",
+    "foundry-agent-fastapi @ https://github.com/boozallen/foundry-agent-packages/releases/download/foundry-agent-fastapi/v1.0.0/foundry_agent_fastapi-1.0.0-py3-none-any.whl",
+    "foundry-strands-agent @ https://github.com/boozallen/foundry-agent-packages/releases/download/foundry-strands-agent/v1.0.0/foundry_strands_agent-1.0.0-py3-none-any.whl",
     "mcp==1.28.0",
     "opentelemetry-api==1.42.1",
     "opentelemetry-exporter-otlp-proto-http==1.42.1",
@@ -46,6 +46,13 @@ dev = [
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
+
+[tool.hatch.metadata]
+# Required so the four `foundry-agent-* @ https://...` dependencies (sourced
+# from public GitHub Releases on boozallen/foundry-agent-packages) are accepted
+# by Hatchling. Until those wheels are also published to PyPI, direct-URL is
+# the supported install path.
+allow-direct-references = true
 
 [tool.basedpyright]
 pythonVersion = "3.14"
