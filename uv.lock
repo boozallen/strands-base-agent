@@ -581,45 +581,59 @@ wheels = [
 [[package]]
 name = "foundry-agent-config"
 version = "1.0.0"
-source = { registry = "https://jfrog.te.bah.com/artifactory/api/pypi/agentic-ai-pypi/simple" }
+source = { url = "https://github.com/boozallen/foundry-agent-packages/releases/download/foundry-agent-config/v1.0.0/foundry_agent_config-1.0.0-py3-none-any.whl" }
 dependencies = [
     { name = "pydantic" },
     { name = "pyyaml" },
 ]
-sdist = { url = "https://jfrog.te.bah.com/artifactory/api/pypi/agentic-ai-pypi/foundry-agent-config/1.0.0/foundry_agent_config-1.0.0.tar.gz", hash = "sha256:c7ff6712b3dfc4e1f35c75a35eb29e8a9496788bf9539bdbe6fea58ff08400d2" }
 wheels = [
-    { url = "https://jfrog.te.bah.com/artifactory/api/pypi/agentic-ai-pypi/foundry-agent-config/1.0.0/foundry_agent_config-1.0.0-py3-none-any.whl", hash = "sha256:6c942d141fc883168bc095470a18d86df35a33f86f985220bf7901a37463a372" },
+    { url = "https://github.com/boozallen/foundry-agent-packages/releases/download/foundry-agent-config/v1.0.0/foundry_agent_config-1.0.0-py3-none-any.whl", hash = "sha256:ed42df269315ef453835cdb4c92e782e7d131aa4ff7e9b7265acfbd19dce88b6" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "pydantic", specifier = ">=2.0" },
+    { name = "pyyaml", specifier = ">=6.0" },
 ]
 
 [[package]]
 name = "foundry-agent-core"
 version = "1.0.0"
-source = { registry = "https://jfrog.te.bah.com/artifactory/api/pypi/agentic-ai-pypi/simple" }
+source = { url = "https://github.com/boozallen/foundry-agent-packages/releases/download/foundry-agent-core/v1.0.0/foundry_agent_core-1.0.0-py3-none-any.whl" }
 dependencies = [
     { name = "pydantic" },
 ]
-sdist = { url = "https://jfrog.te.bah.com/artifactory/api/pypi/agentic-ai-pypi/foundry-agent-core/1.0.0/foundry_agent_core-1.0.0.tar.gz", hash = "sha256:09ef69c2779bd431717218369cd6cd63839d60e9313312e06dc820adcdec5737" }
 wheels = [
-    { url = "https://jfrog.te.bah.com/artifactory/api/pypi/agentic-ai-pypi/foundry-agent-core/1.0.0/foundry_agent_core-1.0.0-py3-none-any.whl", hash = "sha256:f8563c43d31491e71047b9dbfb5163e86e6b292a41f7ca3984a459a09e63fdfe" },
+    { url = "https://github.com/boozallen/foundry-agent-packages/releases/download/foundry-agent-core/v1.0.0/foundry_agent_core-1.0.0-py3-none-any.whl", hash = "sha256:b23090d94150d5bc4ee5f9892dbf6a8d449530787260535e22081b718e0e6f18" },
 ]
+
+[package.metadata]
+requires-dist = [{ name = "pydantic", specifier = ">=2.0" }]
 
 [[package]]
 name = "foundry-agent-fastapi"
 version = "1.0.0"
-source = { registry = "https://jfrog.te.bah.com/artifactory/api/pypi/agentic-ai-pypi/simple" }
+source = { url = "https://github.com/boozallen/foundry-agent-packages/releases/download/foundry-agent-fastapi/v1.0.0/foundry_agent_fastapi-1.0.0-py3-none-any.whl" }
 dependencies = [
     { name = "fastapi" },
     { name = "foundry-agent-core" },
 ]
-sdist = { url = "https://jfrog.te.bah.com/artifactory/api/pypi/agentic-ai-pypi/foundry-agent-fastapi/1.0.0/foundry_agent_fastapi-1.0.0.tar.gz", hash = "sha256:dcb1c4e873ec9263fac7a14c3d1098608c2fab5eacf7503b3c54da8d8e9d32cf" }
 wheels = [
-    { url = "https://jfrog.te.bah.com/artifactory/api/pypi/agentic-ai-pypi/foundry-agent-fastapi/1.0.0/foundry_agent_fastapi-1.0.0-py3-none-any.whl", hash = "sha256:f9e4e02621bea7a7c705960510851f30e77e7ee474e2ea6015fc6eb4fe91e74d" },
+    { url = "https://github.com/boozallen/foundry-agent-packages/releases/download/foundry-agent-fastapi/v1.0.0/foundry_agent_fastapi-1.0.0-py3-none-any.whl", hash = "sha256:fa6a9a4b277a29f12aa5da5bfaa8c58b2f2c34745709a3ac579112ad0beaaa92" },
 ]
+
+[package.metadata]
+requires-dist = [
+    { name = "fastapi", specifier = ">=0.100" },
+    { name = "foundry-agent-core", specifier = ">=1.0.0" },
+    { name = "httpx", marker = "extra == 'test'", specifier = ">=0.28.1" },
+]
+provides-extras = ["test"]
 
 [[package]]
 name = "foundry-strands-agent"
 version = "1.0.0"
-source = { registry = "https://jfrog.te.bah.com/artifactory/api/pypi/agentic-ai-pypi/simple" }
+source = { url = "https://github.com/boozallen/foundry-agent-packages/releases/download/foundry-strands-agent/v1.0.0/foundry_strands_agent-1.0.0-py3-none-any.whl" }
 dependencies = [
     { name = "botocore" },
     { name = "cryptography" },
@@ -631,9 +645,21 @@ dependencies = [
     { name = "strands-agents", extra = ["a2a", "openai"] },
     { name = "strands-agents-tools", extra = ["a2a-client"] },
 ]
-sdist = { url = "https://jfrog.te.bah.com/artifactory/api/pypi/agentic-ai-pypi/foundry-strands-agent/1.0.0/foundry_strands_agent-1.0.0.tar.gz", hash = "sha256:9b36ec9b65cceac13950b3d6e101ab69a10c80762f6b52388b974f9edd98b323" }
 wheels = [
-    { url = "https://jfrog.te.bah.com/artifactory/api/pypi/agentic-ai-pypi/foundry-strands-agent/1.0.0/foundry_strands_agent-1.0.0-py3-none-any.whl", hash = "sha256:61d74d81db884a35c994ee38969fb410abcf3ff21aaa1cf8e6acbbf78117dda8" },
+    { url = "https://github.com/boozallen/foundry-agent-packages/releases/download/foundry-strands-agent/v1.0.0/foundry_strands_agent-1.0.0-py3-none-any.whl", hash = "sha256:4e30041adcf68de1b27d028ec4d20ff6fc845665e03d06afa5be43475f7e8e85" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "botocore", specifier = ">=1.35.0" },
+    { name = "cryptography", specifier = ">=43.0" },
+    { name = "foundry-agent-config", specifier = ">=1.0.0" },
+    { name = "foundry-agent-core", specifier = ">=1.0.0" },
+    { name = "mcp", specifier = ">=1.0.0" },
+    { name = "openai" },
+    { name = "pydantic", specifier = ">=2.0" },
+    { name = "strands-agents", extras = ["a2a", "openai"], specifier = ">=0.1.0" },
+    { name = "strands-agents-tools", extras = ["a2a-client"], specifier = ">=0.1.0" },
 ]
 
 [[package]]
@@ -1932,7 +1958,7 @@ a2a-client = [
 
 [[package]]
 name = "strands-base-agent"
-version = "1.0.0"
+version = "1.0.1"
 source = { editable = "." }
 dependencies = [
     { name = "fastapi" },
@@ -1972,10 +1998,10 @@ dev = [
 [package.metadata]
 requires-dist = [
     { name = "fastapi", specifier = "==0.138.0" },
-    { name = "foundry-agent-config", specifier = "==1.0.0" },
-    { name = "foundry-agent-core", specifier = "==1.0.0" },
-    { name = "foundry-agent-fastapi", specifier = "==1.0.0" },
-    { name = "foundry-strands-agent", specifier = "==1.0.0" },
+    { name = "foundry-agent-config", url = "https://github.com/boozallen/foundry-agent-packages/releases/download/foundry-agent-config/v1.0.0/foundry_agent_config-1.0.0-py3-none-any.whl" },
+    { name = "foundry-agent-core", url = "https://github.com/boozallen/foundry-agent-packages/releases/download/foundry-agent-core/v1.0.0/foundry_agent_core-1.0.0-py3-none-any.whl" },
+    { name = "foundry-agent-fastapi", url = "https://github.com/boozallen/foundry-agent-packages/releases/download/foundry-agent-fastapi/v1.0.0/foundry_agent_fastapi-1.0.0-py3-none-any.whl" },
+    { name = "foundry-strands-agent", url = "https://github.com/boozallen/foundry-agent-packages/releases/download/foundry-strands-agent/v1.0.0/foundry_strands_agent-1.0.0-py3-none-any.whl" },
     { name = "mcp", specifier = "==1.28.0" },
     { name = "opentelemetry-api", specifier = "==1.42.1" },
     { name = "opentelemetry-exporter-otlp-proto-http", specifier = "==1.42.1" },

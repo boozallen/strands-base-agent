@@ -156,7 +156,8 @@ strands_base_agent/
 ## Packages
 
 Pinned versions live in `pyproject.toml`; this table only describes what each
-package provides.
+package provides. See the [README install note](README.md#installing-the-foundry-packages)
+for the GitHub-Release vs. internal-index install paths.
 
 | Package | What It Provides |
 |---------|-----------------|
