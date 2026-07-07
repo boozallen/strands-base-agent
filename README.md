@@ -30,7 +30,7 @@ just lint           # Ruff lint + format check
 just type-check     # basedpyright
 ```
 
-Requires Python 3.12+ and [uv](https://docs.astral.sh/uv/) installed.
+Requires Python 3.14+ and [uv](https://docs.astral.sh/uv/) installed.
 
 ## Where to go
 
