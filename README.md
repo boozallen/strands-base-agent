@@ -20,6 +20,20 @@ at that index. Direct dependence on `github.com` release URLs is fine for
 kicking the tires, but production deployments should resolve packages from
 infrastructure you control.
 
+## Local Development & Verification
+
+Since CI workflows are not published, use these commands to verify the codebase locally:
+
+```bash
+just setup          # Install dependencies and pre-commit hooks
+just check          # Run all quality checks (lint, format, type-check, test)
+just test           # Run tests with coverage
+just lint           # Ruff lint + format check
+just type-check     # basedpyright
+```
+
+Requires Python 3.12+ and [uv](https://docs.astral.sh/uv/) installed.
+
 ## Where to go
 
 | If you want to… | Read |
