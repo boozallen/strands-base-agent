@@ -22,8 +22,6 @@ infrastructure you control.
 
 ## Local Development & Verification
 
-Since CI workflows are not published, use these commands to verify the codebase locally:
-
 ```bash
 just setup          # Install dependencies and pre-commit hooks
 just check          # Run all quality checks (lint, format, type-check, test)
