@@ -9,7 +9,7 @@ requires-python = ">=3.14,<3.15"
 authors = [{ name = "Booz Allen Hamilton" }]
 
 dependencies = [
-    "fastapi==0.140.13",
+    "fastapi==0.141.1",
     "foundry-agent-config @ https://github.com/boozallen/foundry-agent-packages/releases/download/foundry-agent-config/v1.0.0/foundry_agent_config-1.0.0-py3-none-any.whl",
     "foundry-agent-core @ https://github.com/boozallen/foundry-agent-packages/releases/download/foundry-agent-core/v1.0.0/foundry_agent_core-1.0.0-py3-none-any.whl",
     "foundry-agent-fastapi @ https://github.com/boozallen/foundry-agent-packages/releases/download/foundry-agent-fastapi/v1.0.0/foundry_agent_fastapi-1.0.0-py3-none-any.whl",
@@ -19,27 +19,27 @@ dependencies = [
     "opentelemetry-exporter-otlp-proto-http==1.42.1",
     "opentelemetry-sdk==1.42.1",
     "pydantic==2.13.4",
-    "python-dotenv==1.2.2",
+    "python-dotenv==1.2.3",
     "python-multipart==0.0.32",
-    "strands-agents-tools[a2a-client]==0.8.5",
-    "strands-agents[a2a,ollama]==1.50.2",
-    "uvicorn==0.51.0",
+    "strands-agents-tools[a2a-client]==0.8.6",
+    "strands-agents[a2a,ollama]==1.52.0",
+    "uvicorn==0.52.3",
 ]
 
 [dependency-groups]
 dev = [
     "bandit[toml]==1.9.4",
-    "basedpyright==1.39.9",
-    "coverage==7.15.2",
+    "basedpyright==1.39.10",
+    "coverage==7.15.4",
     "debugpy==1.8.21",
     "deptry==0.25.1",
-    "pre-commit==4.6.1",
+    "pre-commit==4.6.2",
     "pytest==9.1.1",
     "pytest-asyncio==1.4.0",
     "pytest-cov==7.1.0",
     "pytest-mock==3.15.1",
     "pytest-xdist[psutil]==3.8.0",
-    "ruff==0.16.0",
+    "ruff==0.16.3",
     "vulture==2.16",
 ]
 
