@@ -30,7 +30,7 @@ dependencies = [
 dev = [
     "bandit[toml]==1.9.4",
     "basedpyright==1.39.10",
-    "coverage==7.15.4",
+    "coverage==7.16.0",
     "debugpy==1.8.21",
     "deptry==0.25.1",
     "pre-commit==4.6.2",
