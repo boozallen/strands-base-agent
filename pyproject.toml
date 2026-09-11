@@ -21,16 +21,16 @@ dependencies = [
     "pydantic==2.13.5",
     "python-dotenv==1.2.3",
     "python-multipart==0.0.32",
-    "strands-agents-tools[a2a-client]==0.8.7",
-    "strands-agents[a2a,ollama]==1.54.0",
+    "strands-agents-tools[a2a-client]==0.8.8",
+    "strands-agents[a2a,ollama]==1.55.0",
     "uvicorn==0.52.4",
 ]
 
 [dependency-groups]
 dev = [
     "bandit[toml]==1.9.4",
-    "basedpyright==1.39.10",
-    "coverage==7.15.4",
+    "basedpyright==1.40.0",
+    "coverage==7.16.0",
     "debugpy==1.8.21",
     "deptry==0.25.1",
     "pre-commit==4.6.2",
@@ -39,7 +39,7 @@ dev = [
     "pytest-cov==7.1.0",
     "pytest-mock==3.15.1",
     "pytest-xdist[psutil]==3.8.0",
-    "ruff==0.16.5",
+    "ruff==0.16.6",
     "vulture==2.16",
 ]
 
