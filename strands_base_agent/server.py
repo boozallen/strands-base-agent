@@ -5,21 +5,25 @@
 Provides the entry point for starting application and A2A protocol servers.
 """
 
-import asyncio
 import logging
 import os
-import threading
+import re
 from contextlib import asynccontextmanager
-from typing import Any, Self, cast
+from typing import Protocol, cast
 
 import uvicorn
+from a2a import types as a2a_types
+from a2a.types import InvalidParamsError
 from a2a.utils.errors import ServerError
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
+from strands import Agent
+from strands.multiagent.a2a.executor import StrandsA2AExecutor
 from strands.multiagent.a2a.server import A2AServer
 
-from foundry_agent_core import AgentBackend
+from foundry_agent_core import AgentBackend, AgentCreationError
 from foundry_strands_agent import AgentConfig, AgentFactory, StrandsAgentBackend, StrandsAgentFactory
+from foundry_strands_agent.factory import AgentBuilder
 
 from strands_base_agent.application.factory import create_application_container
 from strands_base_agent.application.lifecycle import boot_system
@@ -28,156 +32,75 @@ from strands_base_agent.application.runtime_container import set_runtime_contain
 logger = logging.getLogger(__name__)
 
 
-class MCPReconnectExhaustedError(RuntimeError):
-    """Raised when MCP reconnect + retry still fails."""
+_AUTH_EXEMPT_PATHS = frozenset(
+    {
+        "/api/v1/health",
+        "/.well-known/agent.json",
+        "/.well-known/agent-card.json",
+    }
+)
 
 
-class ReconnectingAgentProxy:
-    """A proxy for an agent that reconnects to an MCP server if it fails."""
+class _SupportsAgentBuilder(Protocol):
+    """An AgentFactory that can prepare a builder for per-context A2A agents."""
 
-    def __init__(self, agent, agent_factory, max_retries: int = 1):
-        self._agent_factory = agent_factory
-        self._max_retries = max_retries
-        self._lock = threading.RLock()
-        self._agent = agent
-        self._needs_rebuild = False
+    async def create_agent_builder(self) -> AgentBuilder: ...
 
-    @classmethod
-    async def create(cls, agent_factory, max_retries: int = 1) -> Self:
-        agent = await agent_factory.create_agent()
-        return cls(agent, agent_factory, max_retries=max_retries)
 
-    async def _recreate_agent_async(self) -> None:
-        logger.info("Recreating agent due to MCP error...")
+# The context id A2AServer passes to agent_factory when it builds the agent card
+# at construction (strands.multiagent.a2a.server._AGENT_CARD_CONTEXT_ID).
+_A2A_AGENT_CARD_CONTEXT_ID = "__agent_card__"
 
-        old = None
-        new_agent = await self._agent_factory.create_agent()
+# A2A sessions share session_storage_dir / session_s3_prefix with REST sessions.
+# REST session_ids allow only letters, digits, "_" and "-", so the "." keeps the
+# two apart in both directions.
+_A2A_SESSION_ID_PREFIX = "a2a."
 
-        with self._lock:
-            old = self._agent
-            self._agent = new_agent
+_INVALID_CONTEXT_ID_MESSAGE = "Invalid contextId: use at most 124 letters, digits, '.', '_', or '-', not ending in '.'"
 
-        close_fn = getattr(old, "close", None)
-        if callable(close_fn):
-            try:
-                maybe_coro = close_fn()
-                if asyncio.iscoroutine(maybe_coro):
-                    await maybe_coro
-            except Exception:
-                pass
 
-        logger.info("Agent recreated successfully")
+# Each retained context holds a full Agent with its message history, so the
+# limit is a memory knob. The cap keeps a typo from exhausting memory.
+_A2A_MAX_CONTEXTS_CAP = 10_000
 
-    def _is_mcp_error(self, err: Exception) -> bool:
-        text = str(err).lower()
-        markers = (
-            "mcp",
-            "mcpconnectionerror",
-            "mcpclientinitializationerror",
-            "client session is not running",
-            "connection to the mcp server was closed",
-            "streamablehttp",
+
+def _a2a_max_contexts() -> int:
+    """Per-context agents A2AServer keeps (STRANDS_A2A_MAX_CONTEXTS), SDK default when unset."""
+    value = os.getenv("STRANDS_A2A_MAX_CONTEXTS")
+    if not value:
+        return StrandsA2AExecutor.DEFAULT_MAX_CONTEXTS
+    # 1 to 5 ASCII digits: int() accepts "1_000" and " 5 ", and fails past 4300 digits.
+    if not re.fullmatch(r"[0-9]{1,5}", value) or not 1 <= int(value) <= _A2A_MAX_CONTEXTS_CAP:
+        raise RuntimeError(
+            f"STRANDS_A2A_MAX_CONTEXTS must be an integer from 1 to {_A2A_MAX_CONTEXTS_CAP}, got {value!r}"
         )
-        return any(m in text for m in markers)
+    return int(value)
 
-    def _event_has_mcp_failure(self, event: object) -> bool:
-        text = f"{event!r} {event}".lower()
-        markers = (
-            "mcpclientinitializationerror",
-            "client session is not running",
-            "connection to the mcp server was closed",
-            "tool execution failed",
-            "failed to process tool",
-            "Connection to the MCP server was closed",
+
+def is_auth_exempt(method: str, path: str) -> bool:
+    """True when the request may bypass bearer auth (OPTIONS or an exempt path)."""
+    path = path.rstrip("/") or "/"
+    return method == "OPTIONS" or path in _AUTH_EXEMPT_PATHS
+
+
+_BEARER_SCHEME_NAME = "bearer"
+
+
+class _BearerCardA2AServer(A2AServer):
+    """A2AServer whose agent card says every A2A call needs the bearer API key."""
+
+    @property
+    def public_agent_card(self) -> a2a_types.AgentCard:
+        """The SDK's card plus the bearer scheme that _require_bearer_auth enforces."""
+        scheme = a2a_types.HTTPAuthSecurityScheme(
+            scheme="bearer", description="The API key the server is configured with (STRANDS_API_KEY)."
         )
-        return any(m in text for m in markers)
-
-    def mark_stale(self) -> None:
-        with self._lock:
-            self._needs_rebuild = True
-
-    async def _ensure_fresh_agent(self) -> None:
-        with self._lock:
-            needs_rebuild = self._needs_rebuild
-            if needs_rebuild:
-                self._needs_rebuild = False
-
-        if not needs_rebuild:
-            return
-
-        await self._recreate_agent_async()
-
-    async def _stream_once(self, *args, **kwargs):
-        with self._lock:
-            agent = self._agent
-        async for event in agent.stream_async(*args, **kwargs):
-            yield event
-
-    def stream_async(self, *args, **kwargs):
-        async def _gen():
-            for attempt in range(self._max_retries + 1):
-                await self._ensure_fresh_agent()
-                saw_mcp_failure = False
-                try:
-                    async for event in self._stream_once(*args, **kwargs):
-                        if self._event_has_mcp_failure(event):
-                            saw_mcp_failure = True
-                            self.mark_stale()
-                            break
-                        yield event
-                except Exception as e:
-                    if self._is_mcp_error(e):
-                        saw_mcp_failure = True
-                        self.mark_stale()
-                    else:
-                        raise
-
-                if not saw_mcp_failure:
-                    return
-
-                if attempt < self._max_retries:
-                    await self._ensure_fresh_agent()
-                    continue
-
-                # exhausted: emit explicit stream error event instead of silent end
-                yield {
-                    "type": "error",
-                    "error": "mcp_reconnect_failed",
-                    "message": f"MCP unavailable after {self._max_retries + 1} attempt(s)",
-                    "retryable": True,
-                }
-                return
-
-        return _gen()
-
-    async def invoke_async(self, *args, **kwargs):
-        await self._ensure_fresh_agent()
-        with self._lock:
-            agent = self._agent
-        try:
-            return await agent.invoke_async(*args, **kwargs)
-        except Exception as e:
-            if self._is_mcp_error(e):
-                self.mark_stale()
-                await self._recreate_agent_async()
-                with self._lock:
-                    agent = self._agent
-                return await agent.invoke_async(*args, **kwargs)  # one retry
-            raise
-
-    def __getattr__(self, item: str):
-        with self._lock:
-            return getattr(self._agent, item)
-
-    async def aclose(self) -> None:
-        with self._lock:
-            agent = self._agent
-
-        close_fn = getattr(agent, "close", None)
-        if callable(close_fn):
-            result = close_fn()
-            if asyncio.iscoroutine(result):
-                await result
+        return super().public_agent_card.model_copy(
+            update={
+                "security_schemes": {_BEARER_SCHEME_NAME: a2a_types.SecurityScheme(root=scheme)},
+                "security": [{_BEARER_SCHEME_NAME: []}],
+            }
+        )
 
 
 def start_server() -> None:
@@ -191,8 +114,11 @@ def start_server() -> None:
         ImportError: If A2A dependencies are not installed
         RuntimeError: If server initialization fails or if called in client mode
     """
-    # Load configuration
-    config = AgentConfig.from_env()
+    # Build the DI container first so the one YAML-aware AgentConfig can be resolved from it
+    # below, rather than constructing a second, potentially divergent instance via
+    # AgentConfig.from_env(). The container is also registered for FastAPI deps (see runtime_container).
+    container = create_application_container()
+    config = container.resolve(AgentConfig)
 
     # Get deployment configuration
     host = os.getenv("HOST", "0.0.0.0")
@@ -215,9 +141,6 @@ def start_server() -> None:
     logger.info("Starting A2A server on %s:%s (version: %s)", host, port, version)
     logger.info("Agent discovery endpoint %s", agent_public_url)
 
-    # Create agent using the factory pattern (register for FastAPI deps — see runtime_container)
-    container = create_application_container()
-
     # Register AgentFactory in the composition root — adopters customize here.
     # Pass session_manager_factories / model_provider_factories dicts to extend.
     container.register_factory(
@@ -235,42 +158,63 @@ def start_server() -> None:
     set_runtime_container(container)
     agent_factory = container.resolve(AgentFactory)
 
-    # Agent instance created async in lifespan; placeholder for closure reference
-    agent_instance: ReconnectingAgentProxy | None = None
+    # Per-context A2A agents. The one-time setup runs in the
+    # lifespan; A2AServer then builds a fresh agent per context_id, so no two
+    # conversations share message history, state or session.
+    if not callable(getattr(agent_factory, "create_agent_builder", None)):
+        raise RuntimeError(
+            "The registered AgentFactory does not provide create_agent_builder(), which the A2A "
+            "server needs to build a fresh agent per conversation. StrandsAgentFactory provides it."
+        )
+    strands_agent_factory = cast(_SupportsAgentBuilder, agent_factory)
+    agent_builder: AgentBuilder | None = None
 
-    # Create A2A server — agent_instance is set before requests arrive via lifespan.
-    # A2AServer.__init__ eagerly accesses .name, .description on the agent (for the
-    # agent card) and passes it to StrandsA2AExecutor which checks ._session_manager
-    # and calls .take_snapshot(). We satisfy those during construction with safe
-    # defaults; all runtime access defers to the real agent once lifespan initializes it.
     class _NoOpToolRegistry:
-        """Stub registry for agent card construction before real agent exists."""
+        """Empty tool registry, so the agent card lists no skills."""
 
         def get_all_tools_config(self):
             return {}
 
-    class _LazyAgentProxy:
-        """Provides card metadata for A2AServer construction; defers runtime access."""
+    class _AgentCardMetadata:
+        """What A2AServer reads to build the agent card: name, description, tools.
+
+        A2AServer calls agent_factory once at construction with the card context
+        id, before the lifespan has created the builder. This object answers that
+        call from config alone and forwards nothing to a runtime agent.
+        """
 
         name = config.agent_name
         description = config.agent_description
-        _session_manager = None
         tool_registry = _NoOpToolRegistry()
 
-        def take_snapshot(self, **kwargs):
-            return None
+    def build_context_agent(context_id: str) -> Agent:
+        if agent_builder is None:
+            # Only A2AServer's construction-time card build runs before the lifespan.
+            if context_id == _A2A_AGENT_CARD_CONTEXT_ID:
+                return cast(Agent, _AgentCardMetadata())
+            raise RuntimeError("A2A request received before the agent builder was initialized")
+        try:
+            agent = agent_builder.build(session_id=f"{_A2A_SESSION_ID_PREFIX}{context_id}")
+        except AgentCreationError as e:
+            # Only build()'s session_id check carries session_id_length; let other failures through.
+            if "session_id_length" not in e.context:
+                raise
+            # A ServerError reaches the client as a JSON-RPC "invalid params" error, not a failed task.
+            raise ServerError(error=InvalidParamsError(message=_INVALID_CONTEXT_ID_MESSAGE)) from e
+        # The builder names agents from config.yaml; match the card, which uses this config.
+        agent.name = config.agent_name
+        agent.description = config.agent_description
+        return agent
 
-        def __getattr__(self, item: str):
-            if agent_instance is None:
-                raise RuntimeError("Agent not yet initialized")
-            return getattr(agent_instance, item)
-
-    a2a_server = A2AServer(
-        agent=cast(Any, _LazyAgentProxy()),
+    a2a_server = _BearerCardA2AServer(
+        agent_factory=build_context_agent,
+        max_contexts=_a2a_max_contexts(),
         host=host,
         port=port,
         http_url=agent_public_url,
         version=version,
+        # Stream chunks into one artifact, not one history message per chunk.
+        enable_a2a_compliant_streaming=True,
     )
 
     # Access the underlying FastAPI app
@@ -287,7 +231,21 @@ def start_server() -> None:
     add_request_logging_middleware(fastapi_app)
     add_error_handling_middleware(fastapi_app)
 
+    from strands_base_agent.api.dependencies import is_valid_api_key
     from strands_base_agent.api.routes import chat_history_router, query_router
+
+    @fastapi_app.middleware("http")
+    async def _require_bearer_auth(request: Request, call_next):  # pyright: ignore[reportUnusedFunction]
+        if is_auth_exempt(request.method, request.url.path):
+            return await call_next(request)
+        scheme, _, token = request.headers.get("authorization", "").partition(" ")
+        if scheme.lower() != "bearer" or not is_valid_api_key(token):
+            return JSONResponse(
+                status_code=401,
+                content={"error": "unauthorized", "message": "Invalid or missing API key"},
+                headers={"WWW-Authenticate": "Bearer"},
+            )
+        return await call_next(request)
 
     fastapi_app.include_router(health_router)
     fastapi_app.include_router(query_router)
@@ -297,66 +255,38 @@ def start_server() -> None:
 
     @asynccontextmanager
     async def lifespan(app: FastAPI):
-        nonlocal agent_instance
+        nonlocal agent_builder
+        if not os.environ.get("STRANDS_API_KEY"):
+            raise RuntimeError(
+                "STRANDS_API_KEY is required and must be non-empty. Set it in the environment (see env.template)."
+            )
         async with original_lifespan(app):
             try:
-                agent_instance = await ReconnectingAgentProxy.create(agent_factory, max_retries=1)
-                agent_instance._agent.name = config.agent_name
-                agent_instance._agent.description = config.agent_description
+                agent_builder = await strands_agent_factory.create_agent_builder()
+                # MCP clients connect when the first agent is built and stop when the
+                # last agent holding them is released. Building one here fails startup
+                # on a bad MCP config, and holding it keeps the connections open for
+                # later contexts until shutdown.
+                app.state.a2a_startup_agent = agent_builder.build()
+                logger.info("A2A server started")
                 yield
             finally:
-                try:
-                    if agent_instance is not None:
-                        await agent_instance.aclose()
-                except Exception as e:
-                    logger.warning("Agent shutdown cleanup warning: %s", e)
+                app.state.a2a_startup_agent = None
+                logger.info("A2A server shutting down")
 
     fastapi_app.router.lifespan_context = lifespan
 
-    def _is_mcp_chain(exc: Exception) -> bool:
-        markers = (
-            "mcpclientinitializationerror",
-            "client session is not running",
-            "connection to the mcp server was closed",
-            "mcp",
-        )
-        seen = set()
-        cur: BaseException | None = exc
-        while cur and id(cur) not in seen:
-            seen.add(id(cur))
-            msg = str(cur).lower()
-            if any(m in msg for m in markers):
-                return True
-            cur = cur.__cause__ or cur.__context__
-        return False
-
     @fastapi_app.exception_handler(ServerError)
-    async def handle_a2a_server_error(_: Request, exc: ServerError):  # pyright: ignore[reportUnusedFunction]
-        if _is_mcp_chain(exc) and agent_instance is not None:
-            agent_instance.mark_stale()
-            return JSONResponse(
-                status_code=400,
-                content={
-                    "error": "mcp_session_stale",
-                    "message": "MCP session became stale; retry the request.",
-                    "retryable": True,
-                },
-            )
-
+    async def handle_a2a_server_error(request: Request, exc: ServerError):  # pyright: ignore[reportUnusedFunction]
+        logger.error(
+            "A2A server error: %s",
+            exc,
+            exc_info=exc,
+            extra={"correlation_id": getattr(request.state, "correlation_id", None)},
+        )
         return JSONResponse(
             status_code=500,
             content={"error": "internal_error", "message": "A2A server error"},
-        )
-
-    @fastapi_app.exception_handler(MCPReconnectExhaustedError)
-    async def handle_mcp_reconnect_exhausted(_: Request, exc: MCPReconnectExhaustedError):  # pyright: ignore[reportUnusedFunction]
-        return JSONResponse(
-            status_code=400,
-            content={
-                "error": "mcp_reconnect_failed",
-                "message": str(exc),
-                "retryable": True,
-            },
         )
 
     # Validate TLS posture before starting the server
@@ -371,13 +301,26 @@ def start_server() -> None:
 
     # Start server (blocking call)
     if tls_config.tls_mode == TlsMode.NATIVE:
-        uvicorn.run(
-            fastapi_app,
-            host=host,
-            port=port,
-            ssl_keyfile=tls_config.tls_keyfile,
-            ssl_certfile=tls_config.tls_certfile,
-        )
+        if tls_config.tls_ca_certfile:
+            import ssl
+
+            uvicorn.run(
+                fastapi_app,
+                host=host,
+                port=port,
+                ssl_keyfile=tls_config.tls_keyfile,
+                ssl_certfile=tls_config.tls_certfile,
+                ssl_ca_certs=tls_config.tls_ca_certfile,
+                ssl_cert_reqs=ssl.CERT_REQUIRED,
+            )
+        else:
+            uvicorn.run(
+                fastapi_app,
+                host=host,
+                port=port,
+                ssl_keyfile=tls_config.tls_keyfile,
+                ssl_certfile=tls_config.tls_certfile,
+            )
     else:
         uvicorn.run(fastapi_app, host=host, port=port)
 

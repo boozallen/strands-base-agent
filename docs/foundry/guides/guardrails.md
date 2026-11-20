@@ -4,11 +4,11 @@ sidebar_position: 6
 
 # Guardrails
 
-Strands Base Agent integrates with [AWS Bedrock Guardrails](https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails.html) for safety filtering, content moderation, and prompt-attack defense. Guardrails are configured per agent under `model.guardrails` in `config.yaml`; setting a `guardrail_id` enables them.
+[Strands Base Agent](../index.md) integrates with [AWS Bedrock Guardrails](https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails.html) for safety filtering, content moderation, and prompt-attack defense. Guardrails are configured per agent under `model.guardrails` in [`config.yaml`](../../../config.yaml); setting a `guardrail_id` enables them.
 
 ## Recommended Defaults
 
-A production-ready starting point. Adjust based on your use case and tolerance for false positives.
+Use these settings as a starting point, then adjust them for your use case and tolerance for false positives.
 
 | Category | Setting | Rationale |
 |----------|---------|-----------|
@@ -34,7 +34,7 @@ A production-ready starting point. Adjust based on your use case and tolerance f
 
 ### 1. Create a Guardrail in AWS Bedrock
 
-Follow the AWS guide: [Create a guardrail](https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails-denied-topics.html#guardrails-denied-topics-configure). Take note of the guardrail ID **and** version once created.
+Follow the AWS guide: [Create a guardrail](https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails-components.html). Take note of the guardrail ID **and** version once created.
 
 ### 2. Configure the Agent
 
@@ -45,7 +45,7 @@ Guardrails are part of the model configuration. Add a `guardrails` block under
 # config.yaml
 model:
   provider: bedrock
-  model_id: us.anthropic.claude-haiku-4-5-20251001-v1:0
+  model_id: us.anthropic.claude-haiku-5-5
   guardrails:
     guardrail_id: your-guardrail-id-here
     guardrail_version: "1"
@@ -55,7 +55,7 @@ model:
 | YAML field | Description | Default |
 |------------|-------------|---------|
 | `model.guardrails.guardrail_id` | Guardrail ID (presence enables guardrails) | — |
-| `model.guardrails.guardrail_version` | Guardrail version | `""` |
+| `model.guardrails.guardrail_version` | Guardrail version (required when `guardrail_id` is set) | — |
 | `model.guardrails.guardrail_trace` | Trace mode for debugging | `enabled` |
 
 If the guardrail ID varies by environment (e.g. separate guardrails for dev /

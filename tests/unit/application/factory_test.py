@@ -258,6 +258,7 @@ class TestProtocolRegistrations:
 
         assert chat_history_call is not None
         assert AgentFactory in chat_history_call[1]["dependencies"]
+        assert AgentConfig in chat_history_call[1]["dependencies"]
 
     @patch("strands_base_agent.application.factory.Path.exists", return_value=False)
     @patch("strands_base_agent.application.factory.AgentConfig.from_env")

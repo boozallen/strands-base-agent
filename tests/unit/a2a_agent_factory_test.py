@@ -360,7 +360,7 @@ class TestA2AAgentFactoryConsolidated:
                     assert session_repository is mock_session_instance
 
             elif expected_outcome["session_type"] == "s3":
-                with patch("foundry_strands_agent.factory.S3SessionManager") as mock_s3_session:
+                with patch("foundry_strands_agent.factory.GuardedS3SessionManager") as mock_s3_session:
                     mock_session_instance = Mock()
                     mock_s3_session.return_value = mock_session_instance
 
@@ -371,5 +371,6 @@ class TestA2AAgentFactoryConsolidated:
                         session_id="a2a_s3_session_789",
                         bucket="a2a-agent-sessions",
                         prefix="remote-agents/",
-                        region=None,
+                        region_name=None,
+                        dangling_tool_use_mode="sanitize",
                     )

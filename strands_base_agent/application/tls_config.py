@@ -3,7 +3,7 @@
 """TLS posture configuration for the uvicorn server.
 
 Supports two modes:
-- platform: TLS terminated externally (ingress/service mesh)
+- off: TLS terminated externally (ingress/service mesh)
 - native: TLS terminated by uvicorn with cert/key files
 """
 
@@ -19,7 +19,7 @@ logger = logging.getLogger(__name__)
 
 
 class TlsMode(StrEnum):
-    PLATFORM = "platform"
+    OFF = "off"
     NATIVE = "native"
 
 
@@ -31,6 +31,7 @@ class TlsConfig(BaseModel):
     tls_mode: TlsMode | None = None
     tls_keyfile: str | None = None
     tls_certfile: str | None = None
+    tls_ca_certfile: str | None = None
 
 
 def load_tls_config() -> TlsConfig:
@@ -38,14 +39,18 @@ def load_tls_config() -> TlsConfig:
     tls_mode_raw = os.environ.get("STRANDS_TLS_MODE")
     tls_keyfile = os.environ.get("STRANDS_TLS_KEYFILE")
     tls_certfile = os.environ.get("STRANDS_TLS_CERTFILE")
+    tls_ca_certfile = os.environ.get("STRANDS_TLS_CA_CERTFILE")
 
     mode: TlsMode | None = None
     if tls_mode_raw:
+        if tls_mode_raw.lower() == "platform":
+            logger.error("STRANDS_TLS_MODE=platform is no longer accepted. Use STRANDS_TLS_MODE=off instead.")
+            sys.exit(1)
         try:
             mode = TlsMode(tls_mode_raw.lower())
         except ValueError:
             logger.error(
-                "Invalid STRANDS_TLS_MODE value: %s. Accepted values: platform, native",
+                "Invalid STRANDS_TLS_MODE value: %s. Accepted values: off, native",
                 tls_mode_raw,
             )
             sys.exit(1)
@@ -54,6 +59,7 @@ def load_tls_config() -> TlsConfig:
         tls_mode=mode,
         tls_keyfile=tls_keyfile,
         tls_certfile=tls_certfile,
+        tls_ca_certfile=tls_ca_certfile,
     )
 
 
@@ -62,9 +68,9 @@ def validate_tls_config(config: TlsConfig) -> None:
     if config.tls_mode is None:
         logger.error(
             "STRANDS_TLS_MODE is not set. The server requires an explicit "
-            "TLS posture declaration. Set to 'platform' (TLS handled by "
+            "TLS posture declaration. Set to 'off' (TLS handled by "
             "ingress/service mesh) or 'native' (uvicorn terminates TLS). "
-            "See docs/tls-posture.md for details."
+            "env.template lists the related STRANDS_TLS_* settings."
         )
         sys.exit(1)
 
@@ -92,15 +98,26 @@ def validate_tls_config(config: TlsConfig) -> None:
             )
             sys.exit(1)
 
-    if config.tls_mode == TlsMode.PLATFORM:
-        logger.info(
-            "TLS posture: platform — TLS terminated by external ingress/service mesh. Uvicorn serving plain HTTP."
-        )
+        if config.tls_ca_certfile:
+            ca_certfile_path = Path(config.tls_ca_certfile)
+            if not ca_certfile_path.exists() or not ca_certfile_path.is_file():
+                logger.error(
+                    "TLS CA cert file does not exist or is not readable: %s",
+                    config.tls_ca_certfile,
+                )
+                sys.exit(1)
+
+    if config.tls_mode == TlsMode.OFF:
+        logger.info("TLS posture: off — TLS terminated by external ingress/service mesh. Uvicorn serving plain HTTP.")
     elif config.tls_mode == TlsMode.NATIVE:
+        tls_extra: dict[str, str | None] = {
+            "tls_keyfile": config.tls_keyfile,
+            "tls_certfile": config.tls_certfile,
+        }
+        if config.tls_ca_certfile:
+            tls_extra["tls_ca_certfile"] = config.tls_ca_certfile
         logger.info(
-            "TLS posture: native — uvicorn terminating TLS",
-            extra={
-                "tls_keyfile": config.tls_keyfile,
-                "tls_certfile": config.tls_certfile,
-            },
+            "TLS posture: native — uvicorn terminating TLS%s",
+            " (mTLS enabled)" if config.tls_ca_certfile else "",
+            extra=tls_extra,
         )

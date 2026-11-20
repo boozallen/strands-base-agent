@@ -3,7 +3,7 @@
 """Unit tests for A2A performance characteristics and optimization.
 
 Tests A2A configuration performance implications, response time characteristics,
-and optimization scenarios based on TEST_CASES.md performance testing requirements.
+and optimization scenarios.
 """
 
 

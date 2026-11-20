@@ -4,17 +4,17 @@ sidebar_position: 2
 
 # Quickstart (Local Python)
 
-Get a forked Strands Base Agent running locally in under five minutes. This path is best for active development — `just run` reloads quickly and you have direct access to the venv for debugging.
+Get a forked Strands Base Agent running locally in under five minutes. This path is best for active development — `just run` restarts in seconds after a code change (stop it with `Ctrl+C` and run it again) and you have direct access to the venv for debugging.
 
-If you'd rather not install Python 3.14 and `uv` locally, see the [Docker Compose quickstart](./quickstart-docker.md).
+If you'd rather not install Python 3.14+ and `uv` locally, see the [Docker Compose quickstart](./quickstart-docker.md).
 
 ## Prerequisites
 
-- Python 3.14
-- [uv](https://docs.astral.sh/uv/) >= 0.9 (matches the version pinned in `Dockerfile`)
+- Python 3.14 or newer (currently 3.15)
+- [uv](https://docs.astral.sh/uv/) >= 0.9 (matches the version pinned in [`Dockerfile`](../../Dockerfile))
 - [just](https://github.com/casey/just) command runner
 - AWS credentials with Bedrock access (default model provider)
-- Access to install `foundry-agent-*` packages from your team's package registry
+- Access to install `foundry-agent-*` packages from the package locations configured in [`pyproject.toml`](../../pyproject.toml)
 
 ## Install
 
@@ -31,21 +31,28 @@ If you'd rather not install Python 3.14 and `uv` locally, see the [Docker Compos
    just setup
    ```
 
-   `foundry-agent-*` packages are pulled from your team's package registry. The `pyproject.toml` ships with a `[[tool.uv.index]]` entry pointing at the internal JFrog Artifactory PyPI registry. If `uv sync` or `uv lock` fails to resolve `foundry-agent-*`, verify network access to that index.
+   The `pyproject.toml` configures the package locations `uv` fetches `foundry-agent-*` packages from. If `uv sync` or `uv lock` fails to resolve `foundry-agent-*`, verify network access to those locations.
 
 3. Configure the environment:
 
    ```bash
    cp env.template .env
-   # Edit .env with your AWS profile or credentials
    ```
 
-4. Edit `config.yaml` with your model and agent settings:
+   At minimum, set `STRANDS_API_KEY` and your AWS credentials:
+
+   ```bash
+   python -c "import secrets; print(secrets.token_urlsafe(32))"
+   ```
+
+   Paste the result into `.env` as `STRANDS_API_KEY=<value>`. Also set `AWS_PROFILE` or export AWS credentials for Bedrock access.
+
+4. Edit [`config.yaml`](../../config.yaml) with your model and agent settings:
 
    ```yaml
    model:
      provider: bedrock
-     model_id: us.anthropic.claude-haiku-4-5-20251001-v1:0
+     model_id: us.anthropic.claude-haiku-5-5
 
    agent_name: my-agent
    system_prompt: >
@@ -79,6 +86,7 @@ You should receive a JSON response with `"status": "healthy"`. Then test a query
 ```bash
 curl -X POST http://localhost:8000/api/v1/query \
   -H "Content-Type: application/json" \
+  -H "Authorization: Bearer <your-key>" \
   -d '{"query": "What is machine learning?"}' | jq .
 ```
 

@@ -1,0 +1,315 @@
+openapi: 3.1.0
+info:
+  title: Strands Base Agent API
+  description: HTTP REST interface for query processing via the Strands agent.
+  version: 1.0.0
+paths:
+  /api/v1/query:
+    post:
+      tags:
+      - query
+      summary: Process a query through the agent system
+      operationId: process_query_api_v1_query_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/QueryAPIRequest'
+        required: true
+      responses:
+        '200':
+          description: Query processed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QueryAPIResponse'
+        '400':
+          description: Invalid request data or validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error during query processing
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '503':
+          description: MCP service unavailable (circuit breaker open)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+        '401':
+          description: Missing or invalid bearer token
+          headers:
+            WWW-Authenticate:
+              schema:
+                type: string
+              description: Bearer
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+      - HTTPBearer: []
+  /api/v1/query/stream:
+    post:
+      tags:
+      - query
+      summary: Stream a query through the agent system
+      operationId: process_query_stream_api_v1_query_stream_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/QueryAPIRequest'
+        required: true
+      responses:
+        '200':
+          description: Server-Sent Events stream. Event types are token, result, done,
+            and error. Errors arrive as an error event inside this 200 response.
+          content:
+            text/event-stream:
+              schema:
+                type: string
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+        '401':
+          description: Missing or invalid bearer token
+          headers:
+            WWW-Authenticate:
+              schema:
+                type: string
+              description: Bearer
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+      - HTTPBearer: []
+components:
+  schemas:
+    ErrorResponse:
+      properties:
+        error:
+          type: string
+          maxLength: 64
+          minLength: 1
+          title: Error
+          description: Error type or category
+        message:
+          type: string
+          maxLength: 4096
+          minLength: 1
+          title: Message
+          description: Human-readable error description
+        details:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Details
+          description: Additional error details for debugging
+        correlation_id:
+          anyOf:
+          - type: string
+            maxLength: 128
+            minLength: 1
+          - type: 'null'
+          title: Correlation Id
+          description: Request correlation ID for tracing
+        timestamp:
+          type: string
+          format: date-time
+          title: Timestamp
+          description: Error timestamp
+      type: object
+      required:
+      - error
+      - message
+      title: ErrorResponse
+      description: Standardized API error response.
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    QueryAPIRequest:
+      properties:
+        session_id:
+          anyOf:
+          - type: string
+            maxLength: 128
+            minLength: 8
+            pattern: ^[A-Za-z0-9_-]+$
+          - type: 'null'
+          title: Session Id
+          description: Unique identifier for the chat session
+        query:
+          type: string
+          maxLength: 2097152
+          minLength: 1
+          title: Query
+          description: The user's question or query to be processed by the agent
+          examples:
+          - What are the key features of this project?
+          - How do I configure the agent settings?
+          - Explain the architecture of the system
+        context:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Context
+          description: Optional context information to help with query processing
+          examples:
+          - source: web
+            user_id: '12345'
+          - previous_queries:
+            - hello
+            - help
+            session_id: abc-123
+        max_results:
+          type: integer
+          maximum: 100.0
+          minimum: 1.0
+          title: Max Results
+          description: Maximum number of results to return
+          default: 10
+          examples:
+          - 5
+          - 10
+          - 25
+        similarity_threshold:
+          type: number
+          maximum: 1.0
+          minimum: 0.0
+          title: Similarity Threshold
+          description: Minimum similarity threshold for results (0.0 to 1.0)
+          default: 0.7
+          examples:
+          - 0.5
+          - 0.7
+          - 0.9
+      type: object
+      required:
+      - query
+      title: QueryAPIRequest
+      description: 'HTTP API request model for agent query processing.
+
+
+        Handles HTTP-specific validation, serialization, and OpenAPI documentation
+
+        for query requests. This model is independent of domain models and focuses
+
+        on API layer concerns like Content-Type validation and HTTP semantics.'
+      examples:
+      - context:
+          source: web
+          user_id: '12345'
+        max_results: 10
+        query: What are the main features of this system?
+        similarity_threshold: 0.8
+    QueryAPIResponse:
+      properties:
+        content:
+          type: string
+          maxLength: 524288
+          minLength: 1
+          title: Content
+          description: Agent-generated response content
+        session_id:
+          anyOf:
+          - type: string
+            maxLength: 128
+            minLength: 3
+          - type: 'null'
+          title: Session Id
+          description: Chat session identifier
+        processing_time_ms:
+          type: number
+          maximum: 86400000.0
+          minimum: 0.0
+          title: Processing Time Ms
+          description: Total query processing time in milliseconds
+        timestamp:
+          type: string
+          format: date-time
+          title: Timestamp
+          description: Response generation timestamp in ISO 8601 format
+        metadata:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Metadata
+          description: Additional response metadata
+        correlation_id:
+          anyOf:
+          - type: string
+            maxLength: 128
+            minLength: 1
+          - type: 'null'
+          title: Correlation Id
+          description: Request correlation ID for distributed tracing
+        api_version:
+          type: string
+          maxLength: 16
+          minLength: 1
+          title: Api Version
+          description: API version for response format tracking
+          default: '1.0'
+      type: object
+      required:
+      - content
+      - processing_time_ms
+      - timestamp
+      title: QueryAPIResponse
+      description: "HTTP API response for agent query results.\n\nLean response matching\
+        \ AgentResponse fields \u2014 no RAG-specific types."
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+  securitySchemes:
+    HTTPBearer:
+      type: http
+      scheme: bearer

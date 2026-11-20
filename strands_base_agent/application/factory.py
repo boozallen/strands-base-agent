@@ -100,8 +100,8 @@ def create_application_container() -> DependencyContainer:
     # ==========================================================================
     container.register_factory_with_dependencies(
         ChatHistoryManager,
-        lambda factory: ChatHistorian(factory),
-        dependencies=[AgentFactory],
+        lambda factory, agent_config: ChatHistorian(factory, agent_config),
+        dependencies=[AgentFactory, AgentConfig],
         singleton=True,
     )
 

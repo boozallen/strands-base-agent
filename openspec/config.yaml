@@ -14,7 +14,7 @@ context: |
   in installed `foundry-agent-*` packages; this repo is the composition
   root.
 
-  **Tech stack**: Python 3.14, AWS Strands Agent SDK, FastAPI, Uvicorn,
+  **Tech stack**: Python 3.14+ (currently 3.15), AWS Strands Agent SDK, FastAPI, Uvicorn,
   AWS Bedrock (primary) / Ollama (local), OpenTelemetry, Pydantic v2, uv.
 
   **Architecture**: Hexagonal (ports and adapters). The composition root
@@ -30,17 +30,10 @@ context: |
   - `api/routes/` — domain-specific HTTP endpoints
 
   **Specs in this directory:**
-  - `openspec/specs/` — baseline capabilities this repo ships with. Read
-    these to understand what exists before proposing changes.
+  - `openspec/specs/` — capability specs. Read these to understand what
+    exists before proposing changes.
   - `openspec/changes/` — active proposals (if any) and `archive/` of
     completed ones.
-
-  **Security posture**: `security/stig_checklist.json` tracks the
-  baseline's findings against the DISA ASD STIG (status, responsibility,
-  evidence). When a proposal touches a STIG-relevant area —
-  auth, authz, crypto, audit logging, session handling, data handling,
-  or input validation — update the checklist in the same change. See
-  `security/README.md` for the schema and refresh workflow.
 
   **Hard constraints**:
   - Do NOT re-implement infrastructure that lives in `foundry-agent-*`

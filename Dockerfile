@@ -1,9 +1,10 @@
-# Public Chainguard Python dev image (currently Python 3.14).
+# Public Chainguard Python dev image (currently Python 3.15).
 # `latest-dev` is the floating tag offered in the free public catalog.
 FROM cgr.dev/chainguard/python:latest-dev AS base
 
 # switch to root user
 USER root
+
 
 ###
 
@@ -39,7 +40,7 @@ COPY --link config.yaml ./config.yaml
 # RUN commands).
 FROM base AS production
 
-LABEL org.opencontainers.image.source="https://github.com/boozallen/TBD" \
+LABEL org.opencontainers.image.source="https://github.com/boozallen/strands-base-agent" \
       org.opencontainers.image.licenses="Apache-2.0" \
       org.opencontainers.image.description="Foundry Strands base agent"
 

@@ -8,7 +8,7 @@ The default agent exposes `/api/v1/query`, `/api/v1/query/stream`, and `/api/v1/
 
 ## 1. Create a Router
 
-Add a new file under `api/routes/`:
+Add a new file under [`api/routes/`](../../../strands_base_agent/api/routes/):
 
 ```python
 # strands_base_agent/api/routes/reports.py
@@ -33,11 +33,11 @@ async def get_report(
     return {"report_id": report_id, "status": "ok"}
 ```
 
-Use the dependency-injection bridge in `api/dependencies.py` to resolve `AgentBackend`, `AgentService`, `ChatHistoryManager`, or any other type registered in the application container.
+Use the dependency-injection bridge in [`api/dependencies.py`](../../../strands_base_agent/api/dependencies.py) to resolve `AgentBackend`, `AgentService`, `ChatHistoryManager`, or any other type registered in the application container.
 
 ## 2. Export the Router
 
-Add it to `api/routes/__init__.py`:
+Add it to [`api/routes/__init__.py`](../../../strands_base_agent/api/routes/__init__.py):
 
 ```python
 from strands_base_agent.api.routes.chat_history import router as chat_history_router
@@ -70,13 +70,14 @@ fastapi_app.include_router(reports_router)
 
 ## 4. Verify
 
-Restart the server and hit your new endpoint. Substitute `<AGENT_BASE_URL>` with the URL your agent is reachable at (`http://localhost:8000` for local dev, or your deployed hostname):
+Restart the server and hit your new endpoint:
 
 ```bash
-curl <AGENT_BASE_URL>/api/v1/reports/123 | jq .
+curl -H "Authorization: Bearer <your-key>" \
+  http://localhost:8000/api/v1/reports/123 | jq .
 ```
 
-You should also see it in the OpenAPI spec at `<AGENT_BASE_URL>/docs`.
+You should also see it in the OpenAPI spec at `http://localhost:8000/docs`.
 
 ## When to Use a New Endpoint vs. a Tool
 
