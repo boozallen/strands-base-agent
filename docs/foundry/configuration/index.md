@@ -10,7 +10,7 @@ Strands Base Agent uses a YAML-first configuration approach, with environment va
 
 Configuration is loaded in this order (later sources override earlier):
 
-1. **`config.yaml`** — primary source for non-secret settings
+1. **[`config.yaml`](../../../config.yaml)** — primary source for non-secret settings
 2. **Environment variables** — override YAML values; required for secrets
 
 ## Default `config.yaml`
@@ -20,8 +20,7 @@ The starter repo ships with a flat `config.yaml` that drives the agent directly:
 ```yaml
 model:
   provider: bedrock
-  model_id: us.anthropic.claude-haiku-4-5-20251001-v1:0
-  temperature: 0.3
+  model_id: us.anthropic.claude-haiku-5-5
   streaming: true
 
 agent_name: my-agent
@@ -60,18 +59,18 @@ Env vars override YAML values using the `STRANDS__` prefix with double-underscor
 |---------------|---------|
 | `model.provider` | `STRANDS__MODEL__PROVIDER` |
 | `model.model_id` | `STRANDS__MODEL__MODEL_ID` |
-| `model.temperature` | `STRANDS__MODEL__TEMPERATURE` |
+| `model.streaming` | `STRANDS__MODEL__STREAMING` |
 | `agent_name` | `STRANDS__AGENT_NAME` |
 | `session_type` | `STRANDS__SESSION_TYPE` |
 | `log_level` | `STRANDS__LOG_LEVEL` |
 
 `session_type` becomes `STRANDS__SESSION_TYPE` (not `STRANDS__SESSION__TYPE`) — the underscore inside the field name is preserved.
 
-Example — override the model in production without changing YAML:
+Example — override the model in production without changing YAML (use the latest Sonnet
+inference profile in your region; `aws bedrock list-inference-profiles` lists them):
 
 ```bash
-export STRANDS__MODEL__MODEL_ID=us.anthropic.claude-sonnet-4-20250514-v1:0
-export STRANDS__MODEL__TEMPERATURE=0.1
+export STRANDS__MODEL__MODEL_ID=<latest Sonnet inference profile ID>
 ```
 
 For the full list of YAML fields and env vars, see [Environment Variables](./environment-variables.md).
@@ -120,7 +119,7 @@ When your agent needs domain-specific configuration beyond what `StrandsAgentCon
 # config.yaml
 model:
   provider: bedrock
-  model_id: us.anthropic.claude-haiku-4-5-20251001-v1:0
+  model_id: us.anthropic.claude-haiku-5-5
 agent_name: my-agent
 ```
 
@@ -136,7 +135,7 @@ config = StrandsAgentConfig.from_yaml(Path("config.yaml"), "STRANDS")
 agent:
   model:
     provider: bedrock
-    model_id: us.anthropic.claude-haiku-4-5-20251001-v1:0
+    model_id: us.anthropic.claude-haiku-5-5
   agent_name: finance-analyzer
 
 # Domain-specific fields
@@ -198,13 +197,13 @@ api_key_env: FINANCE_API_KEY  # Code reads os.getenv(config.api_key_env)
 
 When running with Docker Compose, `config.yaml` is copied into the image at build time and secrets are passed via environment variables from `.env`.
 
-Customize `compose.yaml` for your agent:
+Customize [`compose.yaml`](../../../compose.yaml) for your agent:
 
 ```yaml
 services:
   my-agent:                    # rename from strands-agent
     ports:
-      - "8301:8000"            # pick a unique host port
+      - "${PORT:-8000}:8000"   # set PORT in .env to pick a unique host port
     container_name: my-agent
 
 networks:

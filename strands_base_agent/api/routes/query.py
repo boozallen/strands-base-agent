@@ -13,18 +13,27 @@ from collections.abc import AsyncGenerator
 from typing import Annotated, Any
 
 from fastapi import APIRouter, Depends, status
-from fastapi.responses import StreamingResponse
+from fastapi.responses import JSONResponse, StreamingResponse
 
 from foundry_agent_core import AgentBackend, DomainError, QueryProcessingError, ValidationError
+from foundry_agent_core.exceptions import AgentCreationError, ExternalServiceError
 from foundry_agent_fastapi import ErrorResponse, QueryAPIRequest, QueryAPIResponse, generate_correlation_id
 from foundry_agent_fastapi.mappers import api_request_to_domain, domain_response_to_api
 from foundry_strands_agent import AgentService
 
+from strands_base_agent.api.circuit_breaker import McpCircuitOpenError, _CircuitBreaker
 from strands_base_agent.api.dependencies import get_agent_backend, get_agent_service
 
 logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/api/v1/query", tags=["query"])
+
+_query_circuit = _CircuitBreaker(threshold=5, reset_interval=60.0)
+
+
+def _is_mcp_failure(exc: QueryProcessingError) -> bool:
+    cause = exc.__cause__
+    return isinstance(cause, AgentCreationError | ExternalServiceError)
 
 
 @router.post(
@@ -35,14 +44,14 @@ router = APIRouter(prefix="/api/v1/query", tags=["query"])
     responses={
         200: {"description": "Query processed successfully", "model": QueryAPIResponse},
         400: {"description": "Invalid request data or validation error", "model": ErrorResponse},
-        422: {"description": "Request validation failed", "model": ErrorResponse},
         500: {"description": "Internal server error during query processing", "model": ErrorResponse},
+        503: {"description": "MCP service unavailable (circuit breaker open)", "model": ErrorResponse},
     },
 )
 async def process_query(
     query_request: QueryAPIRequest,
     agent_backend: Annotated[AgentBackend, Depends(get_agent_backend)],
-) -> QueryAPIResponse:
+) -> QueryAPIResponse | JSONResponse:
     correlation_id = generate_correlation_id()
 
     logger.info(
@@ -55,8 +64,32 @@ async def process_query(
         },
     )
 
-    domain_request = api_request_to_domain(query_request)
-    domain_response = await agent_backend.process_message(domain_request)
+    try:
+        _query_circuit.check()
+    except McpCircuitOpenError:
+        logger.warning(
+            "MCP circuit breaker open, returning 503",
+            extra={"correlation_id": correlation_id, "session_id": query_request.session_id},
+        )
+        return JSONResponse(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            content={
+                "error": "Service temporarily unavailable",
+                "message": "MCP circuit breaker is open",
+                "correlation_id": correlation_id,
+                "retryable": True,
+            },
+        )
+
+    try:
+        domain_request = api_request_to_domain(query_request)
+        domain_response = await agent_backend.process_message(domain_request)
+    except QueryProcessingError as e:
+        if _is_mcp_failure(e):
+            _query_circuit.record_failure()
+        raise
+
+    _query_circuit.record_success()
 
     api_response = domain_response_to_api(domain_response, correlation_id=correlation_id, api_version="1.0")
 
@@ -180,6 +213,16 @@ async def _stream_generator(
     "/stream",
     status_code=status.HTTP_200_OK,
     summary="Stream a query through the agent system",
+    response_class=StreamingResponse,
+    responses={
+        200: {
+            "description": (
+                "Server-Sent Events stream. Event types are token, result, done, and error. "
+                "Errors arrive as an error event inside this 200 response."
+            ),
+            "content": {"text/event-stream": {"schema": {"type": "string"}}},
+        },
+    },
 )
 async def process_query_stream(
     query_request: QueryAPIRequest,

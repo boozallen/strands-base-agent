@@ -8,9 +8,10 @@ with this codebase.
 A baseline starter repo from the Agent Foundry team, used to accelerate
 client delivery and team POCs. You forked or cloned it to build an agent
 for a specific use case in your own environment. This repo is the
-**composition root** — it wires `foundry-agent-*` packages into a runnable service. The shared infrastructure
-(DI, lifecycle, middleware, retry, OTel, tool loading) lives in those
-packages, not here.
+**composition root** — it wires `foundry-agent-*` packages (installed
+from the package locations configured in `pyproject.toml`) into a
+runnable service. The shared infrastructure (DI, lifecycle, middleware,
+retry, OTel, tool loading) lives in those packages, not here.
 
 What this repo provides directly:
 
@@ -22,10 +23,11 @@ What this repo provides directly:
 
 ## First 90 seconds after forking
 
-1. `just setup` — installs dependencies and pre-commit hooks
+1. `just setup` — syncs dependencies and installs pre-commit hooks
 2. Edit `config.yaml` — set `model`, `agent_name`, `system_prompt`
-3. `cp env.template .env` — set AWS Bedrock credentials
+3. `cp env.template .env` — set `STRANDS_API_KEY` and AWS Bedrock credentials
 4. `just demo "Tell me about Python"` — verify the agent runs
+5. `just dev` — start the A2A server locally on :8000
 
 ## Two ways to extend this baseline
 
@@ -45,50 +47,11 @@ small or exploratory changes.
 
 For larger changes where you want a written proposal before code lands.
 
-- `openspec/specs/` documents the **baseline capabilities** this repo ships
-  with — read these to understand what already exists before proposing
-  changes. They are useful even if you never write a new spec yourself.
-- `openspec/changes/` is where new proposals live. The `openspec` CLI
-  (or matching slash commands in your coding agent) drives the workflow.
+- `openspec/` holds only `config.yaml` in this copy. The `openspec` CLI
+  (or matching slash commands in your coding agent) creates
+  `openspec/changes/` for new proposals and `openspec/specs/` for
+  capability specs as you use it.
 - See `openspec/config.yaml` for project orientation passed to coding agents.
-
-## Security posture & STIG tracking
-
-This repo ships with a baseline assessment against the DISA Application
-Security and Development (ASD) STIG. The intent is to give adopters
-pursuing ATO-style requirements a head start: the controls inherited
-from the baseline are pre-recorded, and what remains is whatever the
-adopter adds on top of it.
-
-- `security/stig_checklist.json` — machine-readable checklist of every
-  STIG finding, with `status`, `responsibility` (baseline vs. adopter),
-  `finding_details`, and longer-form `comments` per control. This is
-  the single file to update as the baseline (or your fork) evolves —
-  evidence lives inside it, not alongside it.
-- `security/README.md` — orientation for the directory, including how
-  to refresh the checklist and what to put in `finding_details` vs.
-  `comments`.
-
-**Treat the checklist as a recommended template, not a hard requirement.**
-Adopters in regulated environments should keep it current alongside code
-changes. Adopters with no compliance obligation can tailor or remove it.
-
-**Keeping it current.** Two patterns work; pick whichever matches your
-team's level of AI adoption:
-
-- *Skill-driven (what the Foundry team uses internally):* coding agents
-  drive the assessment via `foundry-stigkit`-backed skills. These are
-  tooling not included in this repo, but the pattern (run a domain
-  assessment, triage findings, update the JSON) is reproducible with
-  any coding agent and the JSON schema in the file.
-- *Manual / traditional:* edit `security/stig_checklist.json` directly
-  when a code change affects a control. Use the `responsibility` field
-  to mark whether the control is satisfied by the baseline or by an
-  adopter overlay.
-
-When a change touches a STIG-relevant area (auth, authz, crypto, audit
-logging, session handling, data handling, input validation), update the
-checklist in the same PR.
 
 ## Architecture Overview
 
@@ -156,8 +119,7 @@ strands_base_agent/
 ## Packages
 
 Pinned versions live in `pyproject.toml`; this table only describes what each
-package provides. See the [README install note](README.md#installing-the-foundry-packages)
-for the GitHub-Release vs. internal-index install paths.
+package provides.
 
 | Package | What It Provides |
 |---------|-----------------|
@@ -174,8 +136,7 @@ YAML is the primary config source. Environment variables override YAML values.
 # config.yaml
 model:
   provider: bedrock
-  model_id: us.anthropic.claude-haiku-4-5-20251001-v1:0
-  temperature: 0.3
+  model_id: us.anthropic.claude-haiku-5-5
   streaming: true
 
 agent_name: strands-base-agent
@@ -195,14 +156,49 @@ See `docs/foundry/configuration/index.md` for the full guide including the compo
 ## Development Commands
 
 ```bash
-just setup              # Install deps + pre-commit hooks
-just run                # Start A2A server on :8000
-just demo               # Run CLI with test query
-just test               # All tests
-just lint               # Ruff linting
-just dead-code          # Advisory vulture scan (not part of check/ci)
-just check              # All quality checks (lint, format, type-check, test)
+# Setup & Dependencies
+just sync                # Sync the virtual environment with the lockfile
+just setup               # sync + install pre-commit hooks
+
+# Code Quality
+just lint                # Ruff lint + the bandit command-injection sink set
+just lint-fix            # Auto-fix ruff lint findings
+just format              # Check code formatting (does not modify files)
+just format-fix          # Auto-format code
+just type-check          # basedpyright type checking
+just check               # Every quality gate: lint, format, type-check, test
+
+# Testing
+just test                # Whole tree: tests/ (unit + integration)
+just test-unit           # tests/unit/ only
+just test-integration    # tests/integration/ only (no coverage gate)
+
+# Local Runtime
+just dev                 # Start the A2A server on :8000 (alias: just run)
+just demo                # Run the CLI demo against a prompt
+just dead-code           # Advisory vulture scan (not part of `check`)
+just up                  # Start the agent container (alias: just start)
+just down                # Stop the container (alias: just stop)
+just logs                # Follow logs (optionally: just logs <service>)
+just status              # Container status + health check
+just build               # Build the agent Docker image
+just reset               # Stop containers, clean artifacts, re-run setup
+
+# Maintenance
+just clean               # Remove build artifacts and tooling caches
+just clean-all           # clean + this project's containers and volumes
 ```
+
+The justfile is grouped into sections: Setup & Dependencies, Code Quality,
+Testing, Local Runtime (repo-specific), then Maintenance. The section banners and
+the comments for shared recipes are kept textually identical across the Foundry
+single-package repos so the justfiles diff cleanly.
+`just check` ends by printing `All quality checks passed`. Ruff and basedpyright
+receive explicit path arguments rather than relying on config-driven discovery.
+`just test-integration` treats "no tests collected" (pytest exit code 5) as
+success and prints `No integration tests collected - not a failure.`, so the
+recipe stays portable across repos that have no integration suite yet; this repo
+does have one.
 
 ## Common Tasks
 
@@ -229,34 +225,46 @@ See `docs/foundry/configuration/index.md` for the composed config pattern. Wrap 
 Adopters customize by editing `server.py` (the composition root):
 
 ```python
-# Custom session manager
+# Custom model provider
 container.register_factory(
     AgentFactory,
     lambda: StrandsAgentFactory(
         container,
-        session_manager_factories={
-            "file": _default_file_session_manager,
-            "s3": _default_s3_session_manager,
-            "dynamodb": my_dynamodb_factory,
-        },
+        model_provider_factories={"my-provider": my_model_factory},
     ),
     singleton=True,
 )
 ```
 
+Set `model.provider: my-provider` in `config.yaml`. `my_model_factory` receives
+the config as a dict and returns a Strands model. The dict replaces the built-in
+providers, so list every provider you use.
+
+Only `file` and `s3` session backends are supported. Any other `session_type`
+is rejected at startup.
+
 The `AgentBackend` protocol enables future framework adapters (LangChain, CrewAI) without changing the starter repo's API layer.
 
 ## Testing
+
+Tiering is by **directory**, not by marker: a test's tier is decided by where the
+file lives, so it cannot be forgotten. No recipe passes `-m`.
 
 - Unit tests in `tests/unit/` test starter repo code (routes, factory, dependencies)
 - Integration tests in `tests/integration/` test tool loading and startup
 - Package tests live in the `foundry-agent-packages` monorepo
 
 ```bash
-just test               # Run all tests
-just test-unit          # Unit tests only
-just test-integration   # Integration tests only
+just test               # Whole tree: tests/ (unit + integration)
+just test-unit          # tests/unit/ only
+just test-integration   # tests/integration/ only (no coverage gate)
 ```
+
+Coverage reporting is always on via `[tool.pytest.ini_options]` addopts, both
+terminal and HTML (written to `htmlcov/`), so there is no separate coverage
+recipe. The `integration` marker remains declared as a trait tag, but nothing
+selects on it. Unit test files use the `*_test.py` suffix here, which is why
+`python_files` lists both `test_*.py` and `*_test.py`.
 
 ## Commit Guidelines
 
@@ -292,11 +300,11 @@ work belongs in a package PR instead.
   packages; do not duplicate
 - DI container, protocol definitions, lifecycle hooks — `foundry-agent-core`
   owns these
-- Python 3.14 is required (any 3.14.x — see `pyproject.toml`)
+- Python 3.14 or newer is required (currently 3.15, tracking the
+  Chainguard base image's floating tag — see `pyproject.toml`)
 
 ## Documentation
 
 - `env.template` — environment variable reference
 - `CONTRIBUTING.md` — development process, commit/PR conventions
-- `security/README.md` — STIG checklist and security posture
 - See `docs/foundry/` for deeper guides (configuration, MCP setup, tool authoring, server customization). This is the same content published to the Agent Foundry docs site.

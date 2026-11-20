@@ -4,9 +4,24 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "$PORT:8000"
+      - "${PORT:-8000}:8000"
     env_file:
       - .env
+    # Under compose, PORT in .env is the host port only. The agent always
+    # listens on 8000 in the container, which the healthcheck and EXPOSE expect.
+    # environment wins over env_file and config.yaml. The server binds agent_port when
+    # it is set (agent_port in config.yaml, or STRANDS__AGENT_PORT), else PORT, so
+    # both are pinned.
+    environment:
+      PORT: "8000"
+      STRANDS__AGENT_PORT: "8000"
+      HOME: ${STRANDS_CONTAINER_HOME:-/home/nonroot}
+    # Linux only: STRANDS_HOST_UID and STRANDS_CONTAINER_HOME run the container as you, so it can
+    # read your ~/.aws. /home/nonroot is reachable only by the image's built-in
+    # user (65532), so ~/.aws moves to STRANDS_CONTAINER_HOME. In your shell profile (not root's):
+    #   export STRANDS_HOST_UID="$(id -u)" STRANDS_CONTAINER_HOME=/aws-home
+    # With these set, file-backed sessions and tools that write under $HOME aren't supported.
+    user: "${STRANDS_HOST_UID:-65532}:65532"
 
     # Restart policy for development
     restart: unless-stopped
@@ -16,14 +31,14 @@ services:
       - type: volume
         source: strands_sessions
         target: /app/sessions
-      # mount AWS SSO credentials:
-      - type: bind
-        source: ~/.aws
-        target: /home/nonroot/.aws
+      # mount AWS SSO credentials. Read-only (:ro) on Windows, where OS is set in
+      # every shell, so the container can't rewrite an AWS login that WSL may
+      # share.
+      - ~/.aws:${STRANDS_CONTAINER_HOME:-/home/nonroot}/.aws${OS:+:ro}
 
     # Connect to shared network
     networks:
-      - agentic-platform
+      - DockerAINetwork
 
     healthcheck:
       test:
@@ -54,8 +69,8 @@ services:
             - .venv/
 
 networks:
-  agentic-platform:
-    name: agentic-platform
+  DockerAINetwork:
+    name: DockerAINetwork
 
 volumes:
   strands_sessions:

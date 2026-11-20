@@ -1,0 +1,46 @@
+# WSL only. Mac and Windows don't use this file.
+#
+# On WSL, the shared ~/.aws keeps your file owner and is readable only by you,
+# so the image's built-in user (65532) can't read your AWS login. This file runs
+# the container as you instead, still non-root, and shares ~/.aws at a path any
+# user can reach.
+#
+# `just up` loads it when WSL_DISTRO_NAME is set, which WSL does in every
+# shell. Without just, run
+# `docker compose -f compose.yaml -f compose.wsl.yaml up`. It runs as UID
+# 1000, WSL's first user; if `id -u` prints something else, set STRANDS_HOST_UID
+# in .env to that value (never 0, root). See quickstart-docker.md.
+#
+# Not supported with this file: file-backed sessions (session_type: file),
+# because /app/sessions in the image is writable only by the built-in user; and
+# tools that write under $HOME outside ~/.aws (for example MCP servers started
+# with uvx or npx), because $HOME (/aws-home) isn't writable.
+#
+# The service name below must match compose.yaml's. If you rename the service
+# there, rename it here too.
+services:
+  strands-agent:
+    user: "${STRANDS_HOST_UID:-1000}:65532"
+    environment:
+      HOME: /aws-home
+    volumes:
+      - type: bind
+        source: ~/.aws
+        target: /aws-home/.aws
+      # If ~/.aws/sso, cli, config, or credentials is a link into your Windows
+      # .aws folder, set AWS_LINK_SSO, _CLI, _CONFIG, or _CREDENTIALS in .env to
+      # the absolute path that link points to, so it resolves inside the
+      # container. Only those paths are shared. Each one left unset mounts
+      # /dev/null at an unused path instead.
+      - type: bind
+        source: ${AWS_LINK_SSO:-/dev/null}
+        target: ${AWS_LINK_SSO:-/aws-home/.no-link-sso}
+      - type: bind
+        source: ${AWS_LINK_CLI:-/dev/null}
+        target: ${AWS_LINK_CLI:-/aws-home/.no-link-cli}
+      - type: bind
+        source: ${AWS_LINK_CONFIG:-/dev/null}
+        target: ${AWS_LINK_CONFIG:-/aws-home/.no-link-config}
+      - type: bind
+        source: ${AWS_LINK_CREDENTIALS:-/dev/null}
+        target: ${AWS_LINK_CREDENTIALS:-/aws-home/.no-link-credentials}

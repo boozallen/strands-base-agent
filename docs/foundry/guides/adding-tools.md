@@ -8,11 +8,12 @@ Tools give your agent domain-specific capabilities. Strands supports two ways to
 
 ## Using `@tool` (Recommended)
 
-1. Create a Python file inside `strands_base_agent/tools/`.
+1. Create a Python file inside [`strands_base_agent/tools/`](../../../strands_base_agent/tools/).
 
-2. Configure the tool path in `config.yaml`:
+2. Configure the tool path in [`config.yaml`](../../../config.yaml):
 
    ```yaml
+   tools_dir: strands_base_agent/tools
    tools_files:
      - strands_base_agent/tools/local_tools.py
    ```
@@ -20,10 +21,31 @@ Tools give your agent domain-specific capabilities. Strands supports two ways to
    Or via environment variable:
 
    ```bash
+   export STRANDS__TOOLS_DIR=strands_base_agent/tools
    export STRANDS__TOOLS_FILES=strands_base_agent/tools/local_tools.py
    ```
 
+   Tools load only from inside `tools_dir`. Its default is the container path
+   `/app/strands_base_agent/tools`, so without `tools_dir`, local runs (`just run`,
+   `just demo`) reject every tool. The relative path works both locally and
+   in the container.
+
    For multiple files, use a YAML list or a comma-separated string.
+
+   Or name the file by its module path in `tools_modules` instead:
+
+   ```yaml
+   tools_dir: strands_base_agent/tools
+   tools_modules:
+     - strands_base_agent.tools.local_tools
+   ```
+
+   Or via environment variable:
+
+   ```bash
+   export STRANDS__TOOLS_DIR=strands_base_agent/tools
+   export STRANDS__TOOLS_MODULES=strands_base_agent.tools.local_tools
+   ```
 
 3. Decorate each function with `@tool`, include type hints and a docstring:
 
@@ -63,22 +85,28 @@ The docstring is what the model sees — write it clearly. Describe what the too
 
 For tools that need explicit JSON Schema input definitions:
 
-1. Create a Python file inside `strands_base_agent/tools/`. With `TOOL_SPEC` module loading, you may only have one tool per file, and the file name must match the tool name.
+1. Create a Python file inside `strands_base_agent/tools/`. A `TOOL_SPEC` file holds one tool, and the file name must match the tool name.
 
-2. Configure the module path in `config.yaml`:
+2. Configure the file path in `config.yaml`:
 
    ```yaml
-   tools_modules:
-     - strands_base_agent.tools.send_report
+   tools_dir: strands_base_agent/tools
+   tools_files:
+     - strands_base_agent/tools/send_report.py
    ```
 
    Or via environment variable:
 
    ```bash
-   export STRANDS__TOOLS_MODULES=strands_base_agent.tools.send_report
+   export STRANDS__TOOLS_DIR=strands_base_agent/tools
+   export STRANDS__TOOLS_FILES=strands_base_agent/tools/send_report.py
    ```
 
-3. Define `TOOL_SPEC` and the implementation function in the module:
+   List a `TOOL_SPEC` file in `tools_files`, not by module name in `tools_modules`:
+   [`foundry-strands-agent`](https://github.com/boozallen/foundry-agent-packages/blob/HEAD/docs/foundry/packages/foundry-strands-agent/index.md) 3.2.1 and earlier drop a `TOOL_SPEC` module listed in
+   `tools_modules` without an error, so the agent never gets the tool.
+
+3. Define `TOOL_SPEC` and the implementation function in the file:
 
    ```python
    TOOL_SPEC = {
@@ -113,7 +141,7 @@ For tools that need explicit JSON Schema input definitions:
        }
    ```
 
-For the full `TOOL_SPEC` reference, see the [Strands documentation](https://strandsagents.com/latest/documentation/docs/user-guide/concepts/tools/custom-tools/#module-based-tools-python-only).
+For the full `TOOL_SPEC` reference, see [Module Based Tools](https://strandsagents.com/docs/user-guide/sdk/tools/custom-tools/#module-based-tools) in the Strands documentation.
 
 ## Verifying Tools Loaded
 
@@ -122,6 +150,7 @@ Run the agent and check the startup logs — registered tools are logged when th
 ```bash
 curl -X POST http://localhost:8000/api/v1/query \
   -H "Content-Type: application/json" \
+  -H "Authorization: Bearer <your-key>" \
   -d '{"query": "Flip a coin for me"}'
 ```
 ## Note on CLI Functionality

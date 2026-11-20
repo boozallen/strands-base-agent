@@ -10,7 +10,8 @@ see `AGENTS.md`, which is the single source of truth for repo structure.
 just setup
 ```
 
-This installs dependencies via `uv` and registers pre-commit hooks. Then copy
+This syncs dependencies via `uv` (`just sync` on its own does the dependency
+sync only) and registers pre-commit hooks. Then copy
 the env template and fill in your AWS Bedrock credentials:
 
 ```bash
@@ -20,30 +21,75 @@ cp env.template .env
 
 ## Code Quality Standards
 
-Tooling enforced locally and in CI:
+Tooling enforced locally:
 
 - **Ruff** — formatting and linting
+- **bandit** — command-injection sink set (`B602`/`B603`/`B605`/`B607`), run by
+  `just lint` alongside ruff; enforces STIG V-222604
 - **basedpyright** — static type checking
-- **pytest** — tests with a 70% coverage gate
+- **pytest** — tests with a coverage gate, run in strict marker and strict
+  config mode: an undeclared `@pytest.mark` name or an unrecognized key in
+  `[tool.pytest.ini_options]` fails the run instead of being ignored. Declare new
+  markers in `pyproject.toml`'s `markers` list
 - **pre-commit hooks** — run on each commit
 
 ```bash
-just check        # lint + format + type-check + test
-just format       # apply Ruff formatting
+just check        # full gate: lint + format + type-check + test
+just lint         # Ruff + bandit (use `just lint-fix` to auto-fix ruff findings)
+just format       # Ruff format check (use `just format-fix` to apply)
 just type-check   # basedpyright only
 ```
 
+`just check` prints `All quality checks passed` when every gate succeeds. Ruff
+and basedpyright are always given explicit path arguments in the justfile rather
+than relying on config-driven discovery.
+
 ## Testing
 
+Tiering is by **directory**, not by marker: a test's tier is decided by where
+the file lives, so it cannot be forgotten. Unit tests live in `tests/unit/`;
+integration tests live in `tests/integration/`.
+
 ```bash
-just test               # all tests
-just test-unit          # unit tests
-just test-integration   # integration tests
+just test               # whole tree: tests/ (unit + integration)
+just test-unit          # tests/unit/ only
+just test-integration   # tests/integration/ only (no coverage gate)
 ```
 
+`just test-integration` treats "no tests collected" (pytest exit code 5) as
+success and prints `No integration tests collected - not a failure.`, so the
+recipe stays portable across repos with no integration suite yet; this repo does
+have one.
+
+Coverage reporting is always on via `[tool.pytest.ini_options]` addopts -
+terminal and HTML (`htmlcov/`) — so there is no separate coverage recipe. The
+`integration` marker is still declared as a trait tag, but nothing selects on
+it.
+
 When adding code, write unit tests for new behavior, keep coverage at or above
-70%, and prefer the existing pytest fixture patterns. Integration tests live
-in `tests/integration/`; unit tests live in `tests/unit/`.
+the configured gate, and prefer the existing pytest fixture patterns.
+
+## Recipe conventions shared across Foundry Python repos
+
+- `just sync` installs dependencies only; `just setup` runs `sync` plus
+  repo-specific environment preparation (here: installing pre-commit hooks)
+- `just check` does not call `sync` — `uv run` auto-syncs on every invocation,
+  so a cold clone can run `just check` directly
+- Every recipe invokes its tool as plain `uv run <tool> ...`, with no `--group`
+  flag and no `python -m` wrapper
+- `just clean` removes `build/`, `dist/`, `htmlcov/`, `*.egg-info/`,
+  `.pytest_cache/`, `.ruff_cache/`, `.coverage`, `__pycache__/`, and `*.pyc`,
+  then prints `Cleaned build artifacts`. It skips `.venv/` so a clean does not
+  invalidate the environment. A stale `.coverage` can make a later coverage run
+  fail spuriously, so it is always removed
+- Container recipes use one naming set across repos: `up`/`down` with
+  `start`/`stop` as aliases, `logs [service]`, `status`, `build`, `reset`
+  (down + clean + setup), and `clean-all` (clean + `docker compose down -v
+  --remove-orphans`). `clean-all` is scoped to this project's compose file: it
+  removes the containers and volumes this repo declares and does not prune the
+  Docker host, so it cannot disturb unrelated services
+- The local, non-Docker run recipe is `just dev` in every repo, with `just run`
+  as an alias
 
 ## Project Structure
 
@@ -91,24 +137,20 @@ Types: `feat`, `fix`, `chore`, `docs`, `test`, `refactor`.
 
 ## Pull Requests
 
-1. `just check` and `just test` must pass locally before pushing.
+1. `just check` must pass locally before pushing (it runs lint, format,
+   type-check, and the full test suite).
 2. Update relevant docs.
-3. If the change touches a STIG-relevant area (auth, authz, crypto,
-   audit logging, session handling, data handling, input validation),
-   update `security/stig_checklist.json` in the same PR. See
-   `security/README.md` for the workflow.
-4. Open a PR against upstream `develop` and address review feedback.
+3. Open a PR against upstream `develop` and address review feedback.
 
 ### CI/CD
 
-GitHub Actions runs CodeQL, the lint/type/test pipeline, and a coverage gate
-(70% minimum). All checks must pass before merge.
+GitHub runs CodeQL code scanning on this repository. Lint, type checks, tests and the coverage gate run locally: `just check` must pass before you open a PR.
 
 ### Branch Protection
 
 The `develop` branch is protected with the following requirements:
 
-- **2 approving reviews** required before merge
+- **1 approving review** required before merge
 - **Stale reviews dismissed** — new pushes invalidate previous approvals
 - **Code Owners review required** — files covered by `.github/CODEOWNERS` must
   be approved by designated owners
@@ -131,7 +173,6 @@ private security advisory feature.
 - `docs/foundry/quickstart.md` — get the agent running locally with Python and `uv`
 - `docs/foundry/quickstart-docker.md` — get the agent running in Docker Compose
 - `docs/foundry/configuration/index.md` — YAML config reference
-- `security/README.md` — STIG checklist and security posture
 - GitHub Issues — bugs and feature requests
 
 ## License

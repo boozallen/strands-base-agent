@@ -9,13 +9,15 @@ from fastapi import Request
 
 from foundry_agent_core import AgentBackend, DependencyContainer
 from foundry_agent_fastapi.mappers import api_request_to_domain, domain_response_to_api
-from foundry_strands_agent import AgentService
+from foundry_strands_agent import AgentFactory, AgentService
 
 from strands_base_agent.api.dependencies import (
     get_agent_backend,
+    get_agent_factory,
     get_agent_service,
     get_container,
     get_correlation_id,
+    is_valid_api_key,
 )
 
 
@@ -50,6 +52,18 @@ class TestGetAgentBackend:
 
         assert result == mock_backend
         mock_container.resolve.assert_called_once_with(AgentBackend)
+
+
+class TestGetAgentFactory:
+    def test_get_agent_factory_resolves_from_container(self):
+        mock_container = MagicMock(spec=DependencyContainer)
+        mock_factory = MagicMock(spec=AgentFactory)
+        mock_container.resolve.return_value = mock_factory
+
+        result = get_agent_factory(mock_container)
+
+        assert result == mock_factory
+        mock_container.resolve.assert_called_once_with(AgentFactory)
 
 
 class TestGetAgentService:
@@ -170,3 +184,25 @@ class TestDependencyTypeAliases:
         assert AgentServiceDep is not None
         assert ChatHistoryManagerDep is not None
         assert CorrelationIdDep is not None
+
+
+class TestIsValidApiKey:
+    def test_fails_closed_when_env_unset(self, monkeypatch):
+        monkeypatch.delenv("STRANDS_API_KEY", raising=False)
+        assert is_valid_api_key("any-token") is False
+
+    def test_fails_closed_when_env_empty(self, monkeypatch):
+        monkeypatch.setenv("STRANDS_API_KEY", "")
+        assert is_valid_api_key("any-token") is False
+
+    def test_rejects_none_token(self, monkeypatch):
+        monkeypatch.setenv("STRANDS_API_KEY", "correct-key")
+        assert is_valid_api_key(None) is False
+
+    def test_rejects_mismatch(self, monkeypatch):
+        monkeypatch.setenv("STRANDS_API_KEY", "correct-key")
+        assert is_valid_api_key("wrong-key") is False
+
+    def test_accepts_match(self, monkeypatch):
+        monkeypatch.setenv("STRANDS_API_KEY", "correct-key")
+        assert is_valid_api_key("correct-key") is True

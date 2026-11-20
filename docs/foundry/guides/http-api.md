@@ -14,11 +14,28 @@ The default agent ships with three groups of HTTP endpoints alongside the A2A pr
 
 A2A protocol routes (`/.well-known/agent-card.json` and the JSON-RPC endpoint) are mounted on the same server but are documented by the A2A spec and the Strands Agents SDK. This page covers the REST endpoints this repo defines directly.
 
-:::note Example URLs
-Examples below use `<AGENT_BASE_URL>` for the agent's HTTP base. Substitute the URL your agent is reachable at — `http://localhost:8000` for local dev (see the [quickstart](../quickstart.md)), or the deployed hostname for any other environment.
-:::
+The OpenAPI spec at `http://localhost:8000/docs` is the authoritative source for request/response shapes — this page is a concise reference and field guide.
 
-The OpenAPI spec at `<AGENT_BASE_URL>/docs` is the authoritative source for request/response shapes — this page is a concise reference and field guide.
+## Authentication
+
+All endpoints require a bearer token in the `Authorization` header:
+
+```
+Authorization: Bearer <your-key>
+```
+
+The token is validated against the `STRANDS_API_KEY` environment variable. Requests without a valid token receive `401 Unauthorized`.
+
+Exempt paths (no token required):
+
+- `GET /api/v1/health`
+- `GET /.well-known/agent.json`
+- `GET /.well-known/agent-card.json`
+- All `OPTIONS` requests (CORS preflight)
+
+The server requires `STRANDS_API_KEY` to be set in the environment.
+
+A2A calls to the JSON-RPC endpoint need the same token. The agent card says so, so A2A clients can find out before their first call: `securitySchemes` has a `bearer` entry (`"type": "http"`, `"scheme": "bearer"`), and `security` is `[{"bearer": []}]`.
 
 ## Sync Query
 
@@ -54,8 +71,9 @@ Runs a single query through the agent and returns the full response when generat
 ### Example
 
 ```bash
-curl -X POST <AGENT_BASE_URL>/api/v1/query \
+curl -X POST http://localhost:8000/api/v1/query \
   -H "Content-Type: application/json" \
+  -H "Authorization: Bearer <your-key>" \
   -d '{
     "query": "What is machine learning?",
     "session_id": "user-42-session-1"
@@ -87,8 +105,9 @@ Always close the stream when you receive `done` or `error`. `retryable: true` on
 ### Example
 
 ```bash
-curl -N -X POST <AGENT_BASE_URL>/api/v1/query/stream \
+curl -N -X POST http://localhost:8000/api/v1/query/stream \
   -H "Content-Type: application/json" \
+  -H "Authorization: Bearer <your-key>" \
   -d '{"query": "Explain async/await in Python"}'
 ```
 
@@ -111,16 +130,29 @@ data: {"processing_time_ms": 1842.3, "session_id": null, "query_id": "…", "cor
 /api/v1/chat/history
 ```
 
-CRUD over persisted chat sessions. Backed by the configured `ChatHistoryManager` (file or S3 by default; see [Customizing the Server](./customizing-server.md) to plug in a custom store).
+CRUD over persisted chat sessions. Backed by the configured `ChatHistoryManager` (file or S3). Chat history is off by default for security. Set `session_type` in [`config.yaml`](../../../config.yaml) to turn it on. While it's off, these routes return a generic `500`, because errors don't expose internal details.
 
 | Method | Path | Purpose |
 |---|---|---|
-| `GET` | `/api/v1/chat/history` | List sessions (most recent first) |
+| `GET` | `/api/v1/chat/history` | List sessions (most recent first) - disabled by default, see below |
 | `GET` | `/api/v1/chat/history/{session_id}` | List messages in a session |
 | `PUT` | `/api/v1/chat/history/{session_id}` | Create a session (idempotent) |
-| `DELETE` | `/api/v1/chat/history/{session_id}` | Delete a session and its messages |
+| `DELETE` | `/api/v1/chat/history/{session_id}` | Delete a session and its messages - disabled by default, see below |
 
-`session_id` path parameters are 3–40 chars.
+`session_id` path parameters are 8–128 characters: letters, digits, `_`, and `-`. Anything else returns `422`.
+
+**`GET /api/v1/chat/history` is disabled by default** and returns `403` unless
+`STRANDS_CHAT_HISTORY_LIST_ENABLED=true` is set. Auth here is a single shared bearer token, not
+per-user identity, so this endpoint has no way to scope results to the caller - enabling it lets
+any bearer-token holder enumerate every session on the instance. See
+[Environment Variables](../configuration/environment-variables.md#authentication).
+
+**`DELETE /api/v1/chat/history/{session_id}` is also disabled by default** and returns `403`
+unless `STRANDS_CHAT_HISTORY_DELETE_ENABLED=true` is set, for the same reason: any bearer-token
+holder could otherwise delete any session. The check runs before storage is read, so a disabled
+endpoint returns the same `403` whether or not the session exists. The two flags are independent;
+neither affects the other, and the `GET`/`PUT` endpoints for a single session are unaffected by
+both.
 
 ### List sessions
 
@@ -173,7 +205,8 @@ DELETE /api/v1/chat/history/{session_id}
 ```
 
 - `204 No Content` — session deleted
-- `404 Not Found` — no session with that ID
+- `403 Forbidden` — deletion is disabled (`STRANDS_CHAT_HISTORY_DELETE_ENABLED` unset or not `true`)
+- `404 Not Found` — deletion is enabled but no session with that ID exists
 
 ## Health
 
@@ -181,19 +214,38 @@ DELETE /api/v1/chat/history/{session_id}
 GET /api/v1/health
 ```
 
-Returns `{"status": "healthy"}` (and additional readiness details) when the agent is ready to serve requests. Used by Docker, ECS, and Kubernetes probes — `docker compose ps` reports the container as `healthy` once this endpoint returns 200. Provided by `foundry-agent-fastapi`'s `health_router`.
+Returns `{"status": "healthy"}` (and additional readiness details) when the agent is ready to serve requests. Used by Docker, ECS, and Kubernetes probes — `docker compose ps` reports the container as `healthy` once this endpoint returns 200. Provided by [`foundry-agent-fastapi`](https://github.com/boozallen/foundry-agent-packages/blob/HEAD/docs/foundry/packages/foundry-agent-fastapi/index.md)'s `health_router`.
 
 ## Error Format
 
-All endpoints return errors in the same shape, produced by `ErrorHandlingMiddleware`:
+Errors come back in one of three shapes, depending on where they're raised.
+
+Errors from the agent (`400`, `500`) are produced by `ErrorHandlingMiddleware`:
 
 ```json
 {
-  "error": "ValidationError",
-  "message": "Query cannot be empty or whitespace only",
+  "error": "QueryProcessingError",
+  "message": "An internal error occurred. Use the correlation_id to reference this request.",
   "details": null,
-  "correlation_id": "f1b3…",
-  "timestamp": "2026-06-26T12:34:56Z"
+  "correlation_id": "req_061d689b",
+  "timestamp": "2026-06-26T12:34:56"
+}
+```
+
+A missing or wrong API key (`401`) returns `{"error": "unauthorized", "message": "Invalid or missing API key"}`, and an open MCP circuit breaker (`503`) returns `error`, `message`, and `correlation_id`.
+
+Errors from the route itself use FastAPI's `detail` shape. `403` and `404` return a message, for example `{"detail": "Chat session listing is disabled"}`. `422` returns a list, one entry per invalid field:
+
+```json
+{
+  "detail": [
+    {
+      "type": "value_error",
+      "loc": ["body", "query"],
+      "msg": "Value error, Query cannot be empty or whitespace only",
+      "input": "   "
+    }
+  ]
 }
 ```
 
@@ -202,19 +254,22 @@ Common statuses:
 | Status | Meaning |
 |---|---|
 | `400` | Domain validation rejected the request (also used for transient MCP failures with `retryable: true`) |
+| `401` | Missing or invalid bearer token |
+| `403` | Session listing or deletion is disabled (`GET /api/v1/chat/history` without `STRANDS_CHAT_HISTORY_LIST_ENABLED=true`, or `DELETE /api/v1/chat/history/{session_id}` without `STRANDS_CHAT_HISTORY_DELETE_ENABLED=true`) |
 | `404` | Session ID not found (chat history routes only) |
-| `422` | Pydantic request validation failed |
-| `500` | Unhandled server error |
+| `422` | Request validation failed (for example an empty query or a bad `session_id`) |
+| `500` | Unhandled server error. Chat history routes also return a generic `500` while chat history is off |
+| `503` | MCP circuit breaker is open (query routes only); retry later |
 
-For streaming, the same shape arrives as the payload of an `error` SSE event.
+For streaming, a failure after the stream starts arrives as an `error` SSE event whose payload has `error`, `message`, `correlation_id`, `session_id`, and `retryable`.
 
 ## OpenAPI / Swagger UI
 
 While the server is running, browse the live spec:
 
-- **Swagger UI** — `<AGENT_BASE_URL>/docs`
-- **ReDoc** — `<AGENT_BASE_URL>/redoc`
-- **OpenAPI JSON** — `<AGENT_BASE_URL>/openapi.json`
+- **Swagger UI** — `http://localhost:8000/docs`
+- **ReDoc** — `http://localhost:8000/redoc`
+- **OpenAPI JSON** — `http://localhost:8000/openapi.json`
 
 ## Related
 

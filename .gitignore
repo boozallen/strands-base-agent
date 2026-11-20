@@ -250,8 +250,3 @@ tmp/
 
 # Strands FileSessionManager local storage (auto-created on first request)
 sessions/
-
-# Corporate proxy certificates (never commit)
-etc/*.cer
-etc/*.crt
-etc/*.pem

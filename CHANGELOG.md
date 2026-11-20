@@ -7,6 +7,55 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [4.0.0] - 2026-11-19
+
+### Features
+
+- add optional mTLS support for native TLS mode
+- add circuit breaker to MCP reconnection
+
+### Fixes
+
+- mask and bound session_id in chat history logs
+- bump pydantic-settings to 2.14.2
+- pass AgentConfig to ChatHistorian factory registration
+- _LazyAgentProxy crashes A2A executor on first request
+- use exclude_also so coverage built-in exclusions stay in effect
+- use extend-exclude to skip openspec and docs from ruff
+- resolve AgentConfig from container in start_server()
+- upgrade foundry-agent-packages pins
+- disable session-list endpoint by default
+- rename STRANDS_TLS_MODE value 'platform' to 'off'
+- raise floors for open Dependabot/Grype alerts
+- let the Compose container read the host AWS login on WSL
+- make chat session delete opt-in and fix existence check
+- pin compose container port so PORT sets the host port only
+- isolate A2A conversations with per-context agent_factory
+- bump filelock, virtualenv and OpenTelemetry for Dependabot alerts
+- share AWS login safely from Windows and Linux in Docker Compose
+- turn on A2A-compliant streaming in the A2A server
+- raise the pyasn1 floor to 0.6.5
+- bump opentelemetry and soupsieve for CVE fixes
+
+### Maintenance
+
+- Security and maintenance updates
+- Dependency updates
+- document nims and region_name model config fields
+- add unit tests for _LazyAgentProxy snapshot methods
+- document outbound mTLS env vars in env.template
+- standardize justfile quality/test recipes
+- add --strict-markers and --strict-config to pytest addopts
+- exclude openspec/changes/ from ruff format
+- update foundry-agent-* package versions
+- fix guides that don't match the code
+- Upgrade to Python 3.15 (Chainguard base image bump)
+- tell adopters to pin a release tag when forking
+- rebuild on latest Chainguard base image
+- drop "production-ready" from the guardrails guide
+- guardrails links, publish the TLS guide, and clean up the docs links
+- add OpenAPI spec for query endpoints
+
 ## [1.0.1] - 2026-06-30
 
 ### Changed
@@ -49,7 +98,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **AI assistant integrations** — Claude Code, Cursor, and GitHub Copilot
   skill/prompt scaffolding; OpenSpec workflow (`openspec/`) initialized
   with a clean changes archive.
-- **Security artifacts** — STIG checklist (`security/stig_checklist.json`).
 
 ### Notes
 

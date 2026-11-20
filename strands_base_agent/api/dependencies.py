@@ -8,14 +8,28 @@ application startup), so route handlers share one container graph instead of
 building a new one per request.
 """
 
+import os
+import secrets
 from typing import Annotated
 
 from fastapi import Depends, Request
 
 from foundry_agent_core import AgentBackend, DependencyContainer
-from foundry_strands_agent import AgentService, ChatHistoryManager, create_agent_service
+from foundry_strands_agent import AgentFactory, AgentService, ChatHistoryManager, create_agent_service
 
 from strands_base_agent.application.runtime_container import get_dependency_container
+
+
+def is_valid_api_key(presented_token: str | None) -> bool:
+    """Constant-time check of a bearer token against STRANDS_API_KEY.
+
+    Fails closed: returns False when STRANDS_API_KEY is unset or empty,
+    or when no token is presented.
+    """
+    expected = os.environ.get("STRANDS_API_KEY")
+    if not expected or not presented_token:
+        return False
+    return secrets.compare_digest(presented_token, expected)
 
 
 def get_container() -> DependencyContainer:
@@ -36,6 +50,10 @@ def get_chat_history_manager(
     return container.resolve(ChatHistoryManager)
 
 
+def get_agent_factory(container: Annotated[DependencyContainer, Depends(get_container)]) -> AgentFactory:
+    return container.resolve(AgentFactory)
+
+
 def get_correlation_id(request: Request) -> str:
     try:
         return getattr(request.state, "correlation_id", "")
@@ -47,4 +65,5 @@ ContainerDep = Annotated[DependencyContainer, Depends(get_container)]
 AgentBackendDep = Annotated[AgentBackend, Depends(get_agent_backend)]
 AgentServiceDep = Annotated[AgentService, Depends(get_agent_service)]
 ChatHistoryManagerDep = Annotated[ChatHistoryManager, Depends(get_chat_history_manager)]
+AgentFactoryDep = Annotated[AgentFactory, Depends(get_agent_factory)]
 CorrelationIdDep = Annotated[str, Depends(get_correlation_id)]
