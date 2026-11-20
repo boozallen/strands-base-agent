@@ -1,0 +1,76 @@
+services:
+  strands-agent:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "${PORT:-8000}:8000"
+    env_file:
+      - .env
+    # Under compose, PORT in .env is the host port only. The agent always
+    # listens on 8000 in the container, which the healthcheck and EXPOSE expect.
+    # environment wins over env_file and config.yaml. The server binds agent_port when
+    # it is set (agent_port in config.yaml, or STRANDS__AGENT_PORT), else PORT, so
+    # both are pinned.
+    environment:
+      PORT: "8000"
+      STRANDS__AGENT_PORT: "8000"
+      HOME: ${STRANDS_CONTAINER_HOME:-/home/nonroot}
+    # Linux only: STRANDS_HOST_UID and STRANDS_CONTAINER_HOME run the container as you, so it can
+    # read your ~/.aws. /home/nonroot is reachable only by the image's built-in
+    # user (65532), so ~/.aws moves to STRANDS_CONTAINER_HOME. In your shell profile (not root's):
+    #   export STRANDS_HOST_UID="$(id -u)" STRANDS_CONTAINER_HOME=/aws-home
+    # With these set, file-backed sessions and tools that write under $HOME aren't supported.
+    user: "${STRANDS_HOST_UID:-65532}:65532"
+
+    # Restart policy for development
+    restart: unless-stopped
+
+    volumes:
+      # Persist FileSessionManager storage across container restarts.
+      - type: volume
+        source: strands_sessions
+        target: /app/sessions
+      # mount AWS SSO credentials. Read-only (:ro) on Windows, where OS is set in
+      # every shell, so the container can't rewrite an AWS login that WSL may
+      # share.
+      - ~/.aws:${STRANDS_CONTAINER_HOME:-/home/nonroot}/.aws${OS:+:ro}
+
+    # Connect to shared network
+    networks:
+      - DockerAINetwork
+
+    healthcheck:
+      test:
+        - CMD
+        - python3
+        - -c
+        - >-
+          import http.client, sys, json;
+          conn = http.client.HTTPConnection('127.0.0.1', 8000, timeout=3);
+          conn.request('GET', '/api/v1/health');
+          r = conn.getresponse();
+          data = r.read();
+          conn.close();
+          print(data.decode('utf-8'), end='');
+          health = r.status == 200 and json.loads(data).get('status');
+          sys.exit(0 if health == 'healthy' else 1)
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+    develop:
+      watch:
+        - action: rebuild
+          path: .
+          target: /app
+          ignore:
+            - .venv/
+
+networks:
+  DockerAINetwork:
+    name: DockerAINetwork
+
+volumes:
+  strands_sessions:

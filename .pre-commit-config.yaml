@@ -1,0 +1,36 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: end-of-file-fixer
+        exclude: |
+            (?x)^(
+                .claude/|
+                .cursor/|
+                project/
+            )
+      - id: trailing-whitespace
+        exclude: |
+            (?x)^(
+                .claude/|
+                .cursor/|
+                etc/.*\.cer|
+                project/
+            )
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.14.5
+    hooks:
+      - id: ruff-check
+        types_or: [ python, pyi ]
+        args: [ "--fix" ]
+      - id: ruff-format
+        types_or: [ python, pyi ]
+  - repo: local
+    hooks:
+      - id: pytest
+        name: pytest
+        stages: [ pre-push, manual ]
+        types: [ python ]
+        entry: uv run python -m pytest --maxfail=1 --disable-warnings -q
+        language: system
+        require_serial: true

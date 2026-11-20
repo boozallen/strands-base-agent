@@ -1,0 +1,201 @@
+[project]
+name = "strands-base-agent"
+version = "4.0.0"
+license = "Apache-2.0"
+license-files = ["LICENSE*", "NOTICE*"]
+description = "General-purpose AI agent application using AWS Strands SDK"
+readme = "README.md"
+requires-python = ">=3.14"
+authors = [{ name = "Booz Allen Hamilton" }]
+
+dependencies = [
+    "fastapi==0.156.8",
+    "foundry-agent-config==1.1.0",
+    "foundry-agent-core==1.4.0",
+    "foundry-agent-fastapi==1.2.3",
+    "foundry-strands-agent==3.2.4",
+    "mcp==1.30.0",
+    "opentelemetry-api==1.45.2",
+    "opentelemetry-exporter-otlp-proto-http==1.45.2",
+    "opentelemetry-sdk==1.45.2",
+    "pydantic==2.14.1",
+    "python-dotenv==1.2.4",
+    "python-multipart==0.0.32",
+    "strands-agents-tools[a2a-client]==0.8.9",
+    "strands-agents[a2a,ollama]==1.61.1",
+    "uvicorn==0.54.0",
+]
+
+[dependency-groups]
+dev = [
+    "bandit[toml]==1.9.4",
+    "basedpyright==1.40.2",
+    "coverage==7.16.2",
+    "debugpy==1.8.22",
+    "deptry==0.25.1",
+    "pre-commit==4.7.0",
+    "pytest==9.1.1",
+    "pytest-asyncio==1.4.0",
+    "pytest-cov==7.1.0",
+    "pytest-mock==3.17.0",
+    "pytest-xdist[psutil]==3.8.0",
+    "ruff==0.17.1",
+    "trustme==1.2.1",
+    "vulture==2.16",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.basedpyright]
+pythonVersion = "3.15"
+include = ["strands_base_agent"]
+exclude = ["**/build", "**/dist"]
+typeCheckingMode = "basic"
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
+python_files = ["test_*.py", "*_test.py"]
+addopts = "-v --tb=short --strict-markers --strict-config --cov=strands_base_agent --cov-report=term-missing --cov-report=html --cov-fail-under=70"
+asyncio_mode = "auto"
+markers = [
+    "integration: marks tests as integration tests",
+]
+filterwarnings = [
+    "ignore::DeprecationWarning:pydantic.*",
+    "ignore::pytest.PytestUnraisableExceptionWarning",
+]
+
+[tool.coverage.run]
+source = ["strands_base_agent"]
+branch = true
+
+[tool.coverage.report]
+exclude_also = [
+    "def __repr__",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+    "class .*\\bProtocol\\b.*:",
+]
+
+[tool.ruff]
+line-length = 120
+extend-exclude = ["openspec/", "docs/"]
+
+[tool.ruff.format]
+docstring-code-format = true
+docstring-code-line-length = 100
+
+[tool.ruff.lint]
+select = [
+    "ARG001",  # unused function arguments
+    "ARG005",  # unused lambda arguments
+    "B",       # flake8-bugbear
+    "C4",     # flake8-comprehensions
+    "D",       # pydocstyle
+    "E",       # pycodestyle errors
+    "F",       # pyflakes
+    "G",       # flake8-logging-format
+    "I",       # isort
+    "T20",     # flake8-print
+    "UP",      # pyupgrade
+    "W",       # pycodestyle warnings
+]
+extend-select = [
+    # STIG V-222604 (CCI-001310) command-injection sink coverage
+    "S102",   # use of exec
+    "S307",   # use of eval
+    "S602",   # subprocess with shell=True
+    "S603",   # subprocess without shell=True
+    "S604",   # any shell=True
+    "S605",   # starting process with a shell
+    "S606",   # starting process without shell
+    "S607",   # partial executable path
+    # STIG V-222642 (CCI-001199) no embedded authentication data
+    "S105",   # hardcoded password in assignment
+    "S106",   # hardcoded password in function argument
+    "S107",   # hardcoded password in function default
+]
+ignore = [
+    "B008",    # function call in argument default — common in FastAPI
+    "B904",    # raise from in except* — not always wanted
+    "C901",    # function too complex (subjective)
+    "D100", "D101", "D102", "D103", "D104", "D105", "D107",  # don't require docstrings
+    "D200", "D203", "D212", "D413", "D415", "D417",          # docstring formatting nits
+    "G002",    # allow %-style logging (project standard, see AGENTS.md)
+    # Conflict with Ruff formatter (per Ruff docs):
+    "D206", "D300", "E111", "E114", "E117", "E501", "W191",
+]
+
+[tool.ruff.lint.isort]
+known-local-folder = ["strands_base_agent", "tests"]
+known-first-party = ["foundry_agent_core", "foundry_agent_config", "foundry_agent_fastapi", "foundry_strands_agent"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = [
+    "B011",  # assert False
+    "B017",  # pytest.raises(Exception) — fine in error-path tests
+    "T201",  # print
+]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.bandit]
+exclude_dirs = ["tests", "openspec"]
+targets = ["strands_base_agent"]
+skips = ["B101"]
+
+[tool.vulture]
+# Advisory dead-code scan. Run via `just dead-code`. Not wired into pre-commit
+# or CI — the DI container, dynamic tool loading, and FastAPI decorators
+# generate enough false positives that vulture is best used as a periodic
+# pre-refactor checklist, not a gate.
+min_confidence = 80
+paths = ["strands_base_agent"]
+sort_by_size = true
+exclude = [
+    "*/__pycache__/*",
+    "*/.venv/*",
+    "*/build/*",
+    "*/dist/*",
+    # Tools are loaded dynamically via STRANDS__TOOLS_MODULES /
+    # STRANDS__TOOLS_FILES; vulture can't see those references.
+    "strands_base_agent/tools/*",
+]
+
+[tool.uv]
+required-version = ">=0.8.0"
+override-dependencies = [
+    "pillow>=13.0.0",
+]
+constraint-dependencies = [
+    "aiohttp>=3.14.4",
+    "anyio>=4.14.2",
+    "cffi>=2.1.0",
+    "cryptography>=50.0.2",
+    "idna>=3.15",
+    "jiter>=0.17.0",
+    "pillow>=12.2.0",
+    "pyasn1>=0.6.5",
+    "pygments>=2.20.0",
+    "pyjwt>=2.15.1",
+    "pywin32>=312",
+    "rpds-py>=2026.5.1",
+    "soupsieve>=4.0.0",
+    "starlette>=1.3.1",
+    "urllib3>=2.8.0",
+    "virtualenv>=21.14.13",
+]
+
+[tool.uv.sources]
+# Every foundry-* dependency must have an entry here, including ones added later.
+# Without one, uv resolves the name from PyPI. tests/unit/dependency_sources_test.py
+# fails the build when an entry is missing.
+foundry-agent-config = {url = "https://github.com/boozallen/foundry-agent-packages/releases/download/foundry-agent-config/v1.1.0/foundry_agent_config-1.1.0-py3-none-any.whl"}
+foundry-agent-core = {url = "https://github.com/boozallen/foundry-agent-packages/releases/download/foundry-agent-core/v1.4.0/foundry_agent_core-1.4.0-py3-none-any.whl"}
+foundry-agent-fastapi = {url = "https://github.com/boozallen/foundry-agent-packages/releases/download/foundry-agent-fastapi/v1.2.3/foundry_agent_fastapi-1.2.3-py3-none-any.whl"}
+foundry-strands-agent = {url = "https://github.com/boozallen/foundry-agent-packages/releases/download/foundry-strands-agent/v3.2.4/foundry_strands_agent-3.2.4-py3-none-any.whl"}

@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Security Vulnerabilities
+    url: https://github.com/boozallen/strands-base-agent/security/advisories/new
+    about: Please report security vulnerabilities through GitHub Security Advisories, not public issues. See SECURITY.md for details.
